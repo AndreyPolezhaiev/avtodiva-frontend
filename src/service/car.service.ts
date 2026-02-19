@@ -24,11 +24,11 @@ export class CarService {
     return this.http.get<Car>(`${this.apiServerUrl}/api/cars/${id}`);
   }
 
-  public deleteCarById(id: number): Observable<string> {
-    return this.http.delete(`${this.apiServerUrl}/api/cars/${id}`, { responseType: 'text' });
-  }
-
   public updateCar(id: number, car: Car): Observable<Car> {
     return this.http.put<Car>(`${this.apiServerUrl}/api/cars/${id}`, car);
+  }
+
+  public deleteCarById(id: number): Observable<string> {
+    return this.http.delete(`${this.apiServerUrl}/api/cars/${id}`, { responseType: 'text' });
   }
 }

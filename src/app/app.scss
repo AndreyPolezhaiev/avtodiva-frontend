@@ -27,15 +27,18 @@
   cursor: pointer;
   font-weight: 600;
   transition: opacity 0.2s;
+  color: white;
 
   &:hover { opacity: 0.8; }
-  &-add { background-color: #27ae60; color: white; }
-  &-refresh { background-color: #3498db; color: white; }
+  &-add { background-color: #27ae60; }
+  &-refresh { background-color: #3498db; }
+  &-get-by-id { background-color: #35eaba; }
 }
 
 .container {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fit, 200px);
+  justify-content: center;
   gap: 20px;
   padding: 20px;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;

@@ -1,7 +1,8 @@
 <header class="main-header">
   <div class="logo">AvtoDiva Admin</div>
   <nav class="actions">
-    <button class="btn btn-add">➕ Добавить машину</button>
+    <button class="btn btn-add" (click)="createCar()">➕ Добавить машину</button>
+    <button class="btn btn-get-by-id" (click)="getCarById()">➕ Взять по ID</button>
     <button class="btn btn-refresh" (click)="getAllCars()">🔄 Обновить список</button>
   </nav>
 </header>
