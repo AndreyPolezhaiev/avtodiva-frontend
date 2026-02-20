@@ -1,9 +1,10 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { Car } from '../model/car.model';
 import { CarService } from '../service/car.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
+import { CarRequestDto } from '../model/car/car.request';
+import { CarResponseDto } from '../model/car/car.response';
 
 @Component({
   selector: 'app-root',
@@ -13,7 +14,7 @@ import { CommonModule } from '@angular/common';
   styleUrl: './app.scss'
 })
 export class App implements OnInit {
-  public cars = signal<Car[]>([]);
+  public cars = signal<CarResponseDto[]>([]);
 
   constructor(private carService: CarService) {};
 
@@ -25,9 +26,9 @@ export class App implements OnInit {
     const newName = prompt('Введите новое название для машины:');
 
     if (newName) {
-      const newCar: Partial<Car> = {name: newName};
+      const newCar: Partial<CarRequestDto> = {name: newName};
 
-      this.carService.createCar(newCar as Car).subscribe ({
+      this.carService.createCar(newCar as CarRequestDto).subscribe ({
         next: (carFromServer) => {
           this.cars.update(cars => [...cars, carFromServer]);
         },
@@ -42,7 +43,7 @@ export class App implements OnInit {
 
   public getAllCars(): void {
     this.carService.getAllCars().subscribe({
-      next: (response: Car[]) => {
+      next: (response: CarResponseDto[]) => {
         console.log('Данные получены:', response);
         this.cars.set(response);
       },
@@ -78,11 +79,11 @@ export class App implements OnInit {
     }
   }
 
-  public updateCar(car: Car): void {
+  public updateCar(car: CarResponseDto): void {
     const newName = prompt('Введите новое название для машины:', car.name);
 
     if (newName && newName !== car.name) {
-      const updatedCar: Car = { ...car, name: newName };
+      const updatedCar: CarRequestDto = { ...car, name: newName };
 
       this.carService.updateCar(car.id, updatedCar).subscribe({
         next: (carFromServer) => {

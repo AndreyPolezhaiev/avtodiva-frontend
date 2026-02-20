@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Car } from '../model/car.model';
 import { environment } from '../environmets/environment';
+import { CarRequestDto } from '../model/car/car.request';
+import { CarResponseDto } from '../model/car/car.response';
 
 @Injectable({
   providedIn: 'root',
@@ -12,20 +13,20 @@ export class CarService {
 
   constructor(private http: HttpClient) {};
 
-  public createCar(car: Car): Observable<Car> {
-    return this.http.post<Car>(`${this.apiServerUrl}/api/cars`, car);
+  public createCar(car: CarRequestDto): Observable<CarResponseDto> {
+    return this.http.post<CarResponseDto>(`${this.apiServerUrl}/api/cars`, car);
   }
 
-  public getAllCars(): Observable<Car[]> {
-    return this.http.get<Car[]>(`${this.apiServerUrl}/api/cars/all`);
+  public getAllCars(): Observable<CarResponseDto[]> {
+    return this.http.get<CarResponseDto[]>(`${this.apiServerUrl}/api/cars/all`);
   }
 
-  public getCarById(id: number): Observable<Car> {
-    return this.http.get<Car>(`${this.apiServerUrl}/api/cars/${id}`);
+  public getCarById(id: number): Observable<CarResponseDto> {
+    return this.http.get<CarResponseDto>(`${this.apiServerUrl}/api/cars/${id}`);
   }
 
-  public updateCar(id: number, car: Car): Observable<Car> {
-    return this.http.put<Car>(`${this.apiServerUrl}/api/cars/${id}`, car);
+  public updateCar(id: number, car: CarRequestDto): Observable<CarResponseDto> {
+    return this.http.put<CarResponseDto>(`${this.apiServerUrl}/api/cars/${id}`, car);
   }
 
   public deleteCarById(id: number): Observable<string> {
