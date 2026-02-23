@@ -1,0 +1,89 @@
+<div class="action-bar">
+  <div class="page-info">
+    <h2>Управління машинами</h2>
+    <span class="count-badge">{{ cars().length }} авто</span>
+  </div>
+
+  <div class="controls">
+    <button class="btn btn-add" (click)="openControlModal('ADD')" title="Додати нову машину">+</button>
+    <button class="btn btn-get-id" (click)="openControlModal('GET_BY_ID')">Знайти за ID</button>
+    <button class="btn btn-refresh" (click)="getAllCars()">🔄 Оновити</button>
+  </div>
+</div>
+
+@if (activeModal() !== null) {
+  <div class="modal-overlay" (click)="closeControlModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      @if (activeModal() === 'ADD') {
+        <h3>Додати автомобіль</h3>
+        <form #addForm="ngForm" (ngSubmit)="createCar(addForm)">
+          <div class="form-group">
+            <label>Модель:</label>
+            <input type="text" name="model" ngModel required placeholder="Наприклад: Toyota Camry" class="form-control">
+          </div>
+          <div class="modal-actions">
+            <button type="button" class="btn btn-cancel" (click)="closeControlModal()">Відмінити</button>
+            <button type="submit" class="btn btn-save" [disabled]="addForm.invalid">Зберегти</button>
+          </div>
+        </form>
+      }
+      @else if (activeModal() === 'GET_BY_ID') {
+        <h3>Знайти за ID</h3>
+        <form #byIdForm="ngForm" (ngSubmit)="getCarById(byIdForm)">
+          <div class="form-group">
+            <label>ID</label>
+            <input type="number" name="carId" ngModel required placeholder="Наприклад: 10" class="form-control">
+          </div>
+          <div class="modal-actions">
+            <button type="button" class="btn btn-cancel" (click)="closeControlModal()">Відмінити</button>
+            <button type="submit" class="btn btn-save" [disabled]="byIdForm.invalid">Знайти</button>
+          </div>
+        </form>
+      }
+      @else if (activeModal() === 'UPDATE' && selectedCar()) {
+        <h3>Оновити автомобіль</h3>
+        <form #updateForm="ngForm" (ngSubmit)="updateCar(updateForm)">
+          <div class="form-group">
+            <label>Модель:</label>
+            <input type="text" name="model" [ngModel]="selectedCar()?.name" required placeholder="Toyota Camry" class="form-control">
+          </div>
+          <div class="modal-actions">
+            <button type="button" class="btn btn-cancel" (click)="closeIconModal()">Відмінити</button>
+            <button type="submit" class="btn btn-save" [disabled]="updateForm.invalid">Оновити</button>
+          </div>
+        </form>
+      }
+      @else if (activeModal() === 'DELETE' && selectedCar()) {
+        <h3>Ви впевенені, що хочете видалити автомобіль?</h3>
+        <form #byIdForm="ngForm" (ngSubmit)="deleteCarById(byIdForm)">
+          <div class="form-group">
+            <h4 class="notification">УВАГА!!!</h4>
+            <span class="notification-message">
+              Якщо ви видалите автомобіль
+              то і видаляться усі заняття,
+              які пов'язані з цим автомобілем.</span>
+          </div>
+          <div class="modal-actions">
+            <button type="button" class="btn btn-cancel" (click)="closeIconModal()">Відмінити</button>
+            <button type="submit" class="btn btn-save" [disabled]="byIdForm.invalid">Видалити</button>
+          </div>
+        </form>
+      }
+    </div>
+  </div>
+}
+
+<div class="container">
+  @for (car of cars(); track car.id) { 
+    <div class="car-card">
+      <div class="car-name">🚗 {{ car.name }}</div>
+      <div class="car-id">ID: {{ car.id }}</div>
+      <div class="card-actions">
+        <button class="btn-icon" (click)="openIconModal('UPDATE', car)">✏️</button>
+        <button class="btn-icon" (click)="openIconModal('DELETE', car)">🗑️</button>
+      </div>
+    </div>
+  } @empty {
+    <div class="empty-state">Поки що машин немає...</div>
+  }
+</div>

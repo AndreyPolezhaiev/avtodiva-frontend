@@ -1,5 +1,4 @@
-export interface ScheduleSlotResponseDto {
-  id: number;
+export interface ScheduleSlotRequestDto {
   date: string;
   timeFrom: string;
   timeTo: string;
