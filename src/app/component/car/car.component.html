@@ -11,6 +11,21 @@
   </div>
 </div>
 
+<div class="container">
+  @for (car of cars(); track car.id) { 
+    <div class="card">
+      <div class="name">🚗 {{ car.name }}</div>
+      <div class="id">ID: {{ car.id }}</div>
+      <div class="card-actions">
+        <button class="btn-icon" (click)="openIconModal('UPDATE', car)">✏️</button>
+        <button class="btn-icon" (click)="openIconModal('DELETE', car)">🗑️</button>
+      </div>
+    </div>
+  } @empty {
+    <div class="empty-state">Поки що машин немає...</div>
+  }
+</div>
+
 @if (activeModal() !== null) {
   <div class="modal-overlay" (click)="closeControlModal()">
     <div class="modal-content" (click)="$event.stopPropagation()">
@@ -19,7 +34,7 @@
         <form #addForm="ngForm" (ngSubmit)="createCar(addForm)">
           <div class="form-group">
             <label>Модель:</label>
-            <input type="text" name="model" ngModel required placeholder="Наприклад: Toyota Camry" class="form-control">
+            <input class="form-control" type="text" name="model" ngModel required placeholder="Наприклад: Toyota Camry">
           </div>
           <div class="modal-actions">
             <button type="button" class="btn btn-cancel" (click)="closeControlModal()">Відмінити</button>
@@ -31,8 +46,8 @@
         <h3>Знайти за ID</h3>
         <form #byIdForm="ngForm" (ngSubmit)="getCarById(byIdForm)">
           <div class="form-group">
-            <label>ID</label>
-            <input type="number" name="carId" ngModel required placeholder="Наприклад: 10" class="form-control">
+            <label>ID:</label>
+            <input class="form-control" type="number" name="carId" ngModel required placeholder="Наприклад: 10">
           </div>
           <div class="modal-actions">
             <button type="button" class="btn btn-cancel" (click)="closeControlModal()">Відмінити</button>
@@ -45,7 +60,7 @@
         <form #updateForm="ngForm" (ngSubmit)="updateCar(updateForm)">
           <div class="form-group">
             <label>Модель:</label>
-            <input type="text" name="model" [ngModel]="selectedCar()?.name" required placeholder="Toyota Camry" class="form-control">
+            <input class="form-control" type="text" name="model" [ngModel]="selectedCar()?.name" required placeholder="Toyota Camry">
           </div>
           <div class="modal-actions">
             <button type="button" class="btn btn-cancel" (click)="closeIconModal()">Відмінити</button>
@@ -55,7 +70,7 @@
       }
       @else if (activeModal() === 'DELETE' && selectedCar()) {
         <h3>Ви впевенені, що хочете видалити автомобіль?</h3>
-        <form #byIdForm="ngForm" (ngSubmit)="deleteCarById(byIdForm)">
+        <form #deleteForm="ngForm" (ngSubmit)="deleteCarById()">
           <div class="form-group">
             <h4 class="notification">УВАГА!!!</h4>
             <span class="notification-message">
@@ -65,25 +80,10 @@
           </div>
           <div class="modal-actions">
             <button type="button" class="btn btn-cancel" (click)="closeIconModal()">Відмінити</button>
-            <button type="submit" class="btn btn-save" [disabled]="byIdForm.invalid">Видалити</button>
+            <button type="submit" class="btn btn-save" [disabled]="deleteForm.invalid">Видалити</button>
           </div>
         </form>
       }
     </div>
   </div>
 }
-
-<div class="container">
-  @for (car of cars(); track car.id) { 
-    <div class="car-card">
-      <div class="car-name">🚗 {{ car.name }}</div>
-      <div class="car-id">ID: {{ car.id }}</div>
-      <div class="card-actions">
-        <button class="btn-icon" (click)="openIconModal('UPDATE', car)">✏️</button>
-        <button class="btn-icon" (click)="openIconModal('DELETE', car)">🗑️</button>
-      </div>
-    </div>
-  } @empty {
-    <div class="empty-state">Поки що машин немає...</div>
-  }
-</div>

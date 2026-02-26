@@ -34,7 +34,7 @@ export class CarComponent implements OnInit {
         next: (carFromServer) => {
           this.cars.update(cars => [...cars, carFromServer]);
           form.reset();
-          this.activeModal.set(null);
+          this.closeControlModal();
         },
 
         error: (error: HttpErrorResponse) => {
@@ -64,7 +64,7 @@ export class CarComponent implements OnInit {
           next: (carFromServer) => {
             this.cars.set([carFromServer]);
             form.reset();
-            this.activeModal.set(null);
+            this.closeControlModal();
           },
 
           error: (error: HttpErrorResponse) => {
@@ -97,13 +97,14 @@ export class CarComponent implements OnInit {
     }
   }
 
-  public deleteCarById(form: NgForm): void {
+  public deleteCarById(): void {
     const currentCar = this.selectedCar();
     
-    if (form.valid && currentCar) {
+    if (currentCar) {
       this.carService.deleteCarById(currentCar.id).subscribe({
         next: () => {
           this.cars.update(currentCars => currentCars.filter(c => c.id !== currentCar.id));
+          this.closeIconModal();
         },
 
         error: (error: HttpErrorResponse) => {

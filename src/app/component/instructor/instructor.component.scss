@@ -19,7 +19,7 @@
       font-weight: 700;
     }
 
-    .count-badge {
+    .count-bage {
       background: #edf2f7;
       color: #4a5568;
       padding: 4px 12px;
@@ -31,8 +31,8 @@
 
   .controls {
     display: flex;
-    gap: 12px;
     align-items: center;
+    gap: 12px;
   }
 }
 
@@ -51,11 +51,11 @@
     background: #19d768;
     font-size: 24px;
     border-radius: 12px;
-    
+
     &:hover { background: #14ee1b; }
   }
 
-  &-get-id { 
+  &-get-by-id {
     background: #f1f5f9; 
     color: #475569;
     border: 1px solid #cbd5e1;
@@ -207,4 +207,58 @@
   padding-top: 5px;
   padding-bottom: 15px;
   color: red;
+}
+
+.detailed-info {
+  max-width: 600px;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.detail-section {
+  margin-top: 20px;
+  text-align: left;
+  
+  h4 {
+    border-bottom: 1px solid #e2e8f0;
+    padding-bottom: 5px;
+    color: #1e293b;
+  }
+}
+
+.detail-list {
+  list-style: none;
+  padding: 0;
+  li {
+    padding: 8px 0;
+    border-bottom: 1px dashed #cbd5e1;
+  }
+}
+
+.slots-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.slot-item {
+  padding: 10px;
+  background: #f8fafc;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  display: flex;
+  flex-direction: column;
+  font-size: 0.85rem;
+
+  &.booked {
+    background: #ecfdf5;
+    border-color: #10b981;
+  }
+}
+
+.muted {
+  color: #64748b;
+  font-style: italic;
+  font-size: 0.9rem;
 }

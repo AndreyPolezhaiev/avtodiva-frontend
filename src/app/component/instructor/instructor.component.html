@@ -1,0 +1,128 @@
+<div class="action-bar">
+  <div class="page-info">
+    <h2>Управління інструкторами</h2>
+    <span class="count-bage">{{instructors().length}} інструкторів</span>
+  </div>
+  <div class="controls">
+    <button class="btn btn-add" (click)="openControlModal('ADD')" title="Додати нового інструктора">+</button>
+    <button class="btn btn-get-by-id" (click)="openControlModal('GET_BY_ID')">Знайти за ID</button>
+    <button class="btn btn-refresh" (click)="getAllInstructors()">🔄 Оновити</button>
+  </div>
+</div>
+
+<div class="container">
+  @for (instructor of instructors(); track instructor.id) {
+    <div class="card">
+      <div class="name"> 👤 {{instructor.name}} </div>
+      <div class="id">ID: {{instructor.id}} </div>
+      <div class="card-actions">
+        <button class="btn-icon" (click)="openIconModal('UPDATE', instructor)">✏️</button>
+        <button class="btn-icon" (click)="getDetailedInstructorById(instructor.id)" title="Детальна інформація">ℹ️</button>
+        <button class="btn-icon" (click)="openIconModal('DELETE', instructor)">🗑️</button>
+      </div>
+    </div>
+  } @empty {
+    <div class="empty-state">Поки що інструкторів немає...</div>
+  }
+</div>
+
+@if (activeModal() !== null) {
+  <div class="modal-overlay" (click)="closeControlModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      @if (activeModal() === 'ADD') {
+        <h3>Додати інструктора</h3>
+        <form #addForm="ngForm" (ngSubmit)="createInstructor(addForm)">
+          <div class="form-group">
+            <label>Ім'я:</label>
+            <input class="form-control" type="text" name="name" ngModel required placeholder="Наприклад: Оксана">
+          </div>
+          <div class="modal-actions">
+            <button class="btn btn-cancel" type="button" (click)="closeControlModal()">Відмінити</button>
+            <button class="btn btn-save" type="submit" [disabled]="addForm.invalid">Зберегти</button>
+          </div>
+        </form>
+      }
+      @else if (activeModal() === 'GET_BY_ID') {
+        <h3>Знайти за ID</h3>
+        <form #byIdForm="ngForm" (ngSubmit)="getInstructorById(byIdForm)">
+          <div class="form-group">
+            <label>ID:</label>
+            <input class="form-control" type="number" name="instructorId" ngModel required placeholder="Наприклад: 10">
+          </div>
+          <div class="modal-actions">
+            <button class="btn btn-cancel" type="button" (click)="closeControlModal()">Відмінити</button>
+            <button class="btn btn-save" type="submit" [disabled]="byIdForm.invalid">Знайти</button>
+          </div>
+        </form>
+      }
+      @else if (activeModal() === 'UPDATE' && selectedInstructor()) {
+        <h3>Оновити інструктора</h3>
+        <form #updateForm="ngForm" (ngSubmit)="updateInstructor(updateForm)">
+          <div class="form-group">
+            <label>Ім'я:</label>
+            <input class="form-control" type="text" name="instructorName" [ngModel]="selectedInstructor()?.name" required>
+          </div>
+          <div class="modal-actions">
+            <button class="btn btn-cancel" type="button" (click)="closeIconModal()">Відмінити</button>
+            <button class="btn btn-save" type="submit" [disabled]="updateForm.invalid">Оновити</button>
+          </div>
+        </form>
+      }
+      @else if (activeModal() === 'DELETE' && selectedInstructor()) {
+        <h3>Видалити інструктора</h3>
+        <form #deleteForm="ngForm" (ngSubmit)="deleteInstructorById()">
+          <div class="form-group">
+            <h4 class="notification">УВАГА!!!</h4>
+            <span class="notification-message">
+              Якщо ви видалите інструктора
+              то і видаляться усі заняття,
+              які пов'язані з цим інструктором
+              та його вихідні.
+            </span>
+          </div>
+          <div class="modal-actions">
+            <button type="button" class="btn btn-cancel" (click)="closeIconModal()">Відмінити</button>
+            <button type="submit" class="btn btn-save" [disabled]="deleteForm.invalid">Видалити</button>
+          </div>
+        </form>
+      }
+      @else if (activeModal() === 'GET_DETAILED_BY_ID') {
+        <div class="detailed-info">
+          @for (details of detailedInstructors(); track details.id) {
+            <h3>Деталі інструктора: {{ details.name }}</h3>
+
+            <div class="detail-section">
+              <h4>🚗 Графік занять</h4>
+              @if (details.scheduleSlots && details.scheduleSlots.length > 0) {
+                <div class="slots-grid">
+                  @for (slot of details.scheduleSlots; track slot.id) {
+                    <div class="slot-item" [class.booked]="slot.booked">
+                      <strong>{{ slot.date }}</strong>
+                      <span>{{ slot.timeFrom }} - {{ slot.timeTo }}</span>
+                      <small>{{ slot.booked ? '✅ Заброньовано' : '⏳ Вільно' }}</small>
+                    </div>
+                  }
+                </div>
+              } @else { <p class="muted">Занять поки немає</p> }
+            </div>
+
+            <div class="detail-section">
+              <h4>🗓️ Вихідні дні</h4>
+              @if (details.weekends && details.weekends.length > 0) {
+                <ul class="detail-list">
+                  @for (w of details.weekends; track w.id) {
+                    <li>{{ w.day }}: {{ w.timeFrom }} - {{ w.timeTo }}</li>
+                  }
+                </ul>
+              } @else { <p class="muted">Вихідні не призначені</p> }
+            </div>
+          }
+          
+          <div class="modal-actions">
+            <button class="btn btn-cancel" (click)="closeControlModal()">Закрити</button>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+}
