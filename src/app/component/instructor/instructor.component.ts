@@ -58,26 +58,6 @@ export class InstructorComponent {
     })
   }
 
-  public getInstructorById(form: NgForm): void {
-    if (form.valid) {
-      const id = form.value.instructorId;
-
-      if (!isNaN(id)) {
-        this.instructorService.getInstructorById(id).subscribe({
-          next: (instructorResponse: InstructorResponseDto) => {
-            this.instructors.set([instructorResponse])
-            form.reset();
-            this.closeControlModal();
-          },
-
-          error: (error: HttpErrorResponse) => {
-            this.handleError(`Не вдалось отримати інструктора за ID: ${id}`, error);
-          }
-        })
-      }
-    }
-  }
-
   public getDetailedInstructorById(id: number): void {
     if (!isNaN(id)) {
       this.instructorService.getDetailedInstructorById(id).subscribe({

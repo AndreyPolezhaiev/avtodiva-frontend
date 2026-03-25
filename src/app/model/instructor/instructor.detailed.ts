@@ -5,5 +5,5 @@ export interface InstructorDetailedResponseDto {
   id: number;
   name: string;
   weekends?: WeekendResponseDto[];
-  scheduleSlots?: ScheduleSlotResponseDto[]; 
+  slots?: ScheduleSlotResponseDto[]; 
 }

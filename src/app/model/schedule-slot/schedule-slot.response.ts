@@ -8,9 +8,9 @@ export interface ScheduleSlotResponseDto {
   timeFrom: string;
   timeTo: string;
   description: string;
-  instructor?: InstructorResponseDto; 
-  car?: CarResponseDto;
-  student?: StudentResponseDto;
+  instructorDto?: InstructorResponseDto; 
+  carDto?: CarResponseDto;
+  studentDto?: StudentResponseDto;
   link: string;
   booked: boolean;
 }

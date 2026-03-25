@@ -1,12 +1,25 @@
 .main-header {
+  position: sticky;
+  top: 0;
+  left: 0;
   background-color: #2c3e50;
+  min-width: max-content;
   padding: 0.75rem 2rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
   color: white;
+  z-index: 100000;
 
-  .logo { font-size: 1.5rem; font-weight: bold; }
+  .logo { 
+    font-size: 1.5rem; 
+    font-weight: bold; 
+  }
+
+  .logo__link {
+    text-decoration: none;
+    color: white;
+  }
 
   .main-nav {
     display: flex;

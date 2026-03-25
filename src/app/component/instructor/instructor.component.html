@@ -5,7 +5,6 @@
   </div>
   <div class="controls">
     <button class="btn btn-add" (click)="openControlModal('ADD')" title="Додати нового інструктора">+</button>
-    <button class="btn btn-get-by-id" (click)="openControlModal('GET_BY_ID')">Знайти за ID</button>
     <button class="btn btn-refresh" (click)="getAllInstructors()">🔄 Оновити</button>
   </div>
 </div>
@@ -27,8 +26,8 @@
 </div>
 
 @if (activeModal() !== null) {
-  <div class="modal-overlay" (click)="closeControlModal()">
-    <div class="modal-content" (click)="$event.stopPropagation()">
+  <div class="modal-overlay" (click)="activeModal() === 'GET_DETAILED_BY_ID' ? null : closeControlModal()">
+    <div class="modal-content" [class.modal-detailed]="activeModal() === 'GET_DETAILED_BY_ID'" (click)="$event.stopPropagation()">
       @if (activeModal() === 'ADD') {
         <h3>Додати інструктора</h3>
         <form #addForm="ngForm" (ngSubmit)="createInstructor(addForm)">
@@ -39,19 +38,6 @@
           <div class="modal-actions">
             <button class="btn btn-cancel" type="button" (click)="closeControlModal()">Відмінити</button>
             <button class="btn btn-save" type="submit" [disabled]="addForm.invalid">Зберегти</button>
-          </div>
-        </form>
-      }
-      @else if (activeModal() === 'GET_BY_ID') {
-        <h3>Знайти за ID</h3>
-        <form #byIdForm="ngForm" (ngSubmit)="getInstructorById(byIdForm)">
-          <div class="form-group">
-            <label>ID:</label>
-            <input class="form-control" type="number" name="instructorId" ngModel required placeholder="Наприклад: 10">
-          </div>
-          <div class="modal-actions">
-            <button class="btn btn-cancel" type="button" (click)="closeControlModal()">Відмінити</button>
-            <button class="btn btn-save" type="submit" [disabled]="byIdForm.invalid">Знайти</button>
           </div>
         </form>
       }
@@ -87,34 +73,80 @@
         </form>
       }
       @else if (activeModal() === 'GET_DETAILED_BY_ID') {
-        <div class="detailed-info">
+        <div class="detailed-container">
           @for (details of detailedInstructors(); track details.id) {
-            <h3>Деталі інструктора: {{ details.name }}</h3>
-
-            <div class="detail-section">
-              <h4>🚗 Графік занять</h4>
-              @if (details.scheduleSlots && details.scheduleSlots.length > 0) {
-                <div class="slots-grid">
-                  @for (slot of details.scheduleSlots; track slot.id) {
-                    <div class="slot-item" [class.booked]="slot.booked">
-                      <strong>{{ slot.date }}</strong>
-                      <span>{{ slot.timeFrom }} - {{ slot.timeTo }}</span>
-                      <small>{{ slot.booked ? '✅ Заброньовано' : '⏳ Вільно' }}</small>
-                    </div>
-                  }
-                </div>
-              } @else { <p class="muted">Занять поки немає</p> }
+            <div class="detailed-header">
+               <h3>Деталі інструктора: <span>{{ details.name }}</span></h3>
+               <button class="close-top" (click)="closeControlModal()">✕</button>
             </div>
 
-            <div class="detail-section">
-              <h4>🗓️ Вихідні дні</h4>
-              @if (details.weekends && details.weekends.length > 0) {
-                <ul class="detail-list">
-                  @for (w of details.weekends; track w.id) {
-                    <li>{{ w.day }}: {{ w.timeFrom }} - {{ w.timeTo }}</li>
-                  }
-                </ul>
-              } @else { <p class="muted">Вихідні не призначені</p> }
+            <div class="tables-layout">
+              <div class="detail-section">
+                <h4>🚗 Графік занять</h4>
+                <div class="table-wrapper">
+                  <table class="styled-table">
+                    <thead>
+                      <tr>
+                        <th>Дата/Час</th>
+                        <th>Студент/Авто</th>
+                        <th>Опис</th>
+                        <th>Статус</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      @for (slot of details.slots; track slot.id) {
+                        <tr [class.row-booked]="slot.booked">
+                          <td>
+                            <strong>{{ slot.date }}</strong><br>
+                            <small>{{ slot.timeFrom }} - {{ slot.timeTo }}</small>
+                          </td>
+                          <td>
+                            👤 {{ slot.studentDto?.name || '—' }}<br>
+                            🚘 {{ slot.carDto?.name || '—' }}
+                          </td>
+                          <td class="cell-desc">
+                            <div class="text-truncate">{{ slot.description }}</div>
+                            @if (slot.link) {
+                              <a [href]="slot.link" target="_blank" class="link-icon">🔗</a>
+                            }
+                          </td>
+                          <td>
+                            <span class="status-badge" [class.is-booked]="slot.booked">
+                              {{ slot.booked ? 'Занято' : 'Вільно' }}
+                            </span>
+                          </td>
+                        </tr>
+                      } @empty {
+                        <tr><td colspan="4" class="empty-row">Занять поки немає</td></tr>
+                      }
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <div class="detail-section">
+                <h4>🗓️ Вихідні дні</h4>
+                <div class="table-wrapper">
+                  <table class="styled-table">
+                    <thead>
+                      <tr>
+                        <th>Дата (День)</th>
+                        <th>Проміжок</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      @for (w of details.weekends; track w.id) {
+                        <tr>
+                          <td><strong>{{ w.day }}</strong></td>
+                          <td>{{ w.timeFrom }} - {{ w.timeTo }}</td>
+                        </tr>
+                      } @empty {
+                        <tr><td colspan="2" class="empty-row">Вихідні не призначені</td></tr>
+                      }
+                    </tbody>
+                  </table>
+                </div>
+              </div>
             </div>
           }
           

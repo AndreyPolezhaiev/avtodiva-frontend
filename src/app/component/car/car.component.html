@@ -6,7 +6,6 @@
 
   <div class="controls">
     <button class="btn btn-add" (click)="openControlModal('ADD')" title="Додати нову машину">+</button>
-    <button class="btn btn-get-id" (click)="openControlModal('GET_BY_ID')">Знайти за ID</button>
     <button class="btn btn-refresh" (click)="getAllCars()">🔄 Оновити</button>
   </div>
 </div>
@@ -39,19 +38,6 @@
           <div class="modal-actions">
             <button type="button" class="btn btn-cancel" (click)="closeControlModal()">Відмінити</button>
             <button type="submit" class="btn btn-save" [disabled]="addForm.invalid">Зберегти</button>
-          </div>
-        </form>
-      }
-      @else if (activeModal() === 'GET_BY_ID') {
-        <h3>Знайти за ID</h3>
-        <form #byIdForm="ngForm" (ngSubmit)="getCarById(byIdForm)">
-          <div class="form-group">
-            <label>ID:</label>
-            <input class="form-control" type="number" name="carId" ngModel required placeholder="Наприклад: 10">
-          </div>
-          <div class="modal-actions">
-            <button type="button" class="btn btn-cancel" (click)="closeControlModal()">Відмінити</button>
-            <button type="submit" class="btn btn-save" [disabled]="byIdForm.invalid">Знайти</button>
           </div>
         </form>
       }

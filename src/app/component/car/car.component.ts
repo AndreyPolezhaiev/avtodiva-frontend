@@ -56,25 +56,6 @@ export class CarComponent implements OnInit {
     });
   }
 
-  public getCarById(form: NgForm): void {
-    if (form.valid) {
-      const id = form.value.carId;
-      if (!isNaN(id)) {
-        this.carService.getCarById(id).subscribe({
-          next: (carFromServer) => {
-            this.cars.set([carFromServer]);
-            form.reset();
-            this.closeControlModal();
-          },
-
-          error: (error: HttpErrorResponse) => {
-            this.handleError(`Не вдалося знайти машину за ID: ${id}`, error);
-          }
-        });
-      }
-    }
-  }
-
   public updateCar(form: NgForm): void {
     const currentCar = this.selectedCar();
 

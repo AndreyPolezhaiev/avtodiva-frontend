@@ -5,6 +5,7 @@ import { ScheduleSlotRequestDto } from "../model/schedule-slot/schedule-slot.cre
 import { Observable } from "rxjs";
 import { ScheduleSlotResponseDto } from "../model/schedule-slot/schedule-slot.response";
 import { SlotSearchParametersDto } from "../model/schedule-slot/schedule-slot.search";
+import { UpdateScheduleSlotRequestDto } from "../model/schedule-slot/schedule-slot.update";
 
 @Injectable({
   providedIn: 'root',
@@ -28,7 +29,7 @@ export class ScheduleSlotService {
     return this.http.get<ScheduleSlotResponseDto>(`${this.apiUrl}/${id}`);
   }
 
-  public updateSlot(id: number, slot: ScheduleSlotRequestDto): Observable<ScheduleSlotResponseDto> {
+  public updateSlot(id: number, slot: UpdateScheduleSlotRequestDto): Observable<ScheduleSlotResponseDto> {
     return this.http.put<ScheduleSlotResponseDto>(`${this.apiUrl}/${id}`, slot);
   }
 
