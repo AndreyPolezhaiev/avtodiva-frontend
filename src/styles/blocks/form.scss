@@ -1,0 +1,40 @@
+@use 'styles/utils/variables' as vars;
+
+.form {
+  &__group {
+    margin: vars.$form-group-margin;
+  }
+
+  &__field {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__label {
+    display: block;
+    font-weight: vars.$form-label-font-weight;
+    color: vars.$form-label-color;
+  }
+
+  &__input {
+    width: vars.$form-input-width;
+    padding: vars.$form-input-padding;
+    margin-top: vars.$form-input-margin-top;
+    box-sizing: border-box;
+
+    border: vars.$form-input-border; 
+    border-radius: vars.$form-input-border-radius;
+    outline: none;
+
+    &:focus {
+      border-color: vars.$form-input-border-color;
+      box-shadow: vars.$form-input-box-shadow; 
+    }
+  }
+
+  &__actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: vars.$form-actions-gap;
+  }
+}

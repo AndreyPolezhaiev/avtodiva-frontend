@@ -1,0 +1,39 @@
+@use 'styles/utils/variables' as vars;
+
+.action-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: vars.$action-bar-padding;
+  background: vars.$action-bar-background;
+  border-bottom: vars.$action-bar-border-bottom;
+  margin-bottom: vars.$action-bar-margin-bottom;
+
+  &__info {
+    display: flex;
+    align-items: center;
+    gap: vars.$action-bar-info-gap;
+  }
+
+  &__title {
+    margin: 0;
+    color: vars.$action-bar-title-color;
+    font-size: vars.$action-bar-title-font-size;
+    font-weight: vars.$action-bar-title-font-weight;
+  }
+
+  &__badge {
+    background: vars.$badge-background;
+    color: vars.$badge-color;
+    padding: vars.$badge-padding;
+    border-radius: vars.$badge-border-radius;
+    font-size: vars.$badge-font-size;
+    font-weight: vars.$badge-font-weight;
+  }
+
+  &__actions {
+    display: flex;
+    gap: vars.$action-bar-actions-gap;
+    align-items: center;
+  }
+}

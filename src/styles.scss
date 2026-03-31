@@ -1,1 +1,6 @@
-/* You can add global styles to this file, and also import other style files */
+@use 'styles/utils/variables.scss' as vars;
+
+body {
+  margin: 0;
+  background-color: vars.$primary-background;
+}

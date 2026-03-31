@@ -1,11 +1,11 @@
 import { Injectable } from "@angular/core";
 import { environment } from "../../environmets/environment";
 import { HttpClient } from "@angular/common/http";
-import { ScheduleSlotRequestDto } from "../model/schedule-slot/schedule-slot.create";
+import { ScheduleSlotRequestDto } from "../models/schedule-slot/schedule-slot.create";
 import { Observable } from "rxjs";
-import { ScheduleSlotResponseDto } from "../model/schedule-slot/schedule-slot.response";
-import { SlotSearchParametersDto } from "../model/schedule-slot/schedule-slot.search";
-import { UpdateScheduleSlotRequestDto } from "../model/schedule-slot/schedule-slot.update";
+import { ScheduleSlotResponseDto } from "../models/schedule-slot/schedule-slot.response";
+import { SlotSearchParametersDto } from "../models/schedule-slot/schedule-slot.search";
+import { UpdateScheduleSlotRequestDto } from "../models/schedule-slot/schedule-slot.update";
 
 @Injectable({
   providedIn: 'root',

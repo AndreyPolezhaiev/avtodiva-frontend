@@ -1,0 +1,14 @@
+@use 'styles/utils/variables' as vars;
+
+.btn-icon {
+  background: vars.$btn-icon-background;
+  border: vars.$btn-icon-border;
+  border-radius: vars.$btn-icon-border-radius;
+  padding: vars.$btn-icon-padding;
+  transition: vars.$transition-base;
+  cursor: pointer;
+
+  &:hover {
+    background: vars.$btn-icon-hover-background;
+  }
+}

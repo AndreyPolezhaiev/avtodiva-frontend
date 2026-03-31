@@ -1,0 +1,22 @@
+@use 'styles/utils/variables' as vars;
+
+.header {
+  position: sticky;
+  top: 0;
+  left: 0;
+  background-color: vars.$header-bg-color;
+  min-width: max-content;
+  padding: vars.$header-padding;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: vars.$header-text-color;
+  z-index: vars.$header-z-index;
+
+  &__link {
+    font-size: vars.$logo-font-size; 
+    font-weight: vars.$logo-font-weight;
+    text-decoration: none;
+    color: inherit;
+  }
+}

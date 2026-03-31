@@ -1,0 +1,11 @@
+@use 'styles/utils/variables' as vars;
+
+.card-container {
+  display: grid;
+  box-sizing: border-box;
+  grid-template-columns: vars.$card-container-grid-template;
+  gap: vars.$card-container-grid-gap;
+  padding: vars.$card-container-padding;
+  margin-inline: vars.$card-container-margin-inline;
+  max-width: vars.$card-container-max-width;
+}

@@ -1,15 +1,15 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
-import { CarResponseDto } from '../../model/car/car.response';
-import { CarService } from '../../service/car.service';
-import { CarRequestDto } from '../../model/car/car.request';
+import { CarResponseDto } from '../../../models/car/car.response';
+import { CarService } from '../../../services/car.service';
+import { CarRequestDto } from '../../../models/car/car.request';
 import { FormsModule, NgForm } from '@angular/forms';
 
 type ModalType = 'ADD' | 'GET_BY_ID' | 'UPDATE' | 'DELETE' | null;
 
 @Component({
-  selector: 'app-car',
+  selector: 'app-car-page',
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './car.component.html',

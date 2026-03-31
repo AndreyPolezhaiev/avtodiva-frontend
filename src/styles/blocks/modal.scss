@@ -1,0 +1,31 @@
+@use 'styles/utils/variables' as vars;
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: vars.$modal-background;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: vars.$modal-z-index;
+
+  &__content {
+    background: vars.$modal-content-background;
+    padding: vars.$modal-content-padding;
+    border-radius: vars.$modal-content-border-radius;
+    width: vars.$modal-content-width;
+    min-width: vars.$modal-content-min-width;
+    max-width: vars.$modal-content-max-width;
+    color: vars.$modal-content-color;
+  }
+
+  &__title {
+    margin-top: 0;
+    color: vars.$modal-title-color;
+    border-bottom: vars.$modal-title-border-bottom;
+    padding-bottom: vars.$modal-title-padding-bottom;
+  }
+}

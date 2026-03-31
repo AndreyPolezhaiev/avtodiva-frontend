@@ -1,0 +1,40 @@
+@use 'styles/utils/variables' as vars;
+
+.card {
+  background: vars.$card-background;
+  border-radius: vars.$card-border-radius;
+  box-shadow: vars.$card-box-shadow;
+  padding: vars.$card-padding;
+  transition: vars.$card-transition;
+  border: vars.$card-border;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  &:hover {
+    transform: vars.$card-hover-transform;
+    box-shadow: vars.$card-hover-box-shadow;
+  }
+
+  &__title {
+    font-size: vars.$card-title-font-size;
+    color: vars.$card-title-color;
+    margin-bottom: vars.$card-title-margin-bottom;
+  }
+
+  &__id {
+    margin-top: vars.$card-id-margin-top;
+    display: inline-block;
+    color: vars.$card-id-color;
+    font-size: vars.$card-id-font-size;
+    background: vars.$card-id-font-size;
+    padding: vars.$card-id-padding;
+    border-radius: vars.$card-id-border-radius;
+  }
+
+  &__actions {
+    margin-top: vars.$card-actions-margin-top;
+    display: flex;
+    gap: vars.$card-actions-gap;
+  }
+}

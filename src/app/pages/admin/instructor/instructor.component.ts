@@ -1,16 +1,16 @@
-import { Component, signal } from "@angular/core";
-import { InstructorService } from "../../service/instructor.service";
-import { InstructorResponseDto } from "../../model/instructor/instructor.response";
+import { Component, computed, signal } from "@angular/core";
+import { InstructorService } from "../../../services/instructor.service";
+import { InstructorResponseDto } from "../../../models/instructor/instructor.response";
 import { FormsModule, NgForm } from "@angular/forms";
 import { CommonModule } from "@angular/common";
-import { InstructorRequestDto } from "../../model/instructor/instructor.request";
+import { InstructorRequestDto } from "../../../models/instructor/instructor.request";
 import { HttpErrorResponse } from "@angular/common/http";
-import { InstructorDetailedResponseDto } from "../../model/instructor/instructor.detailed";
+import { InstructorDetailedResponseDto } from "../../../models/instructor/instructor.detailed";
 
 type ModalType = 'ADD' | 'GET_BY_ID' | 'GET_DETAILED_BY_ID' | 'UPDATE' | 'DELETE' | null;
 
 @Component({
-  selector: 'app-instructor',
+  selector: 'app-instructor-page',
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './instructor.component.html',

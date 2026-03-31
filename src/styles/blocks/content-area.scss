@@ -1,0 +1,5 @@
+@use 'styles/utils/variables' as vars;
+
+.content-area {
+  padding: vars.$content-area-padding;
+}

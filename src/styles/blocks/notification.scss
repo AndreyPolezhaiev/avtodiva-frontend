@@ -1,0 +1,17 @@
+@use 'styles/utils/variables' as vars;
+
+.notification {
+  color: vars.$notification-color;
+  margin-top: 0;
+  text-align: center;
+  padding-bottom: vars.$notification-padding-bottom;
+
+  &__message {
+    box-sizing: border-box;
+    display: block;
+    text-align: center;
+    padding-top: vars.$notification-message-padding-top;
+    padding-bottom: vars.$notification-message-padding-bottom;
+    color: vars.$notification-message-color;
+  }
+}

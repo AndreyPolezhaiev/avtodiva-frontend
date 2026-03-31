@@ -1,10 +1,10 @@
 import { Injectable } from "@angular/core";
 import { environment } from "../../environmets/environment";
 import { HttpClient } from "@angular/common/http";
-import { WeekendRequestDto } from "../model/weekend/weekend.request";
+import { WeekendRequestDto } from "../models/weekend/weekend.request";
 import { Observable } from "rxjs";
-import { WeekendResponseDto } from "../model/weekend/weekend.response";
-import { UpdateWeekendRequestDto } from "../model/weekend/weekend.update";
+import { WeekendResponseDto } from "../models/weekend/weekend.response";
+import { UpdateWeekendRequestDto } from "../models/weekend/weekend.update";
 
 @Injectable({
   providedIn: 'root'

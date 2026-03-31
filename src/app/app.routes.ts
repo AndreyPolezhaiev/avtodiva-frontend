@@ -1,14 +1,16 @@
 import { Routes } from '@angular/router';
-import { CarComponent } from './component/car/car.component';
-import { HomeComponent } from './component/home/home.component';
-import { InstructorComponent } from './component/instructor/instructor.component';
-import { StudentComponent } from './component/student/student.component';
+import { CarComponent } from './pages/admin/car/car.component';
+import { HomeComponent } from './pages/admin/home/home.component';
+import { InstructorComponent } from './pages/admin/instructor/instructor.component';
+import { StudentComponent } from './pages/admin/student/student.component';
+import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
 
 export const routes: Routes = [
   {
     path: '',
-    component: HomeComponent,
+    component: AdminLayoutComponent,
     children: [
+      { path: '', component: HomeComponent},
       { path: 'cars', component: CarComponent },
       { path: 'instructors', component: InstructorComponent },
       { path: 'students', component: StudentComponent },

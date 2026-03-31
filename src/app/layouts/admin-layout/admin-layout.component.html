@@ -1,0 +1,28 @@
+<header class="header">
+  <div class="header__logo">
+    <a routerLink="/" class="header__link">AvtoDiva Admin</a>
+  </div>
+  <nav class="nav">
+    <ul class="nav__list">
+      <li class="nav__item">
+        <a class="nav__link" routerLink="/schedule" routerLinkActive="active">Заняття</a>
+      </li>
+      <li class="nav__item">
+        <a class="nav__link" routerLink="/cars" routerLinkActive="active">Машини</a>
+      </li>
+      <li class="nav__item">
+        <a class="nav__link" routerLink="/instructors" routerLinkActive="active">Інструктори</a>
+      </li>
+      <li class="nav__item">
+        <a class="nav__link" routerLink="/students" routerLinkActive="active">Студенти</a>
+      </li>
+      <li class="nav__item">
+        <a class="nav__link" routerLink="/weekends" routerLinkActive="active">Вихідні</a>
+      </li>
+    </ul>
+  </nav>
+</header>
+
+<main class="content-area">
+  <router-outlet></router-outlet>
+</main>

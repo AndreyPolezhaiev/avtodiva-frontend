@@ -1,0 +1,50 @@
+@use 'styles/utils/variables' as vars;
+
+.btn-control {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: vars.$btn-action-height;
+  padding: vars.$btn-action-padding;
+  border-radius: vars.$btn-action-border-radius;
+  font-weight: vars.$btn-action-font-weight;
+  border: none;
+  cursor: pointer;
+  transition: vars.$transition-base;
+
+  &--add {
+    width: vars.$btn-action-add-width;
+    padding: vars.$btn-action-add-padding;
+    background: vars.$btn-action-add-background;
+    font-size: vars.$btn-action-add-font-size;
+    border-radius: vars.$btn-action-add-border-radius;
+    
+    &:hover {
+      background: vars.$btn-action-add-bg-hover;
+    }
+  }
+
+  &--refresh {
+    background: vars.$btn-action-refresh-background; 
+    color: vars.$btn-action-refresh-color;
+
+    &:hover {
+      background: vars.$btn-action-refresh-bg-hover; 
+    }
+  }
+
+  &--cancel {
+    background-color: vars.$btn-form-cancel-background-color;
+    color: vars.$btn-form-cancel-color;
+  }
+
+  &--save {
+    background-color: vars.$btn-form-save-background-color;
+    color: vars.$btn-form-cancel-color;
+
+    &:disabled {
+      background-color: vars.$btn-form-save-disabled-background-color;
+      cursor: not-allowed;
+    }
+  }
+}
