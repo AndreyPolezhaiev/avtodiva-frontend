@@ -24,6 +24,17 @@
     }
   }
 
+  &--add-small {
+    padding: 0 15px;
+    font-size: 20px;
+    height: 40px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    flex-shrink: 0;
+  }
+
   &--refresh {
     background: vars.$btn-action-refresh-background; 
     color: vars.$btn-action-refresh-color;

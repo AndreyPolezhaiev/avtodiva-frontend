@@ -1,10 +1,10 @@
 import { Injectable } from "@angular/core";
-import { environment } from "../../environmets/environment";
-import { HttpClient } from "@angular/common/http";
-import { StudentRequestDto } from "../models/student/student.request";
+import { environment } from "../../../environmets/environment";
+import { HttpClient, HttpParams } from "@angular/common/http";
+import { StudentRequestDto } from "../../models/student/student.request";
 import { Observable } from "rxjs";
-import { StudentResponseDto } from "../models/student/student.response";
-import { UpdateStudentRequestDto } from "../models/student/student.update";
+import { StudentResponseDto } from "../../models/student/student.response";
+import { UpdateStudentRequestDto } from "../../models/student/student.update";
 
 @Injectable({
   providedIn: 'root',
@@ -24,6 +24,16 @@ export class StudentService {
 
   public getStudentById(id: number): Observable<StudentResponseDto> {
     return this.http.get<StudentResponseDto>(`${this.apiUrl}/${id}`);
+  }
+
+  public searchStudents(name: string): Observable<StudentResponseDto[]> {
+    const params = new HttpParams().set('name', name);
+    return this.http.get<StudentResponseDto[]>(`${this.apiUrl}/search`, {params});
+  }
+
+  public searchByPhone(phoneNumber: string): Observable<StudentResponseDto> {
+    const params = new HttpParams().set('phoneNumber', phoneNumber);
+    return this.http.get<StudentResponseDto>(`${this.apiUrl}/byPhone`, {params});
   }
 
   public updateStudent(id: number, student: UpdateStudentRequestDto): Observable<StudentResponseDto> {

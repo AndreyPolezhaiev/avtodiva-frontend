@@ -5,6 +5,6 @@ export interface ScheduleSlotRequestDto {
   instructorId: number; 
   carId: number;
   studentId: number;
-  description: string;
-  link: string;
+  description?: string;
+  link?: string;
 }

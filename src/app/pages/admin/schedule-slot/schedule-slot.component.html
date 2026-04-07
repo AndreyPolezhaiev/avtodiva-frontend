@@ -1,0 +1,123 @@
+<div class="action-bar">
+  <div class="action-bar__info">
+    <h2 class="action-bar__title">Управління заняттями</h2>
+  </div>
+
+  <div class="action-bar__actions">
+    <button 
+      class="btn-control btn-control--add" 
+      (click)="openControlModal(ModalType.ADD)"
+      title="Додати нове заняття">
+      +
+    </button>
+  </div>
+</div>
+
+@if (activeModal() !== ModalType.NONE) {
+  <div class="modal"> 
+    <div class="modal__content" (click)="$event.stopPropagation()">
+      @if (activeModal() === ModalType.ADD) {
+        <h3 class="modal__title">Додати заняття</h3>
+        <form class="form" #addForm="ngForm" (click)="stopShowStudentsList()" (ngSubmit)="createScheduleSlot(addForm)">
+          <div class="form__group">
+            <div class="form__field">
+              <label class="form__label">Дата:</label>
+              <input class="form__input" type="date" name="date" ngModel required>
+            </div>
+
+            <div class="form__field">
+              <label class="form__label">Час з:</label>
+              <input class="form__input" type="time" name="startTime" ngModel required>
+            </div>
+
+            <div class="form__field">
+              <label class="form__label">Час до:</label>
+              <input class="form__input" type="time" name="endTime" ngModel required>
+            </div>
+
+            <div class="form__field form__field--position-relative">
+              <label class="form__label">Учень (обов'язково):</label>
+              <input
+                class="form__input"
+                type="text"
+                name="studentName"
+                ngModel 
+                (input)="onStudentNameInput($event)"
+                placeholder="Пошук за ім'ям..."
+                required
+                autocomplete="off"
+              >
+
+              @if (foundStudents().length > 0 && showStudents()){
+                <ul class="autocomplete-list">
+                  @for (student of foundStudents(); track student.id) {
+                    <li (click)="selectStudent(student, addForm)">
+                      <span>{{ student.name }}, {{ student.phoneNumber }}</span>
+                    </li>
+                  }
+                </ul>
+              }
+            </div>
+
+            <div class="form__field">
+              <label class="form__label">Телефон учня:</label>
+              <input 
+                class="form__input" 
+                type="tel" 
+                name="studentPhoneNumber" 
+                ngModel 
+                placeholder="Номер телефону...">
+            </div>
+
+            <div class="form__field">
+              <label class="form__label">Інструктор:</label>
+              <select 
+                class="form__input" 
+                name="instructorId" 
+                ngModel 
+                required>
+                <option value="" disabled selected>Оберіть інструктора...</option>
+                @for (instructor of foundInstructors(); track instructor.id) {
+                  <option [value]="instructor.id">
+                    {{ instructor.name }}
+                  </option>
+                }
+              </select>
+            </div>
+
+            <div class="form__field">
+              <label class="form__label">Машина:</label>
+              <select 
+                class="form__input" 
+                name="carId" 
+                ngModel 
+                required>
+                <option value="" disabled selected>Оберіть машину...</option>
+                @for (car of foundCars(); track car.id) {
+                  <option [value]="car.id">
+                    {{ car.name }}
+                  </option>
+                }
+              </select>
+            </div>
+
+            <div class="form__field">
+              <label class="form__label">Опис:</label>
+              <textarea class="form__input" name="description" ngModel placeholder="Додаткова інформація..."></textarea>
+            </div>
+
+            <div class="form__field">
+              <label class="form__label">Посилання:</label>
+              <textarea class="form__input" name="link" ngModel placeholder="Посилання..."></textarea>
+            </div>
+          </div>
+
+          <div class="form__actions">
+            <button type="button" class="btn-control btn-control--cancel" (click)="closeControlModal()">Відмінити</button>
+            <button type="submit" class="btn-control btn-control--save" [disabled]="addForm.invalid">Зберегти</button>
+          </div>
+        </form>
+      }
+    </div>
+  </div>
+}

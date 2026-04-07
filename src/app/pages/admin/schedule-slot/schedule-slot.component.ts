@@ -1,115 +1,110 @@
-import { Component, computed, OnInit, signal } from "@angular/core";
-import { ScheduleSlotService } from "../../../services/schedule-slot.service";
-import { ScheduleSlotResponseDto } from "../../../models/schedule-slot/schedule-slot.response";
-import { FormsModule, NgForm } from "@angular/forms";
+import { Component, Input, Output, EventEmitter, OnInit, signal, computed, inject } from "@angular/core";
 import { CommonModule } from "@angular/common";
-import { ScheduleSlotRequestDto } from "../../../models/schedule-slot/schedule-slot.create";
-import { UpdateScheduleSlotRequestDto } from "../../../models/schedule-slot/schedule-slot.update";
+import { FormsModule, NgForm } from "@angular/forms";
+import { ScheduleSlotService } from "../../../services/schedule/schedule-slot.service";
+import { ScheduleSlotResponseDto } from "../../../models/schedule-slot/schedule-slot.response";
+import { ModalType } from "../../../shared/modal-type";
 import { HttpErrorResponse } from "@angular/common/http";
-import { SlotSearchParametersDto } from "../../../models/schedule-slot/schedule-slot.search";
-
-type SlotModalType = 'ADD' | 'UPDATE' | 'DELETE' | 'SEARCH' | null;
+import { StudentResponseDto } from "../../../models/student/student.response";
+import { ScheduleSlotManagementService } from "../../../services/schedule/management/schedule-slot-management.service";
+import { NotificationService } from "../../../services/notification/notification.service";
+import { ScheduleSlotFacadeService } from "../../../services/schedule/management/use-cases/facade-schedule-slot.service";
+import { take } from "rxjs";
 
 @Component({
-  selector: 'app-schedule-page',
+  selector: 'app-schedule-slot',
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './schedule-slot.component.html',
   styleUrl: './schedule-slot.component.scss'
 })
-export class ScheduleSlotComponent implements OnInit {
-  public slots = signal<ScheduleSlotResponseDto[]>([]);
-  public selectedSlot = signal<ScheduleSlotResponseDto | null>(null);
-  public activeModal = signal<SlotModalType>(null);
-  public searchFilters = signal<SlotSearchParametersDto>({});
+export class ScheduleSlotComponent {
+  private scheduleService = inject(ScheduleSlotService);
+  private scheduleSlotManagementService = inject(ScheduleSlotManagementService);
+  private facadeScheduleSlotService = inject(ScheduleSlotFacadeService);
 
-  public modalTitle = computed(() => {
-    const mode = this.activeModal();
-    if (mode === 'ADD') return 'Додати слот';
-    if (mode === 'UPDATE' && this.selectedSlot()) return 'Оновити час заняття';
-    if (mode === 'DELETE' && this.selectedSlot()) return 'Ви впевнені, що хочете \n видалити цей слот?';
-    return null;
+  public readonly ModalType = ModalType;
+
+  public scheduleSlots = signal<ScheduleSlotResponseDto[]>([]);
+
+  public foundStudents = this.facadeScheduleSlotService.foundStudents;
+  public selectedStudent = signal<StudentResponseDto | null>(null);
+  public isNewStudentMode = computed(() => {
+    const students = this.foundStudents();
+    return students.length === 0 && (this.selectedStudent() === null);
   });
+  public showStudents = signal<boolean>(true);
 
-  constructor(private scheduleService: ScheduleSlotService) {}
+  public activeModal = signal<ModalType>(ModalType.NONE);
 
-  ngOnInit(): void {
-    this.getAllSlots();
+  public foundInstructors = this.facadeScheduleSlotService.instructors;
+  public foundCars = this.facadeScheduleSlotService.cars;
+
+  @Input() slot: ScheduleSlotResponseDto | null = null;
+  @Output() onSaved = new EventEmitter<ScheduleSlotResponseDto>();
+  @Output() onDeleted = new EventEmitter<number>();
+
+  constructor() {}
+
+  public createScheduleSlot(form: NgForm): void {
+    if (form.invalid) {
+      return;
+    }
+
+    this.scheduleSlotManagementService.createScheduleSlot(form, this.selectedStudent())
+    .pipe(take(1))
+    .subscribe({
+      next: slotResponse => {
+        this.onSaved.emit(slotResponse);
+        this.closeControlModal();
+        form.resetForm();
+        this.selectedStudent.set(null);
+      },
+      error: (error: HttpErrorResponse) => {
+        NotificationService.showError('Не вдалося створити заняття', error);
+      }
+    })
   }
 
-  public getAllSlots(): void {
-    this.scheduleService.searchSlots(this.searchFilters()).subscribe({
-      next: (response) => this.slots.set(response),
-      error: (err) => this.handleError('Не вдалося завантажити розклад', err)
-    });
-  }
-
-  public createSlot(form: NgForm): void {
-    if (form.valid) {
-      const newSlot: ScheduleSlotRequestDto = {
-        date: form.value.date,
-        timeFrom: form.value.startTime,
-        timeTo: form.value.endTime,
-        instructorId: form.value.instructorId
-      };
-
-      this.scheduleService.createSlot(newSlot).subscribe({
-        next: (slotFromServer) => {
-          this.slots.update(current => [...current, slotFromServer]);
-          this.closeModal();
-          form.reset();
-        },
-        error: (err) => this.handleError('Помилка при створенні слоту', err)
+  public delete(): void {
+    if (this.slot?.id) {
+      this.scheduleService.deleteSlotById(this.slot.id).subscribe({
+        next: () => this.onDeleted.emit(this.slot!.id),
+        error: (error: HttpErrorResponse) => {
+          NotificationService.showError('Не вдалося видалити заняття', error);
+        }
       });
     }
   }
 
-  public updateSlot(form: NgForm): void {
-    const current = this.selectedSlot();
-    if (form.valid && current) {
-      const updateData: UpdateScheduleSlotRequestDto = {
-        date: form.value.date,
-        timeFrom: form.value.startTime,
-        timeTo: form.value.endTime
-      };
+  public onStudentNameInput(event: Event): void {
+    const name = (event.target as HTMLInputElement).value;
+    this.selectedStudent.set(null);
+    this.showStudents.set(true);
 
-      this.scheduleService.updateSlot(current.id, updateData).subscribe({
-        next: (updated) => {
-          this.slots.update(list => list.map(s => s.id === current.id ? updated : s));
-          this.closeModal();
-        },
-        error: (err) => this.handleError('Не вдалося оновити слот', err)
-      });
-    }
+    this.facadeScheduleSlotService.updateSearchStudentTerm(name);
   }
 
-  public deleteSlot(): void {
-    const current = this.selectedSlot();
-    if (current) {
-      this.scheduleService.deleteSlotById(current.id).subscribe({
-        next: () => {
-          this.slots.update(list => list.filter(s => s.id !== current.id));
-          this.closeModal();
-        },
-        error: (err) => this.handleError('Не вдалося видалити слот', err)
-      });
-    }
+  public selectStudent(student: StudentResponseDto, form: NgForm): void {
+    this.selectedStudent.set(student);
+    this.facadeScheduleSlotService.clearSearchStudentTerm();
+
+    this.scheduleSlotManagementService.fillStudentData(form, student);
   }
 
-  // --- Управление модалками ---
+  public stopShowStudentsList(): void {
+    this.showStudents.set(false);
+  }
 
-  public openModal(type: SlotModalType, slot: ScheduleSlotResponseDto | null = null): void {
+  public openControlModal(type: ModalType): void {
     this.activeModal.set(type);
-    this.selectedSlot.set(slot);
+
+    if (type === ModalType.ADD) {
+      this.facadeScheduleSlotService.loadInitialData();
+    }
   }
 
-  public closeModal(): void {
-    this.activeModal.set(null);
-    this.selectedSlot.set(null);
-  }
-
-  private handleError(message: string, error: HttpErrorResponse): void {
-    console.error(message, error);
-    alert(`${message}. Статус: ${error.status}`);
+  public closeControlModal(): void {
+    this.activeModal.set(ModalType.NONE);
   }
 }

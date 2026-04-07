@@ -4,6 +4,7 @@ import { HomeComponent } from './pages/admin/home/home.component';
 import { InstructorComponent } from './pages/admin/instructor/instructor.component';
 import { StudentComponent } from './pages/admin/student/student.component';
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
+import { ScheduleSlotComponent } from './pages/admin/schedule-slot/schedule-slot.component';
 
 export const routes: Routes = [
   {
@@ -15,7 +16,7 @@ export const routes: Routes = [
       { path: 'instructors', component: InstructorComponent },
       { path: 'students', component: StudentComponent },
       { path: 'weekends', component: CarComponent },
-      { path: 'schedule', component: CarComponent }
+      { path: 'schedule', component: ScheduleSlotComponent }
     ]
   }
 ];
