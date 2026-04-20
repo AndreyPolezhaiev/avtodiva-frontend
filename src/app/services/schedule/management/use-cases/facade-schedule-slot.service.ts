@@ -31,14 +31,6 @@ export class ScheduleSlotFacadeService {
   readonly #scheduleSlots = signal<ScheduleSlotResponseDto[]>([]);
   readonly #isSearching = signal<boolean>(false);
 
-  readonly #searchStudentTerm = signal<string>('');
-  readonly #students$ = toObservable(this.#searchStudentTerm).pipe(
-    debounceTime(300),
-    distinctUntilChanged(),
-    switchMap(term => term.length <= 2 ? of([]) : this.studentService.searchStudents(term))
-  );
-  readonly #foundStudents = toSignal(this.#students$, { initialValue: [] as StudentResponseDto[] });
-
   constructor() {
     this.initDefaultFilters();
     this.loadInitialData();
@@ -147,20 +139,15 @@ export class ScheduleSlotFacadeService {
     return this.#cars.asReadonly();
   }
 
-  public get foundStudents() {
-    return this.#foundStudents;
+  public searchStudents(term: string): Observable<StudentResponseDto[]> {
+    if (term.length <= 2) {
+      return of([]);
+    }
+    return this.studentService.searchStudents(term);
   }
 
   public get currentFilters() {
     return this.#lastSearchParams;
-  }
-
-  public updateSearchStudentTerm(name: string): void {
-    this.#searchStudentTerm.set(name);
-  }
-
-  public clearSearchStudentTerm(): void {
-    this.#searchStudentTerm.set('');
   }
 
   public refreshData(dataType: LoadDataType): void {

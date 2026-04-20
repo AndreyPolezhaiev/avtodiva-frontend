@@ -8,7 +8,7 @@ import { StudentResponseDto } from "../../../models/student/student.response";
 import { ScheduleSlotManagementService } from "../../../services/schedule/management/schedule-slot-management.service";
 import { NotificationService } from "../../../services/notification/notification.service";
 import { ScheduleSlotFacadeService } from "../../../services/schedule/management/use-cases/facade-schedule-slot.service";
-import { take } from "rxjs";
+import { debounceTime, distinctUntilChanged, Subject, switchMap, take } from "rxjs";
 import { ScheduleSlotTableComponent } from "./table/schedule-slot-table.component";
 import { SlotSearchParametersDto } from "../../../models/schedule-slot/schedule-slot.search";
 
@@ -28,8 +28,11 @@ export class ScheduleSlotComponent {
 
   public scheduleSlots = signal<ScheduleSlotResponseDto[]>([]);
 
-  public foundStudents = this.facadeScheduleSlotService.foundStudents;
+  private studentSearch$ = new Subject<string>();
+  public foundStudents = signal<StudentResponseDto[]>([]);
+
   public selectedStudent = signal<StudentResponseDto | null>(null);
+
   public isNewStudentMode = computed(() => {
     const students = this.foundStudents();
     return students.length === 0 && (this.selectedStudent() === null);
@@ -42,7 +45,15 @@ export class ScheduleSlotComponent {
   public slotForUpdate: ScheduleSlotResponseDto | null = null;
   public slotForDelete: ScheduleSlotResponseDto | null = null;
 
-  constructor() {}
+  constructor() {
+    this.studentSearch$.pipe(
+      debounceTime(300),
+      distinctUntilChanged(),
+      switchMap(term => this.facadeScheduleSlotService.searchStudents(term))
+    ).subscribe(students => {
+      this.foundStudents.set(students);
+    });
+  }
 
   public createScheduleSlot(form: NgForm): void {
     if (form.invalid) {
@@ -108,12 +119,12 @@ export class ScheduleSlotComponent {
     this.selectedStudent.set(null);
     this.showStudents.set(true);
 
-    this.facadeScheduleSlotService.updateSearchStudentTerm(name);
+    this.studentSearch$.next(name);
   }
 
   public selectStudent(student: StudentResponseDto, form: NgForm): void {
     this.selectedStudent.set(student);
-    this.facadeScheduleSlotService.clearSearchStudentTerm();
+    this.foundStudents.set([]);
 
     this.scheduleSlotManagementService.fillStudentData(form, student);
   }

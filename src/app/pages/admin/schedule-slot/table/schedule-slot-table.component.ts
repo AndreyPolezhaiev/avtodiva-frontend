@@ -6,6 +6,7 @@ import { FormsModule, NgForm } from "@angular/forms";
 import { NgSelectModule } from "@ng-select/ng-select";
 import { StudentResponseDto } from "../../../../models/student/student.response";
 import { ModalType } from "../../../../shared/modal-type";
+import { debounceTime, distinctUntilChanged, Subject, switchMap } from "rxjs";
 
 @Component({
   selector: 'app-schedule-slot-table',
@@ -22,7 +23,10 @@ export class ScheduleSlotTableComponent {
 
   public foundInstructors = this.facadeScheduleSlotService.instructors;
   public foundCars = this.facadeScheduleSlotService.cars;
-  public foundStudents = this.facadeScheduleSlotService.foundStudents;
+
+  private studentSearch$ = new Subject<string>();
+  public foundStudents = signal<StudentResponseDto[]>([]);
+  
   public currentFilters = this.facadeScheduleSlotService.currentFilters;
 
   public selectedStudent = signal<StudentResponseDto | null>(null);
@@ -33,6 +37,16 @@ export class ScheduleSlotTableComponent {
   @Input() slot: ScheduleSlotResponseDto | null = null;
   @Output() onUpdate = new EventEmitter<ScheduleSlotResponseDto>();
   @Output() onDelete = new EventEmitter<ScheduleSlotResponseDto>();
+
+  constructor() {
+    this.studentSearch$.pipe(
+      debounceTime(300),
+      distinctUntilChanged(),
+      switchMap(term => this.facadeScheduleSlotService.searchStudents(term))
+    ).subscribe(students => {
+      this.foundStudents.set(students);
+    });
+  }
 
   public onSearch(form: NgForm): void {
     if (form.invalid) return;
@@ -54,7 +68,7 @@ export class ScheduleSlotTableComponent {
     this.selectedStudent.set(null);
     this.showStudents.set(true);
 
-    this.facadeScheduleSlotService.updateSearchStudentTerm(name);
+    this.studentSearch$.next(name);
   }
 
   public selectStudent(student: StudentResponseDto): void {
@@ -66,7 +80,7 @@ export class ScheduleSlotTableComponent {
     this.selectedStudent.set(student);
     this.showStudents.set(false);
 
-    this.facadeScheduleSlotService.clearSearchStudentTerm();
+    this.foundStudents.set([]);
   }
 
   public stopShowStudentsList(): void {
