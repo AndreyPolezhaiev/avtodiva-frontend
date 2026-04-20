@@ -1,8 +1,8 @@
 export interface SlotSearchParametersDto {
-  instructorIds?: number[]; 
+  instructorIds?: number[];
   carIds?: number[];
-  studentId?: number;
+  studentId?: number | null;
   dateFrom: string;
   dateTo: string;
-  booked: boolean;
+  booked?: boolean | null;
 }

@@ -1,0 +1,83 @@
+@use 'styles/utils/variables' as vars;
+
+.table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin: 0;
+  border: none;
+  table-layout: fixed;
+
+  &__head {
+    &__cell {
+      position: sticky;
+      top: 0;
+      z-index: vars.$table-head-cell-z-index;
+
+      padding: vars.$table-head-cell-padding;
+      background-color: vars.$table-head-cell-background-color;
+      text-align: center;
+      border-bottom: vars.$table-head-cell-border-bottom;
+
+      &--date { width: vars.$table-head-cell-date-width; }
+      &--time { width: vars.$table-head-cell-time-width; }
+      &--instructor { width: vars.$table-head-cell-instructor-width; }
+      &--car { width: vars.$table-head-cell-car-width; }
+      &--student { width: vars.$table-head-cell-student-width; }
+
+      &--description { width: auto; } 
+      &--link { width: auto; }
+
+      &--edit { width: vars.$table-head-cell-edit-width; }
+      &--delete { width: vars.$table-head-cell-delete-width; }
+
+      &:not(:last-child) {
+        border-right: vars.$table-head-cell-border-right;
+      }
+    }
+  }
+
+  &__body {
+    &__row {
+      &:last-child {
+        .table__body__cell {
+          border-bottom: none;
+        }
+      }
+    }
+
+    &__cell {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+
+      padding: vars.$table-body-cell-padding;
+      background-color: vars.$table-body-cell-background-color;
+      text-align: center;
+
+      border-bottom: vars.$table-body-cell-border-bottom;
+
+      &--description { text-align: left; } 
+      &--link { text-align: left; }
+
+      &--delete, &--edit { 
+        padding: vars.$table-body-cell-delete-edit-padding;
+        height: vars.$table-body-cell-delete-edit-height;
+      }
+
+      &:not(:last-child) {
+        border-right: vars.$table-body-cell-border-right;
+      }
+
+      &--empty {
+        padding: vars.$table-body-cell-empty-padding;
+        text-align: center;
+        color: vars.$table-body-cell-empty-color;
+        font-size: vars.$table-body-cell-empty-font-size;
+        font-style: italic;
+        border-right: none !important; 
+        border-bottom: none;
+      }
+    }
+  }
+}

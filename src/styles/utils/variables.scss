@@ -172,3 +172,102 @@ $notification-message-padding-top: 5px;
 $notification-message-padding-bottom: 15px;
 $notification-message-color: red;
 /* #endregion */
+/* #region autocomplete-list */
+$autocomplete-list-background: white;
+$autocomplete-list-border: 1px solid #ddd;
+$autocomplete-list-border-radius: 4px;
+$autocomplete-list-max-height: 200px;
+$autocomplete-list-overflow-y: auto;
+$autocomplete-list-z-index: 9999;
+$autocomplete-list-padding: 0;
+$autocomplete-list-margin-top: 2px;
+$autocomplete-list-box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+
+$autocomplete-list-item-padding: 10px;
+$autocomplete-list-item-border-bottom: 1px solid #eee;
+
+$autocomplete-list-item-hover-background-color: #f8f9fa;
+$autocomplete-list-item-hover-color: var(--primary-color);
+/* #endregion */
+/* #region filter-form */
+$filter-form-background: #f8f9fa;
+$filter-form-padding: 8px;
+$filter-form-border-radius: 12px;
+$filter-form-border: 1px solid #e0e0e0;
+$filter-form-margin-bottom: 30px;
+
+$filter-form-grid-template-columns: 180px 250px 250px 120px;
+$filter-form-group-gap: 20px;
+
+$filter-form-group-display-column-gap: 12px;
+
+$filter-form-field-gap: 6px;
+$filter-form-field-instructors-cars-width: 267px;
+$filter-form-field-status-width: 140px;
+$filter-form-field-student-width: 220px;
+
+$filter-form-label-font-size: 13px;
+$filter-form-label-font-weight: 600;
+$filter-form-label-color: #444;
+
+$filter-form-input-height: 36px;
+$filter-form-input-padding: 0 10px;
+$filter-form-input-margin-top: 5px;
+$filter-form-input-border: 1px solid rgb(204, 204, 204);
+$filter-form-input-border-radius: 4px;
+
+$filter-form-input-border-color: #3498db;
+$filter-form-input-box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2); 
+
+$filter-form-actions-gap: 10px;
+/* #endregion */
+/* #region table-manager */
+$table-manager-margin-inline: 40px;
+
+$table-manager-filter-margin-bottom: 5px;
+
+$table-manager-content-border: 1px solid #ddd;
+$table-manager-content-border-top-left-radius: 12px;
+$table-manager-content-border-top-right-radius: 12px;
+
+$table-manager-scroll-container-max-height: 500px;
+/* #endregion */
+/* #region table */
+// head
+$table-head-cell-z-index: 10;
+$table-head-cell-padding: 8px 12px;
+$table-head-cell-background-color: greenyellow;
+$table-head-cell-border-bottom: 2px solid #ddd;
+
+$table-head-cell-date-width: 130px;
+$table-head-cell-time-width: 125px;
+$table-head-cell-instructor-width: 140px;
+$table-head-cell-car-width: 120px;
+$table-head-cell-student-width: 140px;
+$table-head-cell-edit-width: 50px;
+$table-head-cell-delete-width: 50px;
+
+$table-head-cell-border-right: 1px solid #ddd;
+
+// body
+$table-body-cell-padding: 8px 6px 4px;
+$table-body-cell-background-color: #fff;
+$table-body-cell-border-bottom: 1px solid #ddd;
+
+$table-body-cell-delete-edit-padding: 0;
+$table-body-cell-delete-edit-height: 1px;
+
+$table-body-cell-border-right: 1px solid #ddd;
+
+$table-body-cell-empty-padding: 40px !important;
+$table-body-cell-empty-color: #999;
+$table-body-cell-empty-font-size: 16px;
+/* #endregion */
+/* #region table-cell-button */
+$table-c-button-background: transparent;
+$table-c-button-border: none;
+$table-c-button-transition: background-color 0.2s ease, transform 0.1s ease;
+$table-c-button-hover-background-color: rgba(0, 0, 0, 0.05);
+$table-c-button-active-transform: scale(0.9);
+$table-c-button-active-background-color: rgba(0, 0, 0, 0.1);
+/* #endregion */

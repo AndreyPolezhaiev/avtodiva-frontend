@@ -4,7 +4,7 @@ export interface UpdateScheduleSlotRequestDto {
   timeTo: string;
   instructorId: number;
   carId: number;
-  studentId: number;
+  studentId: number | null;
   description: string;
   link: string;
   booked: boolean;

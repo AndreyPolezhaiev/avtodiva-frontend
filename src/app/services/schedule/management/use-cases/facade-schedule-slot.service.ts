@@ -9,17 +9,28 @@ import { BehaviorSubject, debounceTime, distinctUntilChanged, Observable, of, sw
 import { toObservable, toSignal } from "@angular/core/rxjs-interop";
 import { StudentResponseDto } from "../../../../models/student/student.response";
 import { SearchScheduleSlotService } from "./search-schedule-slot.service";
+import { LoadDataType } from "../../../../shared/load-type";
+import { ScheduleSlotResponseDto } from "../../../../models/schedule-slot/schedule-slot.response";
+import { SlotSearchParametersDto } from "../../../../models/schedule-slot/schedule-slot.search";
+import { SlotFiltersState } from "../../../../models/schedule-slot/schedule-slot-filters.state";
 
 @Injectable({ providedIn: 'root' })
 export class ScheduleSlotFacadeService {
+  private readonly STORAGE_KEY = 'avtodiva_schedule_filters';
+
   private studentService = inject(StudentService);
   private instructorService = inject(InstructorService);
   private carService = inject(CarService);
   private searchService = inject(SearchScheduleSlotService);
 
   #prefillCache = new Map<number, any>();
+  #lastSearchParams = signal<SlotFiltersState>({} as SlotFiltersState);
   readonly #instructors = signal<InstructorResponseDto[]>([]);
   readonly #cars = signal<CarResponseDto[]>([]);
+
+  readonly #scheduleSlots = signal<ScheduleSlotResponseDto[]>([]);
+  readonly #isSearching = signal<boolean>(false);
+
   readonly #searchStudentTerm = signal<string>('');
   readonly #students$ = toObservable(this.#searchStudentTerm).pipe(
     debounceTime(300),
@@ -27,6 +38,83 @@ export class ScheduleSlotFacadeService {
     switchMap(term => term.length <= 2 ? of([]) : this.studentService.searchStudents(term))
   );
   readonly #foundStudents = toSignal(this.#students$, { initialValue: [] as StudentResponseDto[] });
+
+  constructor() {
+    this.initDefaultFilters();
+    this.loadInitialData();
+  };
+
+  private initDefaultFilters(): void {
+    const saved = localStorage.getItem(this.STORAGE_KEY);
+
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      this.#lastSearchParams.set(parsed);
+      return;
+    }
+
+    const today = new Date();
+    const nextWeek = new Date();
+    nextWeek.setDate(today.getDate() + 7);
+
+    this.#lastSearchParams.set({
+      dateFrom: this.formatDate(today),
+      dateTo: this.formatDate(nextWeek),
+      booked: null,
+      instructorIds: [],
+      carIds: [],
+      studentId: null,
+      studentName: ''
+    });
+  }
+
+  private formatDate(date: Date): string {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
+
+  public searchSlots(filters: SlotFiltersState): void {
+    this.#lastSearchParams.set(filters);
+    localStorage.setItem(this.STORAGE_KEY, JSON.stringify(filters));
+
+    const { studentName, ...searchDto } = filters;
+    const cleanedFilters = this.removeEmptyFilters(searchDto);
+
+    this.#isSearching.set(true);
+    this.searchService.searchSlots(cleanedFilters).subscribe({
+      next: (slots) => {
+        this.#scheduleSlots.set(slots);
+        this.#isSearching.set(false);
+      },
+      error: (err) => {
+        NotificationService.showError('Помилка при пошуку занять', err);
+        this.#isSearching.set(false);
+      }
+    });
+  }
+
+  public refreshSlots(): void {
+    this.searchSlots(this.#lastSearchParams());
+  }
+
+  private removeEmptyFilters(params: any): SlotSearchParametersDto {
+    const cleanParams: any = {};
+
+    Object.keys(params).forEach(key => {
+      const value = params[key];
+
+      if (value !== null && value !== undefined && value !== '') {
+        if (Array.isArray(value) && value.length === 0) {
+          return;
+        }
+        cleanParams[key] = value;
+      }
+    });
+
+    return cleanParams as SlotSearchParametersDto;
+  }
 
   public getStudentPrefillData(studentId: number): Observable<any> {
     if (this.#prefillCache.has(studentId)) {
@@ -43,6 +131,14 @@ export class ScheduleSlotFacadeService {
     );
   }
 
+  public get slots() { 
+    return this.#scheduleSlots.asReadonly(); 
+  }
+
+  public get isSearching() { 
+    return this.#isSearching.asReadonly(); 
+  }
+
   public get instructors() {
     return this.#instructors.asReadonly();
   }
@@ -55,6 +151,10 @@ export class ScheduleSlotFacadeService {
     return this.#foundStudents;
   }
 
+  public get currentFilters() {
+    return this.#lastSearchParams;
+  }
+
   public updateSearchStudentTerm(name: string): void {
     this.#searchStudentTerm.set(name);
   }
@@ -63,14 +163,32 @@ export class ScheduleSlotFacadeService {
     this.#searchStudentTerm.set('');
   }
 
-  public loadInitialData() {
+  public refreshData(dataType: LoadDataType): void {
+    switch (dataType) {
+      case LoadDataType.INSTRUCTORS:
+        this.loadInstructors();
+        break;
+      case LoadDataType.CARS:
+        this.loadCars();
+        break;
+    }
+  }
+
+  private loadInitialData() {
+    this.loadCars();
+    this.loadInstructors();
+  }
+
+  private loadInstructors() {
     this.instructorService.getAllInstructors().subscribe({
       next: (instructors) => {
         this.#instructors.set(instructors);
       },
       error: (err) => NotificationService.showError('Не вдалося завантажити інструкторів', err)
     });
+  }
 
+  private loadCars() {
     this.carService.getAllCars().subscribe({
       next: (cars) => {
         this.#cars.set(cars);

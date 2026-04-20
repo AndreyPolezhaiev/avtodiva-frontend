@@ -1,0 +1,28 @@
+@use 'styles/utils/variables' as vars;
+
+.table-manager {
+  margin-inline: vars.$table-manager-margin-inline;
+  display: flex;
+  flex-direction: column;
+
+  &__filter {
+    display: flex;
+    justify-content: center;
+    margin-bottom: vars.$table-manager-filter-margin-bottom;
+  }
+
+  &__content {
+    position: relative;
+    display: block;
+    height: auto;
+    overflow: hidden;
+    border: vars.$table-manager-content-border;
+    border-top-left-radius: vars.$table-manager-content-border-top-left-radius;
+    border-top-right-radius: vars.$table-manager-content-border-top-right-radius;
+  }
+
+  &__scroll-container {
+    max-height: vars.$table-manager-scroll-container-max-height;
+    overflow-y: auto;
+  }
+}

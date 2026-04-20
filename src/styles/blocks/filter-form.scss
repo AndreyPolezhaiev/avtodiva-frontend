@@ -1,0 +1,75 @@
+@use 'styles/utils/variables' as vars;
+
+.filter-form {
+  background: vars.$filter-form-background;
+  padding: vars.$filter-form-padding;
+  border-radius: vars.$filter-form-border-radius;
+  border: vars.$filter-form-border;
+
+  &__group {
+    display: flex;
+    gap: vars.$filter-form-group-gap;
+    align-items: start;
+
+    &--display-column {
+      display: flex;
+      flex-direction: column;
+      gap: vars.$filter-form-group-display-column-gap;
+    }
+  }
+
+  &__field {
+    display: flex;
+    flex-direction: column;
+    gap: vars.$filter-form-field-gap;
+
+    flex-grow: 0;
+    flex-shrink: 0;
+
+    &--instructors, &--cars { 
+      width: vars.$filter-form-field-instructors-cars-width; 
+    }
+    &--status { width: vars.$filter-form-field-status-width; }
+    &--student { width: vars.$filter-form-field-student-width; }
+
+    &--position-relative {
+      position: relative;
+    }
+
+    ::ng-deep .ng-select {
+      width: 100% !important;
+      max-width: none !important;
+
+      &.ng-select-opened, &.ng-select-focused {
+        .ng-select-container {
+          border-color: vars.$filter-form-input-border-color !important;
+          box-shadow: vars.$filter-form-input-box-shadow !important;
+        }
+      }
+    }
+  }
+
+  &__label {
+    font-size: vars.$filter-form-label-font-size;
+    font-weight: vars.$filter-form-label-font-weight;
+    color: vars.$filter-form-label-color;
+  }
+
+  &__input {
+    height: vars.$filter-form-input-height;
+    border: vars.$filter-form-input-border;
+    border-radius: vars.$filter-form-input-border-radius;
+    padding: vars.$filter-form-input-padding;
+    width: 100%;
+    outline: none;
+    
+    &:focus {
+      border-color: vars.$filter-form-input-border-color;
+      box-shadow: vars.$filter-form-input-box-shadow;
+    }
+  }
+
+  &__actions {
+    align-self: end;
+  }
+}

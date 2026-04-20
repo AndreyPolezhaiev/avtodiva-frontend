@@ -1,0 +1,29 @@
+@use 'styles/utils/variables' as vars;
+
+.autocomplete-list {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: vars.$autocomplete-list-background;
+  border: vars.$autocomplete-list-border;
+  border-radius: vars.$autocomplete-list-border-radius;
+  max-height: vars.$autocomplete-list-max-height;
+  overflow-y: vars.$autocomplete-list-overflow-y;
+  z-index: vars.$autocomplete-list-z-index;
+  padding: vars.$autocomplete-list-padding;
+  margin-top: vars.$autocomplete-list-margin-top;
+  box-shadow: vars.$autocomplete-list-box-shadow;
+
+  &__item {
+    padding: vars.$autocomplete-list-item-padding;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: vars.$autocomplete-list-item-border-bottom;
+    
+    &:hover {
+      background-color: vars.$autocomplete-list-item-hover-background-color;
+      color: vars.$autocomplete-list-item-hover-color;
+    }
+  }
+}

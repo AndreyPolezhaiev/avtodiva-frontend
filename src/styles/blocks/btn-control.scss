@@ -51,7 +51,7 @@
 
   &--save {
     background-color: vars.$btn-form-save-background-color;
-    color: vars.$btn-form-cancel-color;
+    color: vars.$btn-form-save-color;
 
     &:disabled {
       background-color: vars.$btn-form-save-disabled-background-color;

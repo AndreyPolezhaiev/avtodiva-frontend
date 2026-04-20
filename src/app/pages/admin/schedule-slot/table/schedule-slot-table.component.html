@@ -1,0 +1,173 @@
+<div class="table-manager" (click)="stopShowStudentsList()">
+  <div class="table-manager__filter">
+    <form class="filter-form" #filterForm="ngForm" (ngSubmit)="onSearch(filterForm)" (click)="$event.stopPropagation()">
+      <div class="filter-form__group">
+        <div class="filter-form__field">
+          <label class="filter-form__label">Дата з:</label>
+          <input 
+            class="filter-form__input filter-form__input--date"
+            type="date" 
+            name="dateFrom" 
+            [(ngModel)]="currentFilters().dateFrom"
+            required
+          >
+        </div>
+
+        <div class="filter-form__field">
+          <label class="filter-form__label">Дата до:</label>
+          <input 
+            class="filter-form__input filter-form__input--date"
+            type="date" 
+            name="dateTo" 
+            [(ngModel)]="currentFilters().dateTo"
+            required
+          >
+        </div>
+
+        <div class="filter-form__field filter-form__field--instructors">
+          <label class="filter-form__label">Інструктори:</label>
+          <ng-select 
+            [items]="foundInstructors()" 
+            bindLabel="name" 
+            bindValue="id" 
+            [multiple]="true"
+            [closeOnSelect]="false"
+            placeholder="Оберіть інструкторів"
+            name="instructorIds"
+            required="true"
+            [(ngModel)]="currentFilters().instructorIds">
+            
+            <ng-template ng-option-tmp let-item="item" let-item$="item$">
+              <input type="checkbox" [checked]="item$.selected" /> {{item.name}}
+            </ng-template>
+          </ng-select>
+        </div>
+
+        <div class="filter-form__field filter-form__field--cars">
+          <label class="filter-form__label">Машини:</label>
+          <ng-select 
+            [items]="foundCars()" 
+            bindLabel="name" 
+            bindValue="id" 
+            [multiple]="true" 
+            [closeOnSelect]="false"
+            placeholder="Оберіть машини"
+            name="carIds" 
+            required="true"
+            [(ngModel)]="currentFilters().carIds">
+            
+            <ng-template ng-option-tmp let-item="item" let-item$="item$">
+              <input type="checkbox" [checked]="item$.selected" /> {{item.name}}
+            </ng-template>
+          </ng-select>
+        </div>
+        
+        <div class="filter-form__field filter-form__field--status">
+          <label class="filter-form__label">Статус:</label>
+          <ng-select 
+            [items]="[
+              { id: true, label: 'Заброньовані' },
+              { id: false, label: 'Вільні' },
+              { id: null, label: 'Усі' }
+            ]" 
+            bindLabel="label" 
+            bindValue="id" 
+            [clearable]="false"
+            [closeOnSelect]="false"
+            name="booked"
+            [(ngModel)]="currentFilters().booked">
+          </ng-select>
+        </div>
+
+        <div class="filter-form__field filter-form__field--student filter-form__field--position-relative">
+          <label class="filter-form__label">Учениця:</label>
+          <input
+            class="filter-form__input"
+            type="text"
+            name="studentName"
+            [(ngModel)]="currentFilters().studentName"
+            (input)="onStudentNameInput($event)"
+            placeholder="За потреби..."
+            autocomplete="off"
+          >
+
+          <input type="hidden" name="studentId" [ngModel]="selectedStudent()?.id">
+
+          @if (foundStudents().length > 0 && showStudents()){
+            <ul class="autocomplete-list">
+              @for (student of foundStudents(); track student.id) {
+                <li class="autocomplete-list__item" (click)="selectStudent(student)">
+                  <span>{{ student.name }}, {{ student.phoneNumber }}</span>
+                </li>
+              }
+            </ul>
+          }
+        </div>
+        
+        <div class="filter-form__actions">
+          <button 
+            type="submit" 
+            class="btn-control btn-control--save"
+            [disabled]="filterForm.invalid">Пошук
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div class="table-manager__content">
+    @if (isSearching()) {
+      <div class="loader">Завантаження...</div>
+    }
+    @else {
+      <div class="table-manager__scroll-container">
+        <table class="table">
+          <thead class="table__head">
+            <tr class="table__head__row">
+              <th class="table__head__cell table__head__cell--date">Дата</th>
+              <th class="table__head__cell table__head__cell--time">Час</th>
+              <th class="table__head__cell table__head__cell--instructor">Інструктор</th>
+              <th class="table__head__cell table__head__cell--car">Машина</th>
+              <th class="table__head__cell table__head__cell--student">Учениця</th>
+              <th class="table__head__cell table__head__cell--description">Опис</th>
+              <th class="table__head__cell table__head__cell--link">Посилання</th>
+              <th class="table__head__cell table__head__cell--edit">✏️</th>
+              <th class="table__head__cell table__head__cell--delete">🗑️</th>
+            </tr>
+          </thead>
+          <tbody class="table__body">
+            @for (slot of slots(); track slot.id) {
+              <tr class="table__body__row">
+                <td class="table__body__cell table__body__cell--date">
+                  {{ slot.date | date:'EE, dd.MM.yyyy' }}
+                </td>
+                <td class="table__body__cell table__body__cell--time">
+                  {{ slot.timeFrom.slice(0, 5) }} — {{ slot.timeTo.slice(0, 5) }}
+                </td>
+                <td class="table__body__cell table__body__cell--instructor">{{ slot.instructorDto?.name }}</td>
+                <td class="table__body__cell table__body__cell--car">{{ slot.carDto?.name }}</td>
+                <td class="table__body__cell table__body__cell--student">{{ slot.studentDto?.name }}</td>
+                <td class="table__body__cell table__body__cell--description">{{ slot.description }}</td>
+                <td class="table__body__cell table__body__cell--link">{{ slot.link }}</td>
+
+                <td class="table__body__cell table__body__cell--edit">
+                  <button class="table-cell-button" (click)="emitUpdate(slot)">✏️</button>
+                </td>
+                <td class="table__body__cell table__body__cell--delete">
+                  <button class="table-cell-button" (click)="emitDelete(slot)">🗑️</button>
+                </td>
+              </tr>
+            } 
+            @empty {
+              <tr class="table__body__row table__body__row--empty">
+                <td colspan="9" class="table__body__cell table__body__cell--empty">
+                  Занять не знайдено
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  </div>
+</div>
