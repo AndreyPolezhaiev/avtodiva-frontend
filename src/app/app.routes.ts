@@ -5,6 +5,7 @@ import { InstructorComponent } from './pages/admin/instructor/instructor.compone
 import { StudentComponent } from './pages/admin/student/student.component';
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
 import { ScheduleSlotComponent } from './pages/admin/schedule-slot/schedule-slot.component';
+import { WeekendComponent } from './pages/admin/weekend/weekend.component';
 
 export const routes: Routes = [
   {
@@ -12,11 +13,11 @@ export const routes: Routes = [
     component: AdminLayoutComponent,
     children: [
       { path: '', component: HomeComponent},
+      { path: 'schedule', component: ScheduleSlotComponent },
       { path: 'cars', component: CarComponent },
       { path: 'instructors', component: InstructorComponent },
       { path: 'students', component: StudentComponent },
-      { path: 'weekends', component: CarComponent },
-      { path: 'schedule', component: ScheduleSlotComponent }
+      { path: 'weekends', component: WeekendComponent }
     ]
   }
 ];
