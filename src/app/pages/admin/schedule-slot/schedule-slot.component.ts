@@ -7,10 +7,12 @@ import { HttpErrorResponse } from "@angular/common/http";
 import { StudentResponseDto } from "../../../models/student/student.response";
 import { ScheduleSlotManagementService } from "../../../services/schedule/management/schedule-slot-management.service";
 import { NotificationService } from "../../../services/notification/notification.service";
-import { ScheduleSlotFacadeService } from "../../../services/schedule/management/use-cases/facade-schedule-slot.service";
+import { ScheduleSlotFacadeService } from "../../../services/schedule/management/facade-schedule-slot.service";
 import { debounceTime, distinctUntilChanged, Subject, switchMap, take } from "rxjs";
 import { ScheduleSlotTableComponent } from "./table/schedule-slot-table.component";
 import { SlotSearchParametersDto } from "../../../models/schedule-slot/schedule-slot.search";
+import { StudentManagementService } from "../../../services/student/management/student-management.service";
+import { StudentSearchParametersDto } from "../../../models/student/student.search";
 
 @Component({
   selector: 'app-schedule-slot',
@@ -22,13 +24,14 @@ import { SlotSearchParametersDto } from "../../../models/schedule-slot/schedule-
 export class ScheduleSlotComponent {
   private scheduleSlotManagementService = inject(ScheduleSlotManagementService);
   private facadeScheduleSlotService = inject(ScheduleSlotFacadeService);
+  private studentManagementService = inject(StudentManagementService);
 
   public readonly ModalType = ModalType;
   public activeModal = signal<ModalType>(ModalType.NONE);
 
   public scheduleSlots = signal<ScheduleSlotResponseDto[]>([]);
 
-  private studentSearch$ = new Subject<string>();
+  private studentSearch$ = new Subject<StudentSearchParametersDto>();
   public foundStudents = signal<StudentResponseDto[]>([]);
 
   public selectedStudent = signal<StudentResponseDto | null>(null);
@@ -48,8 +51,8 @@ export class ScheduleSlotComponent {
   constructor() {
     this.studentSearch$.pipe(
       debounceTime(300),
-      distinctUntilChanged(),
-      switchMap(term => this.facadeScheduleSlotService.searchStudents(term))
+      distinctUntilChanged((prev, curr) => JSON.stringify(prev) === JSON.stringify(curr)),
+      switchMap(term => this.studentManagementService.searchStudents(term))
     ).subscribe(students => {
       this.foundStudents.set(students);
     });
@@ -115,11 +118,15 @@ export class ScheduleSlotComponent {
   }
 
   public onStudentNameInput(event: Event): void {
-    const name = (event.target as HTMLInputElement).value;
+    const studentName = (event.target as HTMLInputElement).value;
     this.selectedStudent.set(null);
     this.showStudents.set(true);
 
-    this.studentSearch$.next(name);
+    const searchParams: StudentSearchParametersDto = {
+      name: studentName
+    }
+
+    this.studentSearch$.next(searchParams);
   }
 
   public selectStudent(student: StudentResponseDto, form: NgForm): void {

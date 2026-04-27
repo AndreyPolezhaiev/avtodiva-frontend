@@ -20,6 +20,17 @@
       flex-direction: row;
       gap: 8px;
     }
+
+    &--column {
+      display: flex;
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 0;
+
+      &:not(:last-child) {
+        margin-bottom: 8px;
+      }
+    }
   }
 
   &__label {

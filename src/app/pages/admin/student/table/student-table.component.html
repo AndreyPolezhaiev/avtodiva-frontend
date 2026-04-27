@@ -1,0 +1,103 @@
+<div class="table-manager">
+  <div class="table-manager__filter">
+    <form class="filter-form" #filterForm="ngForm" (ngSubmit)="onSearch(filterForm)">
+      <div class="filter-form__group">
+        <div class="filter-form__field filter-form__field--student filter-form__field--position-relative">
+          <label class="filter-form__label">Студент:</label>
+          <input
+            class="filter-form__input"
+            type="text"
+            name="studentName"
+            [(ngModel)]="currentFilters().name"
+            (input)="onStudentNameInput($event)"
+            placeholder="За потреби..."
+            autocomplete="off"
+          >
+
+          @if (foundStudents().length > 0 && activeSearchField() === 'name') {
+            <ul class="autocomplete-list">
+              @for (student of foundStudents(); track student.id) {
+                <li class="autocomplete-list__item" (click)="selectStudent(student)">
+                  <span>{{ student.name }}, {{ student.phoneNumber }}</span>
+                </li>
+              }
+            </ul>
+          }
+        </div>
+
+        <div class="filter-form__field filter-form__field--phone filter-form__field--position-relative">
+          <label class="filter-form__label">Телефон:</label>
+          <input
+            class="filter-form__input"
+            type="text"
+            name="studentPhoneNumber"
+            [(ngModel)]="currentFilters().phoneNumber"
+            (input)="onStudentPhoneInput($event)"
+            placeholder="За потреби..."
+            autocomplete="off"
+          >
+
+          @if (foundStudents().length > 0 && activeSearchField() === 'phone') {
+            <ul class="autocomplete-list">
+              @for (student of foundStudents(); track student.id) {
+                <li class="autocomplete-list__item" (click)="selectStudent(student)">
+                  <span>{{ student.phoneNumber }}, {{ student.name }}</span>
+                </li>
+              }
+            </ul>
+          }
+        </div>
+        
+        <div class="filter-form__actions">
+          <button 
+            type="submit" 
+            class="btn-control btn-control--save"
+            [disabled]="filterForm.invalid">Пошук
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div class="table-manager__content table-manager__content--student">
+    @if (isSearching()) {
+      <div class="loader">Завантаження...</div>
+    }
+    @else {
+      <div class="table-manager__scroll-container">
+        <table class="table table--student">
+          <thead class="table__head">
+            <tr class="table__head__row">
+              <th class="table__head__cell table__head__cell--student">Студент</th>
+              <th class="table__head__cell table__head__cell--phone">Телефон</th>
+              <th class="table__head__cell table__head__cell--edit">✏️</th>
+              <th class="table__head__cell table__head__cell--delete">🗑️</th>
+            </tr>
+          </thead>
+          <tbody class="table__body">
+            @for (student of students(); track student.id) {
+              <tr class="table__body__row">
+                <td class="table__body__cell table__body__cell--student">{{ student?.name }}</td>
+                <td class="table__body__cell table__body__cell--phone">{{ student?.phoneNumber }}</td>
+
+                <td class="table__body__cell table__body__cell--edit">
+                  <button class="table-cell-button" (click)="emitUpdate(student)">✏️</button>
+                </td>
+                <td class="table__body__cell table__body__cell--delete">
+                  <button class="table-cell-button" (click)="emitDelete(student)">🗑️</button>
+                </td>
+              </tr>
+            } 
+            @empty {
+              <tr class="table__body__row table__body__row--empty">
+                <td colspan="4" class="table__body__cell table__body__cell--empty">
+                  Студентів не знайдено
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  </div>
+</div>

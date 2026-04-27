@@ -1,23 +1,21 @@
 import { inject, Injectable, signal } from "@angular/core";
-import { StudentService } from "../../../student/student.service";
-import { InstructorService } from "../../../instructor.service";
-import { CarService } from "../../../car.service";
-import { InstructorResponseDto } from "../../../../models/instructor/instructor.response";
-import { CarResponseDto } from "../../../../models/car/car.response";
-import { NotificationService } from "../../../notification/notification.service";
+import { InstructorService } from "../../instructor.service";
+import { CarService } from "../../car.service";
+import { InstructorResponseDto } from "../../../models/instructor/instructor.response";
+import { CarResponseDto } from "../../../models/car/car.response";
+import { NotificationService } from "../../notification/notification.service";
 import {  Observable, of, tap } from "rxjs";
-import { StudentResponseDto } from "../../../../models/student/student.response";
-import { SearchScheduleSlotService } from "./search-schedule-slot.service";
-import { LoadDataType } from "../../../../shared/load-type";
-import { ScheduleSlotResponseDto } from "../../../../models/schedule-slot/schedule-slot.response";
-import { SlotSearchParametersDto } from "../../../../models/schedule-slot/schedule-slot.search";
-import { SlotFiltersState } from "../../../../models/schedule-slot/schedule-slot-filters.state";
+import { StudentResponseDto } from "../../../models/student/student.response";
+import { SearchScheduleSlotService } from "./use-cases/search-schedule-slot.service";
+import { LoadDataType } from "../../../shared/load-type";
+import { ScheduleSlotResponseDto } from "../../../models/schedule-slot/schedule-slot.response";
+import { SlotSearchParametersDto } from "../../../models/schedule-slot/schedule-slot.search";
+import { SlotFiltersState } from "../../../models/schedule-slot/schedule-slot-filters.state";
 
 @Injectable({ providedIn: 'root' })
 export class ScheduleSlotFacadeService {
   private readonly STORAGE_KEY = 'avtodiva_schedule_filters';
 
-  private studentService = inject(StudentService);
   private instructorService = inject(InstructorService);
   private carService = inject(CarService);
   private searchService = inject(SearchScheduleSlotService);
@@ -136,13 +134,6 @@ export class ScheduleSlotFacadeService {
 
   public get cars() {
     return this.#cars.asReadonly();
-  }
-
-  public searchStudents(term: string): Observable<StudentResponseDto[]> {
-    if (term.length <= 2) {
-      return of([]);
-    }
-    return this.studentService.searchStudents(term);
   }
 
   public get currentFilters() {

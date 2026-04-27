@@ -5,7 +5,7 @@ import { StudentResponseDto } from "../../../models/student/student.response";
 import { ScheduleSlotResponseDto } from "../../../models/schedule-slot/schedule-slot.response";
 import { Observable, take } from "rxjs";
 import { SearchScheduleSlotService } from "./use-cases/search-schedule-slot.service";
-import { ScheduleSlotFacadeService } from "./use-cases/facade-schedule-slot.service";
+import { ScheduleSlotFacadeService } from "./facade-schedule-slot.service";
 import { UpdateScheduleSlotService } from "./use-cases/update-schedule-slot.service";
 import { DeleteScheduleSlotService } from "./use-cases/delete-schedule-slot.service";
 

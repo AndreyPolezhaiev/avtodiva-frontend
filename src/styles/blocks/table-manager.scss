@@ -4,6 +4,7 @@
   margin-inline: vars.$table-manager-margin-inline;
   display: flex;
   flex-direction: column;
+  align-items: center;
 
   &__filter {
     display: flex;
@@ -12,8 +13,17 @@
   }
 
   &__content {
-    position: relative;
-    display: block;
+    display: flex;
+    justify-content: center;
+
+    &--schedule-slot {
+      width: 100%;
+    }
+
+    &--student {
+      width: fit-content;
+    }
+
     height: auto;
     overflow: hidden;
     border: vars.$table-manager-content-border;

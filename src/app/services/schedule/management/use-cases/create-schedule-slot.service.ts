@@ -1,6 +1,6 @@
 import { inject, Injectable } from "@angular/core";
 import { ScheduleSlotService } from "../../schedule-slot.service";
-import { StudentManagementService } from "../../../student/student-management.service";
+import { StudentManagementService } from "../../../student/management/student-management.service";
 import { NgForm } from "@angular/forms";
 import { StudentResponseDto } from "../../../../models/student/student.response";
 import { ScheduleSlotResponseDto } from "../../../../models/schedule-slot/schedule-slot.response";
@@ -40,7 +40,7 @@ export class CreateScheduleSlotService {
   }
 
   private verifyStudentBeforeCreation(form: NgForm, studentRequestDto: StudentRequestDto): Observable<ScheduleSlotResponseDto> {
-    return this.studentManagementService.verifyStudent(studentRequestDto).pipe(
+    return this.studentManagementService.verifyExistedStudent(studentRequestDto).pipe(
       switchMap(studentResponse => {
         if (studentResponse) {
           return this.executeSlotCreation(form, studentResponse.id);

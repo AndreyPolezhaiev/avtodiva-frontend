@@ -31,6 +31,7 @@
     }
     &--status { width: vars.$filter-form-field-status-width; }
     &--student { width: vars.$filter-form-field-student-width; }
+    &--phone {width: vars.$filter-form-field-phone-width;}
 
     &--position-relative {
       position: relative;

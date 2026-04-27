@@ -2,6 +2,15 @@
 
 .table {
   width: 100%;
+  
+  &--schedule-slot {
+    width: 100%;
+  }
+
+  &--student {
+    width: fit-content;
+  }
+
   border-collapse: separate;
   border-spacing: 0;
   margin: 0;
@@ -24,6 +33,7 @@
       &--instructor { width: vars.$table-head-cell-instructor-width; }
       &--car { width: vars.$table-head-cell-car-width; }
       &--student { width: vars.$table-head-cell-student-width; }
+      &--phone { width: vars.$table-head-cell-phone-width; }
 
       &--description { width: auto; } 
       &--link { width: auto; }

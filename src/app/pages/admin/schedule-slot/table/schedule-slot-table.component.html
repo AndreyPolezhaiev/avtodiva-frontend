@@ -80,7 +80,7 @@
         </div>
 
         <div class="filter-form__field filter-form__field--student filter-form__field--position-relative">
-          <label class="filter-form__label">Учениця:</label>
+          <label class="filter-form__label">Студент:</label>
           <input
             class="filter-form__input"
             type="text"
@@ -115,13 +115,13 @@
     </form>
   </div>
 
-  <div class="table-manager__content">
+  <div class="table-manager__content table-manager__content--schedule-slot">
     @if (isSearching()) {
       <div class="loader">Завантаження...</div>
     }
     @else {
       <div class="table-manager__scroll-container">
-        <table class="table">
+        <table class="table table--schedule-slot">
           <thead class="table__head">
             <tr class="table__head__row">
               <th class="table__head__cell table__head__cell--date">Дата</th>

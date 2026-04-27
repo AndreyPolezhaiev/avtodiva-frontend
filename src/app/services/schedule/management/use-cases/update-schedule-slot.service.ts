@@ -1,5 +1,5 @@
 import { inject, Injectable } from "@angular/core";
-import { StudentManagementService } from "../../../student/student-management.service";
+import { StudentManagementService } from "../../../student/management/student-management.service";
 import { ScheduleSlotService } from "../../schedule-slot.service";
 import { ScheduleSlotResponseDto } from "../../../../models/schedule-slot/schedule-slot.response";
 import { catchError, EMPTY, Observable, switchMap, tap } from "rxjs";
@@ -29,23 +29,16 @@ export class UpdateScheduleSlotService {
       return this.executeSlotUpdate(form, slotId, null); 
     }
 
-    const cleanPhone = PhoneFormatter.formatPhoneNumber(studentPhoneNumber);
-
-    if (cleanPhone.length < 10) {
-      alert('Номер телефону занадто короткий! Має бути мінімум 10 цифр.');
-      return EMPTY;
-    }
-
     const studentRequestDto: StudentRequestDto = {
       name: studentName,
-      phoneNumber: cleanPhone
+      phoneNumber: studentPhoneNumber
     };
 
     return this.verifyStudentBeforeCreation(form, slotId, studentRequestDto);
   }
 
   private verifyStudentBeforeCreation(form: NgForm, slotId: number, studentRequestDto: StudentRequestDto): Observable<ScheduleSlotResponseDto> {
-    return this.studentManagementService.verifyStudent(studentRequestDto).pipe(
+    return this.studentManagementService.verifyExistedStudent(studentRequestDto).pipe(
       switchMap(studentResponse => {
         if (studentResponse) {
           return this.executeSlotUpdate(form, slotId, studentResponse.id);

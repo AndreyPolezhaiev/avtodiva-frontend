@@ -5,6 +5,7 @@ import { StudentRequestDto } from "../../models/student/student.request";
 import { Observable } from "rxjs";
 import { StudentResponseDto } from "../../models/student/student.response";
 import { UpdateStudentRequestDto } from "../../models/student/student.update";
+import { StudentSearchParametersDto } from "../../models/student/student.search";
 
 @Injectable({
   providedIn: 'root',
@@ -22,13 +23,14 @@ export class StudentService {
     return this.http.get<StudentResponseDto[]>(`${this.apiUrl}/all`);
   }
 
-  public getStudentById(id: number): Observable<StudentResponseDto> {
-    return this.http.get<StudentResponseDto>(`${this.apiUrl}/${id}`);
+  public searchStudents(searchDto: StudentSearchParametersDto): Observable<StudentResponseDto[]> {
+    return this.http.get<StudentResponseDto[]>(`${this.apiUrl}/search`, {
+      params: {...searchDto} as any
+    });
   }
 
-  public searchStudents(name: string): Observable<StudentResponseDto[]> {
-    const params = new HttpParams().set('name', name);
-    return this.http.get<StudentResponseDto[]>(`${this.apiUrl}/search`, {params});
+  public getStudentById(id: number): Observable<StudentResponseDto> {
+    return this.http.get<StudentResponseDto>(`${this.apiUrl}/${id}`);
   }
 
   public searchByPhone(phoneNumber: string): Observable<StudentResponseDto> {

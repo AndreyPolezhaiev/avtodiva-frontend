@@ -1,0 +1,136 @@
+<div class="action-bar">
+  <div class="action-bar__info">
+    <h2 class="action-bar__title">Управління студентами</h2>
+  </div>
+
+  <div class="action-bar__actions">
+    <button class="btn-control btn-control--add" (click)="openControlModal(ModalType.ADD)" title="Додати нового студента">+</button>
+  </div>
+</div>
+
+@if (activeModal() !== ModalType.NONE) {
+  <div class="modal">
+    <div class="modal__content" (click)="$event.stopPropagation()">
+      @if (activeModal() === ModalType.ADD) {
+        <h3 class="modal__title">Додати студента</h3>
+        <form class="form" #addForm="ngForm" (ngSubmit)="createStudent(addForm)">
+          <div class="form__group">
+            <div class="form__field form__field--column">
+              <label class="form__label">Ім'я:</label>
+              <input 
+                class="form__input" 
+                type="text" 
+                name="studentName" 
+                ngModel 
+                required 
+                placeholder="Ім'я..."
+              >
+            </div>
+            <div class="form__field form__field--column">
+              <label class="form__label">Номер телефону:</label>
+              <input 
+                class="form__input" 
+                type="text" 
+                name="studentPhoneNumber" 
+                ngModel 
+                required 
+                placeholder="Номер телефону..."
+              >
+            </div>
+          </div>
+
+          <div class="form__actions">
+            <button type="button" class="btn-control btn-control--cancel" (click)="closeControlModal()">Відмінити</button>
+            <button type="submit" class="btn-control btn-control--save" [disabled]="addForm.invalid">Зберегти</button>
+          </div>
+        </form>
+      }
+      @else if (activeModal() === ModalType.DELETE && studentForDelete) {
+        <h3 class="modal__title">
+          Ви впевенені, що хочете
+          <br>
+          видалити студента?
+        </h3>
+        <form class="form" #deleteForm="ngForm" (ngSubmit)="deleteStudent()">
+          <div class="form__group">
+            <h4 class="notification">УВАГА!!!</h4>
+
+            <span class="notification__message">
+              Якщо ви видалите студента
+              то і
+              <br>
+              видаляться усі заняття,
+              які пов'язані з цим
+              <br>
+              студентом.
+            </span>
+
+            <div class="form__field form__field--column">
+              <label class="form__label">Ім'я:</label>
+              <input 
+                class="form__input" 
+                type="text"
+                name="studentName"
+                [ngModel]="studentForDelete.name"
+                readonly
+              >
+            </div>
+
+            <div class="form__field form__field--column">
+              <label class="form__label">Номер телефону:</label>
+              <input 
+                class="form__input" 
+                type="text" 
+                name="studentPhoneNumber" 
+                [ngModel]="studentForDelete.phoneNumber"
+                readonly
+              >
+            </div>
+          </div>
+          <div class="form__actions">
+            <button type="button" class="btn-control btn-control--cancel" (click)="closeControlModal()">Відмінити</button>
+            <button type="submit" class="btn-control btn-control--save" [disabled]="deleteForm.invalid">Видалити</button>
+          </div>
+        </form>
+      }
+      @else if (activeModal() === ModalType.UPDATE && studentForUpdate) {
+        <h3 class="modal__title">Оновити студента</h3>
+        <form class="form" #updateForm="ngForm" (ngSubmit)="updateStudent(updateForm)">
+          <div class="form__group">
+            <div class="form__field form__field--column">
+              <label class="form__label">Ім'я:</label>
+              <input 
+                class="form__input" 
+                type="text" 
+                name="studentName" 
+                [ngModel]="studentForUpdate.name"
+                placeholder="Ім'я..."
+              >
+            </div>
+            
+            <div class="form__field form__field--column">
+              <label class="form__label">Номер телефону:</label>
+              <input 
+                class="form__input" 
+                type="text" 
+                name="studentPhoneNumber" 
+                [ngModel]="studentForUpdate.phoneNumber"
+                placeholder="Номер телефону..."
+              >
+            </div>
+          </div>
+
+          <div class="form__actions">
+            <button type="button" class="btn-control btn-control--cancel" (click)="closeControlModal()">Відмінити</button>
+            <button type="submit" class="btn-control btn-control--save" [disabled]="updateForm.invalid">Зберегти</button>
+          </div>
+        </form>
+      }
+    </div>
+  </div>
+}
+
+<app-student-table
+  (onUpdate)="openUpdateModal($event)"
+  (onDelete)="openDeleteModal($event)">
+</app-student-table>

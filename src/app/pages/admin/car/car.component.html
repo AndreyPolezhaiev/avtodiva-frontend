@@ -26,7 +26,7 @@
 </div>
 
 @if (activeModal() !== null) {
-  <div class="modal" (click)="closeControlModal()">
+  <div class="modal">
     <div class="modal__content" (click)="$event.stopPropagation()">
       @if (activeModal() === 'ADD') {
         <h3 class="modal__title">Додати автомобіль</h3>
@@ -34,7 +34,7 @@
           <div class="form__group">
             <div class="form__field">
               <label class="form__label">Модель:</label>
-              <input class="form__input" type="text" name="model" ngModel required placeholder="Наприклад: Toyota Camry">
+              <input class="form__input" type="text" name="model" ngModel required placeholder="Модель...">
             </div>
           </div>
           <div class="form__actions">
