@@ -1,6 +1,6 @@
 <div class="action-bar">
   <div class="action-bar__info">
-    <h2 class="action-bar__title">Управління заняттями</h2>
+    <h2 class="action-bar__title">Керування заняттями</h2>
   </div>
 
   <div class="action-bar__actions">
@@ -14,8 +14,8 @@
 </div>
 
 @if (activeModal() !== ModalType.NONE) {
-  <div class="modal"> 
-    <div class="modal__content" (click)="$event.stopPropagation()">
+  <div class="modal modal--large"> 
+    <div class="modal__content modal__content--large" (click)="$event.stopPropagation()">
       @if (activeModal() === ModalType.ADD) {
         <h3 class="modal__title">Додати заняття</h3>
         <form class="form" #addForm="ngForm" (click)="stopShowStudentsList()" (ngSubmit)="createScheduleSlot(addForm)">
@@ -134,12 +134,12 @@
 
             <div class="form__field">
               <label class="form__label">Час з:</label>
-              <input class="form__input" type="time" name="startTime" [ngModel]="slotForUpdate.timeFrom" required>
+              <input class="form__input" type="time" name="startTime" [ngModel]="slotForUpdate.startTime" required>
             </div>
 
             <div class="form__field">
               <label class="form__label">Час до:</label>
-              <input class="form__input" type="time" name="endTime" [ngModel]="slotForUpdate.timeTo" required>
+              <input class="form__input" type="time" name="endTime" [ngModel]="slotForUpdate.endTime" required>
             </div>
 
             <div class="form__field form__field--position-relative">
@@ -235,6 +235,7 @@
                 type="date"
                 [ngModel]="slotForDelete.date | date:'yyyy-MM-dd'"
                 [ngModelOptions]="{standalone: true}"
+                readonly
               >
             </div>
 
@@ -244,8 +245,9 @@
                 class="form__input" 
                 type="time" 
                 name="startTime" 
-                [ngModel]="slotForDelete.timeFrom" 
+                [ngModel]="slotForDelete.startTime" 
                 [ngModelOptions]="{standalone: true}"
+                readonly
               >
             </div>
 
@@ -255,8 +257,9 @@
                 class="form__input" 
                 type="time" 
                 name="endTime" 
-                [ngModel]="slotForDelete.timeTo" 
+                [ngModel]="slotForDelete.endTime" 
                 [ngModelOptions]="{standalone: true}"
+                readonly
               >
             </div>
 
@@ -267,6 +270,7 @@
                 type="text"
                 [ngModel]="slotForDelete.studentDto?.name"
                 [ngModelOptions]="{standalone: true}"
+                readonly
               >
             </div>
 
@@ -277,6 +281,7 @@
                 type="tel"
                 [ngModel]="slotForDelete.studentDto?.phoneNumber"
                 [ngModelOptions]="{standalone: true}"
+                readonly
               >
             </div>
 
@@ -286,6 +291,7 @@
                 class="form__input"
                 [ngModel]="slotForDelete.instructorDto?.name"
                 [ngModelOptions]="{standalone: true}"
+                readonly
               >
             </div>
 
@@ -295,6 +301,7 @@
                 class="form__input"
                 [ngModel]="slotForDelete.carDto?.name"
                 [ngModelOptions]="{standalone: true}"
+                readonly
               >
             </div>
 
@@ -303,7 +310,9 @@
               <textarea 
                 class="form__input"
                 [ngModel]="slotForDelete.description" 
-                [ngModelOptions]="{standalone: true}">
+                [ngModelOptions]="{standalone: true}"
+                readonly
+              >
               </textarea>
             </div>
 
@@ -312,7 +321,9 @@
               <textarea 
                 class="form__input"
                 [ngModel]="slotForDelete.link"
-                [ngModelOptions]="{standalone: true}">
+                [ngModelOptions]="{standalone: true}"
+                readonly
+              >
               </textarea>
             </div>
           </div>

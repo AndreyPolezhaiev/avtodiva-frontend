@@ -11,6 +11,11 @@
   justify-content: center;
   align-items: center;
   z-index: vars.$modal-z-index;
+  overflow: hidden;
+
+  &--large {
+    align-items: flex-start;
+  }
 
   &__content {
     background: vars.$modal-content-background;
@@ -20,6 +25,14 @@
     min-width: vars.$modal-content-min-width;
     max-width: vars.$modal-content-max-width;
     color: vars.$modal-content-color;
+
+    &--large {
+      max-height: 90vh;
+      margin-top: 8vh;
+      margin-bottom: 5vh;
+      padding-right: 15px;
+      overflow-y: auto;
+    }
   }
 
   &__title {

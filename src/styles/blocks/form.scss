@@ -37,6 +37,12 @@
     display: block;
     font-weight: vars.$form-label-font-weight;
     color: vars.$form-label-color;
+
+    &--visibility-hidden {
+      visibility: hidden;
+      height: 0;
+      overflow: hidden;
+    }
   }
 
   &__input {

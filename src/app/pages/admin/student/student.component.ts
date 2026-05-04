@@ -70,7 +70,7 @@ export class StudentComponent {
   }
 
   public updateStudent(form: NgForm) {
-    if (!this.studentForUpdate) {
+    if (form.invalid || !this.studentForUpdate) {
       return;
     }
 

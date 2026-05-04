@@ -1,5 +1,5 @@
 import { Component, computed, signal } from "@angular/core";
-import { InstructorService } from "../../../services/instructor.service";
+import { InstructorService } from "../../../services/instructor/instructor.service";
 import { InstructorResponseDto } from "../../../models/instructor/instructor.response";
 import { FormsModule, NgForm } from "@angular/forms";
 import { CommonModule } from "@angular/common";

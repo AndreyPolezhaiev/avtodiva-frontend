@@ -1,6 +1,6 @@
 export interface WeekendRequestDto {
-  day: string;
-  timeFrom: string;
-  timeTo: string;
+  date: string;
+  startTime: string;
+  endTime: string;
   instructorId: number;
 }

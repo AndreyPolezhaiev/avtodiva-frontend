@@ -24,6 +24,10 @@
       width: fit-content;
     }
 
+    &--weekend {
+      width: fit-content;
+    }
+
     height: auto;
     overflow: hidden;
     border: vars.$table-manager-content-border;

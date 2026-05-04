@@ -37,7 +37,6 @@ export class ScheduleSlotTableComponent {
 
   public activeModal = signal<ModalType>(ModalType.NONE);
   
-  @Input() slot: ScheduleSlotResponseDto | null = null;
   @Output() onUpdate = new EventEmitter<ScheduleSlotResponseDto>();
   @Output() onDelete = new EventEmitter<ScheduleSlotResponseDto>();
 

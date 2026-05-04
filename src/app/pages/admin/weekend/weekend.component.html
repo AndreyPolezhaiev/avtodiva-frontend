@@ -1,0 +1,183 @@
+<div class="action-bar">
+  <div class="action-bar__info">
+    <h2 class="action-bar__title">Керування вихідними</h2>
+  </div>
+
+  <div class="action-bar__actions">
+    <button class="btn-control btn-control--add" (click)="openControlModal(ModalType.ADD)" title="Призначити вихідний">+</button>
+  </div>
+</div>
+
+@if (activeModal() !== ModalType.NONE) {
+  <div class="modal modal--large"> 
+    <div class="modal__content modal__content--large" (click)="$event.stopPropagation()">
+      @if (activeModal() === ModalType.ADD) {
+        <h3 class="modal__title">Створити Вихідний</h3>
+        <form class="form" #addForm="ngForm" (ngSubmit)="createWeekends(addForm)">
+          <div class="form__group">
+            <div class="form__field">
+              <label class="form__label">Дні:</label>
+              
+              <div class="display-column">
+                <app-calendar 
+                  [(selectedDates)]="selectedDates">
+                </app-calendar>
+              </div>
+            </div>
+
+            <div class="form__field">
+              <div class="form__label form__label--visibility-hidden">Дні:</div>
+              <div class="selected-days">
+                @for (date of selectedDates(); track date) {
+                  <div class="day">
+                    <div class="day__value">{{ date | date:'dd.MM.yyyy' }}</div>
+                    <div class="day__remove" (click)="removeDate(date)">×</div>
+                  </div>
+                }
+              </div>
+            </div>
+
+            <div class="form__field">
+              <label class="form__label">Час з:</label>
+              <input class="form__input" type="time" name="startTime" ngModel required>
+            </div>
+
+            <div class="form__field">
+              <label class="form__label">Час до:</label>
+              <input class="form__input" type="time" name="endTime" ngModel required>
+            </div>
+
+            <div class="form__field">
+              <label class="form__label">Інструктор:</label>
+              <select 
+                class="form__input"
+                name="instructorId"
+                ngModel 
+                required>
+                <option value="" disabled selected>Оберіть інструктора...</option>
+                @for (instructor of foundInstructors(); track instructor.id) {
+                  <option [value]="instructor.id">
+                    {{ instructor.name }}
+                  </option>
+                }
+              </select>
+            </div>
+          </div>
+
+          <div class="form__actions">
+            <button type="button" class="btn-control btn-control--cancel" (click)="closeControlModal(); clearDates()">Відмінити</button>
+            <button type="submit" class="btn-control btn-control--save" [disabled]="addForm.invalid">Зберегти</button>
+          </div>
+        </form>
+      }
+      @else if (activeModal() === ModalType.UPDATE && weekendForUpdate) {
+        <h3 class="modal__title">Оновити вихідний</h3>
+        <form class="form" #updateForm="ngForm" (ngSubmit)="updateWeekend(updateForm)">
+          <div class="form__group">
+            <div class="form__field">
+              <label class="form__label">Дата:</label>
+              <input 
+              class="form__input" 
+              type="date" 
+              name="date" 
+              [ngModel]="weekendForUpdate.date | date:'yyyy-MM-dd'"
+              required>
+            </div>
+
+            <div class="form__field">
+              <label class="form__label">Час з:</label>
+              <input class="form__input" type="time" name="startTime" [ngModel]="weekendForUpdate.startTime" required>
+            </div>
+
+            <div class="form__field">
+              <label class="form__label">Час до:</label>
+              <input class="form__input" type="time" name="endTime" [ngModel]="weekendForUpdate.endTime" required>
+            </div>
+
+            <div class="form__field">
+              <label class="form__label">Інструктор:</label>
+              <select 
+                class="form__input" 
+                name="instructorId" 
+                [ngModel]="weekendForUpdate.instructorDto?.id"
+                required>
+                <option value="" disabled selected>Оберіть інструктора...</option>
+                @for (instructor of foundInstructors(); track instructor.id) {
+                  <option [value]="instructor.id">
+                    {{ instructor.name }}
+                  </option>
+                }
+              </select>
+            </div>
+          </div>
+
+          <div class="form__actions">
+            <button type="button" class="btn-control btn-control--cancel" (click)="closeControlModal()">Відмінити</button>
+            <button type="submit" class="btn-control btn-control--save" [disabled]="updateForm.invalid">Зберегти</button>
+          </div>
+        </form>
+      }
+      @else if (activeModal() === ModalType.DELETE && weekendForDelete) {
+        <h3 class="modal__title">Видалити вихідний?</h3>
+        <form class="form" #deleteForm="ngForm" (ngSubmit)="deleteWeekend()">
+          <div class="form__group">
+            <div class="form__field">
+              <label class="form__label">Дата:</label>
+              <input 
+                class="form__input" 
+                type="date"
+                [ngModel]="weekendForDelete.date | date:'yyyy-MM-dd'"
+                [ngModelOptions]="{standalone: true}"
+                readonly
+              >
+            </div>
+
+            <div class="form__field">
+              <label class="form__label">Час з:</label>
+              <input 
+                class="form__input" 
+                type="time" 
+                name="startTime" 
+                [ngModel]="weekendForDelete.startTime" 
+                [ngModelOptions]="{standalone: true}"
+                readonly
+              >
+            </div>
+
+            <div class="form__field">
+              <label class="form__label">Час до:</label>
+              <input 
+                class="form__input" 
+                type="time" 
+                name="endTime" 
+                [ngModel]="weekendForDelete.endTime" 
+                [ngModelOptions]="{standalone: true}"
+                readonly
+              >
+            </div>
+
+            <div class="form__field">
+              <label class="form__label">Інструктор:</label>
+              <input 
+                class="form__input"
+                [ngModel]="weekendForDelete.instructorDto?.name"
+                [ngModelOptions]="{standalone: true}"
+                readonly
+              >
+            </div>
+          </div>
+
+          <div class="form__actions">
+            <button type="button" class="btn-control btn-control--cancel" (click)="closeControlModal()">Відмінити</button>
+            <button type="submit" class="btn-control btn-control--save">Видалити</button>
+          </div>
+        </form>
+      }
+    </div>
+  </div>
+}
+
+<app-weekend-table
+  (onUpdate)="openUpdateModal($event)"
+  (onDelete)="openDeleteModal($event)">
+</app-weekend-table>

@@ -33,7 +33,6 @@ export class StudentTableComponent {
 
   public showList = signal<boolean>(true);
   
-  public activeModal = signal<ModalType>(ModalType.NONE);
   public activeSearchField = signal<'name' | 'phone' | null>(null);
   
   @Output() onUpdate = new EventEmitter<StudentResponseDto>();

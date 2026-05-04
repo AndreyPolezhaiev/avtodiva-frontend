@@ -1,0 +1,27 @@
+<div class="my-calendar">
+  <div class="my-calendar__header">
+    <button type="button" (click)="changeMonth(-1)">‹</button>
+    <span>{{ currentMonth | date:'MMMM yyyy' }}</span>
+    <button type="button" (click)="changeMonth(1)">›</button>
+  </div>
+
+  <div class="my-calendar__grid">
+    <div class="my-calendar__weekday">Пн</div>
+    <div class="my-calendar__weekday">Вт</div>
+    <div class="my-calendar__weekday">Ср</div>
+    <div class="my-calendar__weekday">Чт</div>
+    <div class="my-calendar__weekday">Пт</div>
+    <div class="my-calendar__weekday">Сб</div>
+    <div class="my-calendar__weekday">Нд</div>
+
+    @for (day of calendarDays; track $index) {
+      <div 
+        class="my-calendar__day" 
+        [class.my-calendar__day--empty]="!day"
+        [class.my-calendar__day--selected]="isSelected(day)"
+        (click)="toggleDate(day)">
+        {{ day ? day.getDate() : '' }}
+      </div>
+    }
+  </div>
+</div>

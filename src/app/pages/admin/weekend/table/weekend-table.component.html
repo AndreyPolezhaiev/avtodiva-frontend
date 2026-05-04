@@ -1,0 +1,102 @@
+<div class="table-manager">
+  <div class="table-manager__filter">
+    <form class="filter-form" #filterForm="ngForm" (ngSubmit)="onSearch(filterForm)" (click)="$event.stopPropagation()">
+      <div class="filter-form__group">
+        <div class="filter-form__field">
+          <label class="filter-form__label">Дата з:</label>
+          <input 
+            class="filter-form__input filter-form__input--date"
+            type="date" 
+            name="startDate" 
+            [(ngModel)]="currentFilters().startDate"
+          >
+        </div>
+
+        <div class="filter-form__field">
+          <label class="filter-form__label">Дата до:</label>
+          <input 
+            class="filter-form__input filter-form__input--date"
+            type="date" 
+            name="endDate" 
+            [(ngModel)]="currentFilters().endDate"
+          >
+        </div>
+
+        <div class="filter-form__field filter-form__field--instructors">
+          <label class="filter-form__label">Інструктори:</label>
+          <ng-select 
+            [items]="foundInstructors()" 
+            bindLabel="name" 
+            bindValue="id" 
+            [multiple]="true"
+            [closeOnSelect]="false"
+            placeholder="Оберіть інструкторів"
+            name="instructorIds"
+            required="true"
+            [(ngModel)]="currentFilters().instructorIds">
+            
+            <ng-template ng-option-tmp let-item="item" let-item$="item$">
+              <input type="checkbox" [checked]="item$.selected" /> {{item.name}}
+            </ng-template>
+          </ng-select>
+        </div>
+        
+        <div class="filter-form__actions">
+          <button 
+            type="submit" 
+            class="btn-control btn-control--save"
+            [disabled]="filterForm.invalid">Пошук
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div class="table-manager__content table-manager__content--weekend">
+    @if (isSearching()) {
+      <div class="loader">Завантаження...</div>
+    }
+    @else {
+      <div class="table-manager__scroll-container">
+        <table class="table table--weekend">
+          <thead class="table__head">
+            <tr class="table__head__row">
+              <th class="table__head__cell table__head__cell--date">Дата</th>
+              <th class="table__head__cell table__head__cell--time">Час</th>
+              <th class="table__head__cell table__head__cell--instructor">Інструктор</th>
+              <th class="table__head__cell table__head__cell--edit">✏️</th>
+              <th class="table__head__cell table__head__cell--delete">🗑️</th>
+            </tr>
+          </thead>
+          <tbody class="table__body">
+            @for (weekend of weekends(); track weekend.id) {
+              <tr class="table__body__row">
+                <td class="table__body__cell table__body__cell--date">
+                  {{ weekend.date | date:'EE, dd.MM.yyyy' }}
+                </td>
+                <td class="table__body__cell table__body__cell--time">
+                  {{ weekend.startTime.slice(0, 5) }} — {{ weekend.endTime.slice(0, 5) }}
+                </td>
+                <td class="table__body__cell table__body__cell--instructor">{{ weekend.instructorDto?.name }}</td>
+
+                <td class="table__body__cell table__body__cell--edit">
+                  <button class="table-cell-button" (click)="emitUpdate(weekend)">✏️</button>
+                </td>
+                <td class="table__body__cell table__body__cell--delete">
+                  <button class="table-cell-button" (click)="emitDelete(weekend)">🗑️</button>
+                </td>
+              </tr>
+            } 
+            @empty {
+              <tr class="table__body__row table__body__row--empty">
+                <td colspan="5" class="table__body__cell table__body__cell--empty">
+                  Занять не знайдено
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  </div>
+</div>

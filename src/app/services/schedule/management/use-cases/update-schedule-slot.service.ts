@@ -5,7 +5,6 @@ import { ScheduleSlotResponseDto } from "../../../../models/schedule-slot/schedu
 import { catchError, EMPTY, Observable, switchMap, tap } from "rxjs";
 import { StudentResponseDto } from "../../../../models/student/student.response";
 import { NgForm } from "@angular/forms";
-import { PhoneFormatter } from "../../../../shared/utils/phone-formatter.service";
 import { StudentRequestDto } from "../../../../models/student/student.request";
 import { NotificationService } from "../../../notification/notification.service";
 import { HttpErrorResponse } from "@angular/common/http";
@@ -72,8 +71,8 @@ export class UpdateScheduleSlotService {
   private executeSlotUpdate(form: NgForm, slotId: number, studentId: number | null): Observable<ScheduleSlotResponseDto> {
     const slotRequest: UpdateScheduleSlotRequestDto = {
       date: form.value.date,
-      timeFrom: form.value.startTime,
-      timeTo: form.value.endTime,
+      startTime: form.value.startTime,
+      endTime: form.value.endTime,
       instructorId: form.value.instructorId,
       carId: form.value.carId,
       studentId: studentId,

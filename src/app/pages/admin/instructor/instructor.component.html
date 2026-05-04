@@ -1,6 +1,6 @@
 <div class="action-bar">
   <div class="action-bar__info">
-    <h2 class="action-bar__title">Управління інструкторами</h2>
+    <h2 class="action-bar__title">Керування інструкторами</h2>
     <span class="action-bar__badge">{{ instructors().length }} інструкторів</span>
   </div>
   <div class="action-bar__actions">
@@ -26,7 +26,7 @@
 </div>
 
 @if (activeModal() !== null) {
-  <div class="modal" (click)="activeModal() === 'GET_DETAILED_BY_ID' ? null : closeControlModal()">
+  <div class="modal">
     <div class="modal__content" (click)="$event.stopPropagation()">
       @if (activeModal() === 'ADD') {
         <h3 class="modal__title">Додати інструктора</h3>

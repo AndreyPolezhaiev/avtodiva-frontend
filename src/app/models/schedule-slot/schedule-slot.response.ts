@@ -5,8 +5,8 @@ import { StudentResponseDto } from "../student/student.response";
 export interface ScheduleSlotResponseDto {
   id: number;
   date: string;
-  timeFrom: string;
-  timeTo: string;
+  startTime: string;
+  endTime: string;
   description: string;
   instructorDto?: InstructorResponseDto; 
   carDto?: CarResponseDto;

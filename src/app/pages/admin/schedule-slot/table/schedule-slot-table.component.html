@@ -142,7 +142,7 @@
                   {{ slot.date | date:'EE, dd.MM.yyyy' }}
                 </td>
                 <td class="table__body__cell table__body__cell--time">
-                  {{ slot.timeFrom.slice(0, 5) }} — {{ slot.timeTo.slice(0, 5) }}
+                  {{ slot.startTime.slice(0, 5) }} — {{ slot.endTime.slice(0, 5) }}
                 </td>
                 <td class="table__body__cell table__body__cell--instructor">{{ slot.instructorDto?.name }}</td>
                 <td class="table__body__cell table__body__cell--car">{{ slot.carDto?.name }}</td>

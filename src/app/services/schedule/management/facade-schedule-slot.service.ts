@@ -1,5 +1,5 @@
 import { inject, Injectable, signal } from "@angular/core";
-import { InstructorService } from "../../instructor.service";
+import { InstructorService } from "../../instructor/instructor.service";
 import { CarService } from "../../car.service";
 import { InstructorResponseDto } from "../../../models/instructor/instructor.response";
 import { CarResponseDto } from "../../../models/car/car.response";
@@ -11,12 +11,13 @@ import { LoadDataType } from "../../../shared/load-type";
 import { ScheduleSlotResponseDto } from "../../../models/schedule-slot/schedule-slot.response";
 import { SlotSearchParametersDto } from "../../../models/schedule-slot/schedule-slot.search";
 import { SlotFiltersState } from "../../../models/schedule-slot/schedule-slot-filters.state";
+import { InstructorManagementService } from "../../instructor/management/instructor-management-service";
 
 @Injectable({ providedIn: 'root' })
 export class ScheduleSlotFacadeService {
   private readonly STORAGE_KEY = 'avtodiva_schedule_filters';
 
-  private instructorService = inject(InstructorService);
+  private instructorManagementService = inject(InstructorManagementService);
   private carService = inject(CarService);
   private searchService = inject(SearchScheduleSlotService);
 
@@ -157,7 +158,7 @@ export class ScheduleSlotFacadeService {
   }
 
   private loadInstructors() {
-    this.instructorService.getAllInstructors().subscribe({
+    this.instructorManagementService.getAllInstructors().subscribe({
       next: (instructors) => {
         this.#instructors.set(instructors);
       },

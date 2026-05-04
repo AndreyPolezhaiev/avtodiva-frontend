@@ -74,8 +74,8 @@ export class CreateScheduleSlotService {
   private executeSlotCreation(form: NgForm, studentId: number): Observable<ScheduleSlotResponseDto> {
     const slotRequest: ScheduleSlotRequestDto = {
       date: form.value.date,
-      timeFrom: form.value.startTime,
-      timeTo: form.value.endTime,
+      startTime: form.value.startTime,
+      endTime: form.value.endTime,
       instructorId: form.value.instructorId,
       carId: form.value.carId,
       studentId: studentId,
