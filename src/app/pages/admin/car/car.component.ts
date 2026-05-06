@@ -1,10 +1,11 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { CarResponseDto } from '../../../models/car/car.response';
-import { CarService } from '../../../services/car.service';
 import { CarRequestDto } from '../../../models/car/car.request';
 import { FormsModule, NgForm } from '@angular/forms';
+import { CarManagementService } from '../../../services/car/management/car-management.service';
+import { CarFacadeService } from '../../../services/car/management/facade-car.service';
 
 type ModalType = 'ADD' | 'GET_BY_ID' | 'UPDATE' | 'DELETE' | null;
 
@@ -15,25 +16,26 @@ type ModalType = 'ADD' | 'GET_BY_ID' | 'UPDATE' | 'DELETE' | null;
   templateUrl: './car.component.html',
   styleUrl: './car.component.scss'
 })
-export class CarComponent implements OnInit {
-  public cars = signal<CarResponseDto[]>([]);
+export class CarComponent {
+  private carManagementService = inject(CarManagementService);
+  private carFacadeService = inject(CarFacadeService);
+
+  public cars = this.carFacadeService.cars;
   public activeModal = signal<ModalType>(null);
   public selectedCar = signal<CarResponseDto | null>(null);
 
-  constructor(private carService: CarService) {};
-
-  ngOnInit(): void {
-    this.getAllCars();
-  }
+  constructor() {};
 
   public createCar(form: NgForm): void {
     if (form.valid) {
-      const newCar: Partial<CarRequestDto> = {name: form.value.model};
+      const carRequest: CarRequestDto = {
+        name: form.value.model
+      };
 
-      this.carService.createCar(newCar as CarRequestDto).subscribe ({
-        next: (carFromServer) => {
-          this.cars.update(cars => [...cars, carFromServer]);
+      this.carManagementService.createCar(carRequest).subscribe({
+        next: () => {
           form.reset();
+
           this.closeControlModal();
         },
 
@@ -44,30 +46,22 @@ export class CarComponent implements OnInit {
     }
   }
 
-  public getAllCars(): void {
-    this.carService.getAllCars().subscribe({
-      next: (response: CarResponseDto[]) => {
-        this.cars.set(response);
-      },
-
-      error: (error: HttpErrorResponse) => {
-        this.handleError('Не вдалося отримати список машин', error);
-      }
-    });
+  public refreshCars(): void {
+    this.carFacadeService.refreshCars();
   }
 
   public updateCar(form: NgForm): void {
     const currentCar = this.selectedCar();
 
     if (form.valid && currentCar) {
-      const updatedCar: CarRequestDto = {...currentCar, name: form.value.model};
+      const carRequest: CarRequestDto = {
+        name: form.value.model
+      };
 
-      this.carService.updateCar(currentCar.id, updatedCar).subscribe({
-        next: (carFromServer) => {
-          this.cars.update(
-            currentCars => currentCars.map(c => c.id === currentCar.id ? carFromServer : c)
-          );
-
+      this.carManagementService.updateCar(currentCar.id, carRequest).subscribe({
+        next: () => {
+          form.reset();
+          this.selectedCar.set(null);
           this.closeIconModal();
         },
 
@@ -82,9 +76,9 @@ export class CarComponent implements OnInit {
     const currentCar = this.selectedCar();
     
     if (currentCar) {
-      this.carService.deleteCarById(currentCar.id).subscribe({
+      this.carManagementService.deleteCar(currentCar.id).subscribe({
         next: () => {
-          this.cars.update(currentCars => currentCars.filter(c => c.id !== currentCar.id));
+          this.selectedCar.set(null);
           this.closeIconModal();
         },
 

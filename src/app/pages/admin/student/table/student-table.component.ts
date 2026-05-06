@@ -8,7 +8,7 @@ import { StudentResponseDto } from "../../../../models/student/student.response"
 import { ModalType } from "../../../../shared/modal-type";
 import { debounceTime, distinctUntilChanged, merge, Subject, switchMap } from "rxjs";
 import { StudentManagementService } from "../../../../services/student/management/student-management.service";
-import { StudentFacadeService } from "../../../../services/student/management/facade-student-service";
+import { StudentFacadeService } from "../../../../services/student/management/facade-student.service";
 import { StudentSearchParametersDto } from "../../../../models/student/student.search";
 
 @Component({

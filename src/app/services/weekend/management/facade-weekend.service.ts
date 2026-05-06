@@ -1,10 +1,11 @@
 import { inject, Injectable, signal } from "@angular/core";
-import { InstructorManagementService } from "../../instructor/management/instructor-management-service";
+import { InstructorManagementService } from "../../instructor/management/instructor-management.service";
 import { InstructorResponseDto } from "../../../models/instructor/instructor.response";
 import { NotificationService } from "../../notification/notification.service";
-import { SearchWeekendService } from "./use-cases/search-weekend-service";
+import { SearchWeekendService } from "./use-cases/search-weekend.service";
 import { WeekendSearchParametersDto } from "../../../models/weekend/weekend.search";
 import { WeekendResponseDto } from "../../../models/weekend/weekend.response";
+import { DataRegistryService } from "../../../shared/registry/data-registry.service";
 
 @Injectable({
   providedIn: "root"
@@ -12,17 +13,16 @@ import { WeekendResponseDto } from "../../../models/weekend/weekend.response";
 export class WeekendFacadeService {
   private readonly STORAGE_KEY = 'avtodiva_weekend_filters';
 
-  private instructorManagementService = inject(InstructorManagementService);
+  private dataRegistryService = inject(DataRegistryService);
   private searchService = inject(SearchWeekendService);
 
-  readonly #instructors = signal<InstructorResponseDto[]>([]);
+  readonly #instructors = this.dataRegistryService.instructors;
   readonly #weekends = signal<WeekendResponseDto[]>([]);
 
   #lastSearchParams = signal<WeekendSearchParametersDto>({} as WeekendSearchParametersDto);
   readonly #isSearching = signal<boolean>(false);
 
   constructor() {
-    this.loadInsctructors();
     this.initDefaultFilters();
   }
 
@@ -77,7 +77,7 @@ export class WeekendFacadeService {
   }
 
   public get instructors() {
-    return this.#instructors.asReadonly();
+    return this.#instructors;
   }
 
   public get currentFilters() {
@@ -103,14 +103,5 @@ export class WeekendFacadeService {
     });
 
     return cleanParams as WeekendSearchParametersDto;
-  }
-
-  private loadInsctructors() {
-    this.instructorManagementService.getAllInstructors().subscribe({
-      next: (instructors) => {
-        this.#instructors.set(instructors);
-      },
-      error: (err) => NotificationService.showError('Не вдалося завантажити інструкторів', err)
-    });
   }
 }

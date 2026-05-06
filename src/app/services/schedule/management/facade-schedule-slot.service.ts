@@ -1,37 +1,30 @@
 import { inject, Injectable, signal } from "@angular/core";
-import { InstructorService } from "../../instructor/instructor.service";
-import { CarService } from "../../car.service";
-import { InstructorResponseDto } from "../../../models/instructor/instructor.response";
-import { CarResponseDto } from "../../../models/car/car.response";
 import { NotificationService } from "../../notification/notification.service";
 import {  Observable, of, tap } from "rxjs";
-import { StudentResponseDto } from "../../../models/student/student.response";
 import { SearchScheduleSlotService } from "./use-cases/search-schedule-slot.service";
-import { LoadDataType } from "../../../shared/load-type";
 import { ScheduleSlotResponseDto } from "../../../models/schedule-slot/schedule-slot.response";
 import { SlotSearchParametersDto } from "../../../models/schedule-slot/schedule-slot.search";
 import { SlotFiltersState } from "../../../models/schedule-slot/schedule-slot-filters.state";
-import { InstructorManagementService } from "../../instructor/management/instructor-management-service";
+import { DataRegistryService } from "../../../shared/registry/data-registry.service";
+import { DateFormatter } from "../../../shared/utils/date-formatter.service";
 
 @Injectable({ providedIn: 'root' })
 export class ScheduleSlotFacadeService {
   private readonly STORAGE_KEY = 'avtodiva_schedule_filters';
 
-  private instructorManagementService = inject(InstructorManagementService);
-  private carService = inject(CarService);
+  private dataRegistryService = inject(DataRegistryService);
   private searchService = inject(SearchScheduleSlotService);
 
   #prefillCache = new Map<number, any>();
   #lastSearchParams = signal<SlotFiltersState>({} as SlotFiltersState);
-  readonly #instructors = signal<InstructorResponseDto[]>([]);
-  readonly #cars = signal<CarResponseDto[]>([]);
+  readonly #instructors = this.dataRegistryService.instructors;
+  readonly #cars = this.dataRegistryService.cars;
 
   readonly #scheduleSlots = signal<ScheduleSlotResponseDto[]>([]);
   readonly #isSearching = signal<boolean>(false);
 
   constructor() {
     this.initDefaultFilters();
-    this.loadInitialData();
   };
 
   private initDefaultFilters(): void {
@@ -48,21 +41,14 @@ export class ScheduleSlotFacadeService {
     nextWeek.setDate(today.getDate() + 7);
 
     this.#lastSearchParams.set({
-      dateFrom: this.formatDate(today),
-      dateTo: this.formatDate(nextWeek),
+      dateFrom: DateFormatter.formatToISODate(today),
+      dateTo: DateFormatter.formatToISODate(nextWeek),
       booked: null,
       instructorIds: [],
       carIds: [],
       studentId: null,
       studentName: ''
     });
-  }
-
-  private formatDate(date: Date): string {
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    return `${year}-${month}-${day}`;
   }
 
   public searchSlots(filters: SlotFiltersState): void {
@@ -130,48 +116,14 @@ export class ScheduleSlotFacadeService {
   }
 
   public get instructors() {
-    return this.#instructors.asReadonly();
+    return this.#instructors;
   }
 
   public get cars() {
-    return this.#cars.asReadonly();
+    return this.#cars;
   }
 
   public get currentFilters() {
     return this.#lastSearchParams;
-  }
-
-  public refreshData(dataType: LoadDataType): void {
-    switch (dataType) {
-      case LoadDataType.INSTRUCTORS:
-        this.loadInstructors();
-        break;
-      case LoadDataType.CARS:
-        this.loadCars();
-        break;
-    }
-  }
-
-  private loadInitialData() {
-    this.loadCars();
-    this.loadInstructors();
-  }
-
-  private loadInstructors() {
-    this.instructorManagementService.getAllInstructors().subscribe({
-      next: (instructors) => {
-        this.#instructors.set(instructors);
-      },
-      error: (err) => NotificationService.showError('Не вдалося завантажити інструкторів', err)
-    });
-  }
-
-  private loadCars() {
-    this.carService.getAllCars().subscribe({
-      next: (cars) => {
-        this.#cars.set(cars);
-      },
-      error: (err) => NotificationService.showError('Не вдалося завантажити машини', err)
-    })
   }
 }

@@ -1,14 +1,14 @@
 import { inject, Injectable } from "@angular/core";
-import { CreateWeekendService } from "./use-cases/create-weekend-service";
+import { CreateWeekendService } from "./use-cases/create-weekend.service";
 import { WeekendRequestDto } from "../../../models/weekend/weekend.request";
 import { WeekendResponseDto } from "../../../models/weekend/weekend.response";
 import { Observable } from "rxjs";
 import { NgForm } from "@angular/forms";
 import { WeekendSearchParametersDto } from "../../../models/weekend/weekend.search";
-import { SearchWeekendService } from "./use-cases/search-weekend-service";
-import { UpdateWeekendService } from "./use-cases/update-weekend-service";
+import { SearchWeekendService } from "./use-cases/search-weekend.service";
+import { UpdateWeekendService } from "./use-cases/update-weekend.service";
 import { UpdateWeekendRequestDto } from "../../../models/weekend/weekend.update";
-import { DeleteWeekendService } from "./use-cases/delete-weekend-service";
+import { DeleteWeekendService } from "./use-cases/delete-weekend.service";
 
 @Injectable({
   providedIn: "root"

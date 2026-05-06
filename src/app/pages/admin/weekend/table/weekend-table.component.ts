@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Inject, inject, Input, Output } from "@angular/core";
-import { WeekendFacadeService } from "../../../../services/weekend/management/facade-weekend-service";
-import { WeekendManagementService } from "../../../../services/weekend/management/weekend-management-service";
+import { WeekendFacadeService } from "../../../../services/weekend/management/facade-weekend.service";
+import { WeekendManagementService } from "../../../../services/weekend/management/weekend-management.service";
 import { FormsModule, NgForm } from "@angular/forms";
 import { CommonModule } from "@angular/common";
 import { NgSelectModule } from "@ng-select/ng-select";

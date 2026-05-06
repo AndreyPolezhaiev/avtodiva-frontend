@@ -3,12 +3,12 @@ import { StudentService } from "../student.service";
 import { Observable, of, switchMap, tap, throwError } from "rxjs";
 import { StudentResponseDto } from "../../../models/student/student.response";
 import { StudentRequestDto } from "../../../models/student/student.request";
-import { CreateStudentService } from "./use-cases/create-student-service";
-import { SearchStudentService } from "./use-cases/search-student-service";
+import { CreateStudentService } from "./use-cases/create-student.service";
+import { SearchStudentService } from "./use-cases/search-student.service";
 import { StudentSearchParametersDto } from "../../../models/student/student.search";
-import { VerifyStudentService } from "./use-cases/verify-student-service";
-import { DeleteStudentService } from "./use-cases/delete-student-service";
-import { UpdateStudentService } from "./use-cases/update-student-service";
+import { VerifyStudentService } from "./use-cases/verify-student.service";
+import { DeleteStudentService } from "./use-cases/delete-student.service";
+import { UpdateStudentService } from "./use-cases/update-student.service";
 import { UpdateStudentRequestDto } from "../../../models/student/student.update";
 
 @Injectable({

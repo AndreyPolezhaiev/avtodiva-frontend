@@ -1,11 +1,11 @@
-import { Component, computed, signal } from "@angular/core";
-import { InstructorService } from "../../../services/instructor/instructor.service";
+import { Component, computed, inject, signal } from "@angular/core";
 import { InstructorResponseDto } from "../../../models/instructor/instructor.response";
 import { FormsModule, NgForm } from "@angular/forms";
 import { CommonModule } from "@angular/common";
 import { InstructorRequestDto } from "../../../models/instructor/instructor.request";
 import { HttpErrorResponse } from "@angular/common/http";
-import { InstructorDetailedResponseDto } from "../../../models/instructor/instructor.detailed";
+import { InstructorManagementService } from "../../../services/instructor/management/instructor-management.service";
+import { InstructorFacadeService } from "../../../services/instructor/management/facade-instructor.service";
 
 type ModalType = 'ADD' | 'GET_BY_ID' | 'GET_DETAILED_BY_ID' | 'UPDATE' | 'DELETE' | null;
 
@@ -17,24 +17,23 @@ type ModalType = 'ADD' | 'GET_BY_ID' | 'GET_DETAILED_BY_ID' | 'UPDATE' | 'DELETE
   styleUrl: './instructor.component.scss'
 })
 export class InstructorComponent {
-  public instructors = signal<InstructorResponseDto[]>([]);
-  public detailedInstructors = signal<InstructorDetailedResponseDto[]>([]);
+  private instructorManagementService = inject(InstructorManagementService);
+  private facadeInstructorService = inject(InstructorFacadeService);
+
+  public instructors = this.facadeInstructorService.instructors;
   public selectedInstructor = signal<InstructorResponseDto | null>(null);
   public activeModal = signal<ModalType>(null);
 
-  constructor(private instructorService: InstructorService){}
-
-  ngOnInit(): void {
-    this.getAllInstructors();
-  }
+  constructor(){}
 
   public createInstructor(form: NgForm): void {
     if (form.valid) {
-      const newInstructor: Partial<InstructorRequestDto> = {name: form.value.name};
+      const instructorRequest: InstructorRequestDto = {
+        name: form.value.name
+      };
 
-      this.instructorService.createInstructor(newInstructor as InstructorRequestDto).subscribe({
-        next: (instructorFromServer) => {
-          this.instructors.update(instructors => [...instructors, instructorFromServer]);
+      this.instructorManagementService.createInstructor(instructorRequest).subscribe({
+        next: () => {
           form.reset();
           this.closeControlModal();
         },
@@ -46,46 +45,17 @@ export class InstructorComponent {
     }
   }
 
-  public getAllInstructors(): void {
-    this.instructorService.getAllInstructors().subscribe({
-      next: (instructorsResponse: InstructorResponseDto[]) => {
-        this.instructors.set(instructorsResponse);
-      },
-
-      error: (error: HttpErrorResponse) => {
-        this.handleError('Не вдалося отримати список інструкторів', error)
-      }
-    })
-  }
-
-  public getDetailedInstructorById(id: number): void {
-    if (!isNaN(id)) {
-      this.instructorService.getDetailedInstructorById(id).subscribe({
-        next: (instructorResponse: InstructorDetailedResponseDto) => {
-          console.log('Детальні дані інструктора:', instructorResponse);
-          this.detailedInstructors.set([instructorResponse]);
-          this.activeModal.set('GET_DETAILED_BY_ID');
-        },
-
-        error: (error: HttpErrorResponse) => {
-          this.handleError(`Не вдалося отримати інструктора за ID: ${id}`, error);
-        }
-      })
-    }
-  }
-
   public updateInstructor(form: NgForm): void {
     const currentInstructor = this.selectedInstructor();
 
     if (form.valid && currentInstructor) {
-      const updatedInstructor: InstructorRequestDto = {name: form.value.instructorName};
+      const instructorRequest: InstructorRequestDto = {
+        name: form.value.instructorName
+      };
 
-      this.instructorService.updateInstructor(currentInstructor.id, updatedInstructor).subscribe({
-        next: (instructorResponse: InstructorResponseDto) => {
-          this.instructors.update(
-            currentInstructors => currentInstructors.map(i => i.id == currentInstructor.id ? instructorResponse : i)
-          );
-
+      this.instructorManagementService.updateInstructor(currentInstructor.id, instructorRequest).subscribe({
+        next: () => {
+          form.reset();
           this.closeIconModal();
         },
 
@@ -100,10 +70,8 @@ export class InstructorComponent {
     const currentInstructor = this.selectedInstructor();
 
     if (currentInstructor) {
-      this.instructorService.deleteInstructorById(currentInstructor.id).subscribe({
+      this.instructorManagementService.deleteInstructor(currentInstructor.id).subscribe({
         next: () => {
-          this.instructors.update(currentInstructors => currentInstructors.filter(i => i.id !== currentInstructor.id));
-          this.detailedInstructors.update(list => list.filter(i => i.id !== currentInstructor.id));
           this.closeIconModal();
         },
 
@@ -112,6 +80,10 @@ export class InstructorComponent {
         }
       })
     }
+  }
+
+  public refreshInstructors(): void {
+    this.facadeInstructorService.refreshInstructors();
   }
 
   public openControlModal(type: ModalType): void {

@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { environment } from '../../environmets/environment';
-import { CarRequestDto } from '../models/car/car.request';
-import { CarResponseDto } from '../models/car/car.response';
+import { environment } from '../../../environmets/environment';
+import { CarRequestDto } from '../../models/car/car.request';
+import { CarResponseDto } from '../../models/car/car.response';
 
 @Injectable({
   providedIn: 'root',

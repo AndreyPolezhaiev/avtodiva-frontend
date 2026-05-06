@@ -7,7 +7,7 @@ import { PhoneFormatter } from "../../../../shared/utils/phone-formatter.service
 import { NotificationService } from "../../../notification/notification.service";
 import { StudentService } from "../../student.service";
 import { UpdateStudentRequestDto } from "../../../../models/student/student.update";
-import { VerifyStudentService } from "./verify-student-service";
+import { VerifyStudentService } from "./verify-student.service";
 import { StudentManagementService } from "../student-management.service";
 
 @Injectable({

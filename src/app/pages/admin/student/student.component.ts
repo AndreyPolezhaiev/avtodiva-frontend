@@ -9,7 +9,7 @@ import { NotificationService } from "../../../services/notification/notification
 import { StudentTableComponent } from "./table/student-table.component";
 import { StudentResponseDto } from "../../../models/student/student.response";
 import { UpdateStudentRequestDto } from "../../../models/student/student.update";
-import { StudentFacadeService } from "../../../services/student/management/facade-student-service";
+import { StudentFacadeService } from "../../../services/student/management/facade-student.service";
 
 @Component ({
   selector: 'app-student-page',
