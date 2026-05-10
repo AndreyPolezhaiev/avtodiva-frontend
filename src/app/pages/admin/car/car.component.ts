@@ -6,8 +6,7 @@ import { CarRequestDto } from '../../../models/car/car.request';
 import { FormsModule, NgForm } from '@angular/forms';
 import { CarManagementService } from '../../../services/car/management/car-management.service';
 import { CarFacadeService } from '../../../services/car/management/facade-car.service';
-
-type ModalType = 'ADD' | 'GET_BY_ID' | 'UPDATE' | 'DELETE' | null;
+import { ModalType } from '../../../shared/modal-type';
 
 @Component({
   selector: 'app-car-page',
@@ -17,11 +16,13 @@ type ModalType = 'ADD' | 'GET_BY_ID' | 'UPDATE' | 'DELETE' | null;
   styleUrl: './car.component.scss'
 })
 export class CarComponent {
+  public readonly ModalType = ModalType;
+
   private carManagementService = inject(CarManagementService);
   private carFacadeService = inject(CarFacadeService);
 
   public cars = this.carFacadeService.cars;
-  public activeModal = signal<ModalType>(null);
+  public activeModal = signal<ModalType>(ModalType.NONE);
   public selectedCar = signal<CarResponseDto | null>(null);
 
   constructor() {};
@@ -62,7 +63,7 @@ export class CarComponent {
         next: () => {
           form.reset();
           this.selectedCar.set(null);
-          this.closeIconModal();
+          this.closeControlModal();
         },
 
         error: (error: HttpErrorResponse) => {
@@ -79,7 +80,7 @@ export class CarComponent {
       this.carManagementService.deleteCar(currentCar.id).subscribe({
         next: () => {
           this.selectedCar.set(null);
-          this.closeIconModal();
+          this.closeControlModal();
         },
 
         error: (error: HttpErrorResponse) => {
@@ -94,17 +95,17 @@ export class CarComponent {
   }
 
   public closeControlModal(): void {
-    this.activeModal.set(null);
+    this.activeModal.set(ModalType.NONE);
   }
 
-  public openIconModal(type: ModalType, car: CarResponseDto): void {
-    this.activeModal.set(type);
+  public openUpdateModal(car: CarResponseDto): void {
+    this.activeModal.set(ModalType.UPDATE);
     this.selectedCar.set(car);
   }
 
-  public closeIconModal(): void {
-    this.activeModal.set(null);
-    this.selectedCar.set(null);
+  public openDeleteModal(car: CarResponseDto): void {
+    this.activeModal.set(ModalType.DELETE);
+    this.selectedCar.set(car);
   }
 
   private handleError(message: string, error: HttpErrorResponse): void {

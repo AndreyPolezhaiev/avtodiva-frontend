@@ -6,8 +6,8 @@ import { InstructorRequestDto } from "../../../models/instructor/instructor.requ
 import { HttpErrorResponse } from "@angular/common/http";
 import { InstructorManagementService } from "../../../services/instructor/management/instructor-management.service";
 import { InstructorFacadeService } from "../../../services/instructor/management/facade-instructor.service";
-
-type ModalType = 'ADD' | 'GET_BY_ID' | 'GET_DETAILED_BY_ID' | 'UPDATE' | 'DELETE' | null;
+import { NotificationService } from "../../../services/notification/notification.service";
+import { ModalType } from "../../../shared/modal-type";
 
 @Component({
   selector: 'app-instructor-page',
@@ -17,12 +17,14 @@ type ModalType = 'ADD' | 'GET_BY_ID' | 'GET_DETAILED_BY_ID' | 'UPDATE' | 'DELETE
   styleUrl: './instructor.component.scss'
 })
 export class InstructorComponent {
+  public readonly ModalType = ModalType;
+
   private instructorManagementService = inject(InstructorManagementService);
   private facadeInstructorService = inject(InstructorFacadeService);
 
   public instructors = this.facadeInstructorService.instructors;
   public selectedInstructor = signal<InstructorResponseDto | null>(null);
-  public activeModal = signal<ModalType>(null);
+  public activeModal = signal<ModalType>(ModalType.NONE);
 
   constructor(){}
 
@@ -39,7 +41,7 @@ export class InstructorComponent {
         },
 
         error: (error: HttpErrorResponse) => {
-          this.handleError('Не вдалося створити інструктора', error);
+          NotificationService.showError('Не вдалося створити інструктора', error);
         }
       })
     }
@@ -56,11 +58,11 @@ export class InstructorComponent {
       this.instructorManagementService.updateInstructor(currentInstructor.id, instructorRequest).subscribe({
         next: () => {
           form.reset();
-          this.closeIconModal();
+          this.closeControlModal();
         },
 
         error: (error: HttpErrorResponse) => {
-          this.handleError('Не вдалося оновити інструктора', error);
+          NotificationService.showError('Не вдалося оновити інструктора', error);
         }
       })
     }
@@ -72,11 +74,11 @@ export class InstructorComponent {
     if (currentInstructor) {
       this.instructorManagementService.deleteInstructor(currentInstructor.id).subscribe({
         next: () => {
-          this.closeIconModal();
+          this.closeControlModal();
         },
 
         error: (error: HttpErrorResponse) => {
-          this.handleError('Не вдалося видалити інструктора', error);
+          NotificationService.showError('Не вдалося видалити інструктора', error);
         }
       })
     }
@@ -91,21 +93,17 @@ export class InstructorComponent {
   }
 
   public closeControlModal(): void {
-    this.activeModal.set(null);
-  }
-
-  public openIconModal(type: ModalType, instructor: InstructorResponseDto): void {
-    this.activeModal.set(type);
-    this.selectedInstructor.set(instructor);
-  }
-
-  public closeIconModal(): void {
-    this.activeModal.set(null);
+    this.activeModal.set(ModalType.NONE);
     this.selectedInstructor.set(null);
   }
 
-  private handleError(message: string, error: HttpErrorResponse): void {
-    console.error(message, error);
-    alert(`${message}. Код ошибки: ${error.status}`);
+  public openUpdateModal(instructor: InstructorResponseDto): void {
+    this.activeModal.set(ModalType.UPDATE);
+    this.selectedInstructor.set(instructor);
+  }
+
+  public openDeleteModal(instructor: InstructorResponseDto): void {
+    this.activeModal.set(ModalType.DELETE);
+    this.selectedInstructor.set(instructor);
   }
 }

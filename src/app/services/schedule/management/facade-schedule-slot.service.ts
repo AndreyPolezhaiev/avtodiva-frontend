@@ -1,12 +1,15 @@
 import { inject, Injectable, signal } from "@angular/core";
 import { NotificationService } from "../../notification/notification.service";
-import {  Observable, of, tap } from "rxjs";
+import {  finalize, Observable, of, shareReplay, take, tap } from "rxjs";
 import { SearchScheduleSlotService } from "./use-cases/search-schedule-slot.service";
 import { ScheduleSlotResponseDto } from "../../../models/schedule-slot/schedule-slot.response";
 import { SlotSearchParametersDto } from "../../../models/schedule-slot/schedule-slot.search";
 import { SlotFiltersState } from "../../../models/schedule-slot/schedule-slot-filters.state";
 import { DataRegistryService } from "../../../shared/registry/data-registry.service";
 import { DateFormatter } from "../../../shared/utils/date-formatter.service";
+import { NgForm } from "@angular/forms";
+import { StudentResponseDto } from "../../../models/student/student.response";
+import { StudentPrefillData } from "../../../models/student/student-prefill-data";
 
 @Injectable({ providedIn: 'root' })
 export class ScheduleSlotFacadeService {
@@ -15,7 +18,9 @@ export class ScheduleSlotFacadeService {
   private dataRegistryService = inject(DataRegistryService);
   private searchService = inject(SearchScheduleSlotService);
 
-  #prefillCache = new Map<number, any>();
+  #prefillCache = new Map<number, StudentPrefillData>();
+  #activePrefillRequests = new Map<number, Observable<any>>();
+
   #lastSearchParams = signal<SlotFiltersState>({} as SlotFiltersState);
   readonly #instructors = this.dataRegistryService.instructors;
   readonly #cars = this.dataRegistryService.cars;
@@ -58,6 +63,8 @@ export class ScheduleSlotFacadeService {
     const { studentName, ...searchDto } = filters;
     const cleanedFilters = this.removeEmptyFilters(searchDto);
 
+    console.log('Searching with filters:', cleanedFilters);
+
     this.#isSearching.set(true);
     this.searchService.searchSlots(cleanedFilters).subscribe({
       next: (slots) => {
@@ -89,22 +96,57 @@ export class ScheduleSlotFacadeService {
       }
     });
 
+    console.log('Searching with filters:', cleanParams);
+
     return cleanParams as SlotSearchParametersDto;
   }
 
-  public getStudentPrefillData(studentId: number): Observable<any> {
+  private getStudentPrefillData(studentId: number): Observable<any> {
     if (this.#prefillCache.has(studentId)) {
-      console.log('Student prefill data was taken from cache:', studentId);
       return of(this.#prefillCache.get(studentId));
     }
 
-    return this.searchService.getStudentPrefillData(studentId).pipe(
+    if (this.#activePrefillRequests.has(studentId)) {
+      return this.#activePrefillRequests.get(studentId)!;
+    }
+
+    const request$ = this.searchService.getStudentPrefillData(studentId).pipe(
       tap(data => {
         if (data) {
           this.#prefillCache.set(studentId, data);
         }
-      })
+      }),
+      finalize(() => {
+        this.#activePrefillRequests.delete(studentId);
+      }),
+      shareReplay(1)
     );
+
+    this.#activePrefillRequests.set(studentId, request$);
+    return request$;
+  }
+
+  public fillStudentData(form: NgForm, student: StudentResponseDto): void {
+    form.form.patchValue({
+      studentName: student.name,
+      studentPhoneNumber: student.phoneNumber || ''
+    });
+
+   this.getStudentPrefillData(student.id)
+    .pipe(take(1))
+    .subscribe(data => {
+      if (data) {
+        form.form.patchValue(data);
+      }
+    });
+  }
+
+  public updateStudentPrefillCache(studentId: number | undefined, newData: StudentPrefillData): void {
+    if (!studentId) {
+      return;
+    }
+
+    this.#prefillCache.set(studentId, newData);
   }
 
   public get slots() { 

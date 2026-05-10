@@ -1,6 +1,6 @@
 <div class="table-manager" (click)="stopShowStudentsList()">
   <div class="table-manager__filter">
-    <form class="filter-form" #filterForm="ngForm" (ngSubmit)="onSearch(filterForm)" (click)="$event.stopPropagation()">
+    <form class="filter-form" #filterForm="ngForm" (ngSubmit)="onSearch()" (click)="$event.stopPropagation()">
       <div class="filter-form__group">
         <div class="filter-form__field">
           <label class="filter-form__label">Дата з:</label>
@@ -79,30 +79,18 @@
           </ng-select>
         </div>
 
-        <div class="filter-form__field filter-form__field--student filter-form__field--position-relative">
-          <label class="filter-form__label">Студент:</label>
-          <input
-            class="filter-form__input"
-            type="text"
-            name="studentName"
-            [(ngModel)]="currentFilters().studentName"
-            (input)="onStudentNameInput($event)"
-            placeholder="За потреби..."
-            autocomplete="off"
-          >
-
-          <input type="hidden" name="studentId" [ngModel]="selectedStudent()?.id">
-
-          @if (foundStudents().length > 0 && showStudents()){
-            <ul class="autocomplete-list">
-              @for (student of foundStudents(); track student.id) {
-                <li class="autocomplete-list__item" (click)="selectStudent(student)">
-                  <span>{{ student.name }}, {{ student.phoneNumber }}</span>
-                </li>
-              }
-            </ul>
-          }
-        </div>
+        <app-student-autocomplete
+          name="studentName"
+          containerClass="filter-form__field filter-form__field--student filter-form__field--position-relative"
+          labelClass="filter-form__label"
+          inputClass="filter-form__input"
+          label="Студент:"
+          [(ngModel)]="currentFilters().studentName"
+          (selectedStudent)="selectStudent($event)"
+          placeholder="Пошук за ім'ям..."
+          autocomplete="off"
+        >
+        </app-student-autocomplete>
         
         <div class="filter-form__actions">
           <button 

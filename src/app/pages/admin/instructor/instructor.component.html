@@ -4,7 +4,7 @@
     <span class="action-bar__badge">{{ instructors().length }} інструкторів</span>
   </div>
   <div class="action-bar__actions">
-    <button class="btn-control btn-control--add" (click)="openControlModal('ADD')" title="Додати нового інструктора">+</button>
+    <button class="btn-control btn-control--add" (click)="openControlModal(ModalType.ADD)" title="Додати нового інструктора">+</button>
     <button class="btn-control btn-control--refresh" (click)="refreshInstructors()">🔄 Оновити</button>
   </div>
 </div>
@@ -15,8 +15,8 @@
       <div class="card__title">👤 {{instructor.name}}</div>
       <div class="card__id">ID: {{instructor.id}}</div>
       <div class="card__actions">
-        <button class="btn-icon" (click)="openIconModal('UPDATE', instructor)">✏️</button>
-        <button class="btn-icon" (click)="openIconModal('DELETE', instructor)">🗑️</button>
+        <button class="btn-icon" (click)="openUpdateModal(instructor)">✏️</button>
+        <button class="btn-icon" (click)="openDeleteModal(instructor)">🗑️</button>
       </div>
     </div>
   }
@@ -25,10 +25,10 @@
   }
 </div>
 
-@if (activeModal() !== null) {
+@if (activeModal() !== ModalType.NONE) {
   <div class="modal">
     <div class="modal__content" (click)="$event.stopPropagation()">
-      @if (activeModal() === 'ADD') {
+      @if (activeModal() === ModalType.ADD) {
         <h3 class="modal__title">Додати інструктора</h3>
         <form class="form" #addForm="ngForm" (ngSubmit)="createInstructor(addForm)">
           <div class="form__group">
@@ -43,8 +43,8 @@
           </div>
         </form>
       }
-      @else if (activeModal() === 'UPDATE' && selectedInstructor()) {
-        <h3 class="modal__title">Додати інструктора</h3>
+      @else if (activeModal() === ModalType.UPDATE && selectedInstructor()) {
+        <h3 class="modal__title">Оновити інструктора</h3>
         <form class="form" #updateForm="ngForm" (ngSubmit)="updateInstructor(updateForm)">
           <div class="form__group">
             <div class="form__field">
@@ -53,12 +53,12 @@
             </div>
           </div>
           <div class="form__actions">
-            <button type="button" class="btn-control btn-control--cancel" (click)="closeIconModal()">Відмінити</button>
+            <button type="button" class="btn-control btn-control--cancel" (click)="closeControlModal()">Відмінити</button>
             <button type="submit" class="btn-control btn-control--save" [disabled]="updateForm.invalid">Оновити</button>
           </div>
         </form>
       }
-      @else if (activeModal() === 'DELETE' && selectedInstructor()) {
+      @else if (activeModal() === ModalType.DELETE && selectedInstructor()) {
         <h3 class="modal__title">
           Ви впевнені, що хочете
           <br>
@@ -78,7 +78,7 @@
             </span>
           </div>
           <div class="form__actions">
-            <button type="button" class="btn-control btn-control--cancel" (click)="closeIconModal()">Відмінити</button>
+            <button type="button" class="btn-control btn-control--cancel" (click)="closeControlModal()">Відмінити</button>
             <button type="submit" class="btn-control btn-control--save" [disabled]="deleteForm.invalid">Видалити</button>
           </div>
         </form>

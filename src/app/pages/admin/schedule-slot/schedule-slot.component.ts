@@ -13,25 +13,25 @@ import { ScheduleSlotTableComponent } from "./table/schedule-slot-table.componen
 import { SlotSearchParametersDto } from "../../../models/schedule-slot/schedule-slot.search";
 import { StudentManagementService } from "../../../services/student/management/student-management.service";
 import { StudentSearchParametersDto } from "../../../models/student/student.search";
+import { StudentPrefillData } from "../../../models/student/student-prefill-data";
+import { StudentAutocompleteComponent } from "../student/search/student-autocomplete.component";
 
 @Component({
   selector: 'app-schedule-slot',
   standalone: true,
-  imports: [CommonModule, FormsModule, ScheduleSlotTableComponent],
+  imports: [CommonModule, FormsModule, ScheduleSlotTableComponent, StudentAutocompleteComponent],
   templateUrl: './schedule-slot.component.html',
   styleUrl: './schedule-slot.component.scss'
 })
 export class ScheduleSlotComponent {
   private scheduleSlotManagementService = inject(ScheduleSlotManagementService);
   private facadeScheduleSlotService = inject(ScheduleSlotFacadeService);
-  private studentManagementService = inject(StudentManagementService);
 
   public readonly ModalType = ModalType;
   public activeModal = signal<ModalType>(ModalType.NONE);
 
   public scheduleSlots = signal<ScheduleSlotResponseDto[]>([]);
 
-  private studentSearch$ = new Subject<StudentSearchParametersDto>();
   public foundStudents = signal<StudentResponseDto[]>([]);
 
   public selectedStudent = signal<StudentResponseDto | null>(null);
@@ -49,13 +49,6 @@ export class ScheduleSlotComponent {
   public slotForDelete: ScheduleSlotResponseDto | null = null;
 
   constructor() {
-    this.studentSearch$.pipe(
-      debounceTime(300),
-      distinctUntilChanged((prev, curr) => JSON.stringify(prev) === JSON.stringify(curr)),
-      switchMap(term => this.studentManagementService.searchStudents(term))
-    ).subscribe(students => {
-      this.foundStudents.set(students);
-    });
   }
 
   public createScheduleSlot(form: NgForm): void {
@@ -63,10 +56,19 @@ export class ScheduleSlotComponent {
       return;
     }
 
+    const studentPrefillData: StudentPrefillData = {
+      description: form.value.description,
+      link: form.value.link,
+      instructorId: form.value.instructorId,
+      carId: form.value.carId
+    };
+
     this.scheduleSlotManagementService.createScheduleSlot(form, this.selectedStudent())
     .pipe(take(1))
     .subscribe({
-      next: () => {
+      next: (response) => {
+        const studentId = response.studentDto?.id;
+        this.facadeScheduleSlotService.updateStudentPrefillCache(studentId, studentPrefillData);
         this.closeControlModal();
         form.resetForm();
         this.selectedStudent.set(null);
@@ -117,23 +119,17 @@ export class ScheduleSlotComponent {
     });
   }
 
-  public onStudentNameInput(event: Event): void {
-    const studentName = (event.target as HTMLInputElement).value;
-    this.selectedStudent.set(null);
-    this.showStudents.set(true);
-
-    const searchParams: StudentSearchParametersDto = {
-      name: studentName
-    }
-
-    this.studentSearch$.next(searchParams);
-  }
-
-  public selectStudent(student: StudentResponseDto, form: NgForm): void {
-    this.selectedStudent.set(student);
+  public selectStudent(student: StudentResponseDto | null, form: NgForm): void {
     this.foundStudents.set([]);
+    this.showStudents.set(false);
 
-    this.scheduleSlotManagementService.fillStudentData(form, student);
+    if (student) {
+      this.selectedStudent.set(student);
+      this.facadeScheduleSlotService.fillStudentData(form, student);
+    }
+    else {
+      this.selectedStudent.set(null);
+    }
   }
 
   public stopShowStudentsList(): void {
@@ -150,7 +146,7 @@ export class ScheduleSlotComponent {
     if (slot.studentDto) {
       this.selectedStudent.set(slot.studentDto);
     }
-    
+
     this.activeModal.set(ModalType.UPDATE);
   }
 

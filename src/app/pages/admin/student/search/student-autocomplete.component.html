@@ -1,0 +1,25 @@
+<div [class]="containerClass + ' --position-relative'">
+  <label [class]="labelClass">{{ label }}</label>
+  <input
+    [class]="inputClass"
+    type="text"
+    [name]="name"
+    [ngModel]="value" 
+    (input)="onInput($event)"
+    (blur)="onTouched()"
+    [placeholder]="placeholder"
+    [required]="required"
+    [disabled]="isDisabled"
+    autocomplete="off"
+  >
+
+  @if (foundStudents().length > 0 && isVisible()) {
+    <ul class="autocomplete-list">
+      @for (student of foundStudents(); track student.id) {
+        <li class="autocomplete-list__item" (click)="onSelect(student)">
+          <span>{{ student.name }}, {{ student.phoneNumber }}</span>
+        </li>
+      }
+    </ul>
+  }
+</div>
