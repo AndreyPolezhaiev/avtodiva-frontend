@@ -273,3 +273,66 @@ $table-c-button-hover-background-color: rgba(0, 0, 0, 0.05);
 $table-c-button-active-transform: scale(0.9);
 $table-c-button-active-background-color: rgba(0, 0, 0, 0.1);
 /* #endregion */
+/* #region my-calendar */
+$my-calendar-border: 1px solid #ced4da;
+$my-calendar-border-radius: 4px;
+$my-calendar-padding: 10px;
+$my-calendar-background: #fff;
+$my-calendar-width: 100%;
+$my-calendar-max-width: 320px;
+
+$my-calendar-header-margin-bottom: 10px;
+$my-calendar-header-font-weight: bold;
+    
+$my-calendar-header-button-background: none;
+$my-calendar-header-button-border: none;
+$my-calendar-header-button-font-size: 20px;
+$my-calendar-header-button-hover-color: #007bff;
+
+$my-calendar-grid-template-columns: repeat(7, 1fr);
+$my-calendar-grid-gap: 2px;
+
+$my-calendar-weekday-font-size: 12px;
+$my-calendar-weekday-color: #6c757d;
+$my-calendar-weekday-padding-bottom: 5px;
+
+$my-calendar-day-aspect-ratio: 1;
+$my-calendar-day-font-size: 14px;
+$my-calendar-day-border-radius: 4px;
+$my-calendar-day-transition: 0.2s;
+
+$my-calendar-day-hover-background-color: #f8f9fa;
+
+$my-calendar-day-selected-background-color: #007bff !important;
+$my-calendar-day-selected-color: white;
+/* #endregion */
+/* #region selected-days */
+$selected-days-grid-template-columns: repeat(auto-fill, 80px);
+$selected-days-gap: 3px;
+$selected-days-margin-top: 3px;
+$selected-days-margin-left: 5px;
+$selected-days-width: 100%;
+
+$selected-days-empty-margin-top: 0;
+
+$selected-days-day-background: #f0f2f5;
+$selected-days-day-border: 1px solid #dcdfe6;
+$selected-days-day-border-radius: 16px;
+$selected-days-day-padding: 2px 6px;
+$selected-days-day-font-size: 11px;
+$selected-days-day-height: 22px;
+$selected-days-day-width: 80px;
+
+$selected-days-day-value-line-height: 1;
+
+$selected-days-day-remove-margin-left: 5px;
+$selected-days-day-remove-color: #f56c6c;
+$selected-days-day-remove-font-size: 13px;
+$selected-days-day-remove-border: none;
+$selected-days-day-remove-line-height: 1;
+$selected-days-day-remove-background: none;
+$selected-days-day-remove-font-weight: bold;
+$selected-days-day-remove-margin-bottom: 2px;
+
+$selected-days-day-remove-hover-color: #d93939;
+/* #endregion */

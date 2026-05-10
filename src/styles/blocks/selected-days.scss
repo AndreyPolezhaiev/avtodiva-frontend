@@ -1,0 +1,53 @@
+@use 'styles/utils/variables' as vars;
+
+.selected-days {
+  display: grid;
+  grid-template-columns: vars.$selected-days-grid-template-columns;
+  justify-content: center;
+  gap: vars.$selected-days-gap;
+  margin-top: vars.$selected-days-margin-top;
+  margin-left: vars.$selected-days-margin-left;
+  width: vars.$selected-days-width;
+
+  &:empty {
+    margin-top: vars.$selected-days-empty-margin-top;
+  }
+
+  &__day {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: vars.$selected-days-day-background;
+    border: vars.$selected-days-day-border;
+    border-radius: vars.$selected-days-day-border-radius;
+    padding: vars.$selected-days-day-padding;
+    font-size: vars.$selected-days-day-font-size;
+    height: vars.$selected-days-day-height;
+    width: vars.$selected-days-day-width;
+
+    &__value {
+      line-height: vars.$selected-days-day-value-line-height;
+      display: inline-block;
+    }
+
+    &__remove {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      margin-left: vars.$selected-days-day-remove-margin-left;
+      cursor: pointer;
+      color: vars.$selected-days-day-remove-color;
+      font-size: vars.$selected-days-day-remove-font-size;
+      border: vars.$selected-days-day-remove-border;
+      line-height: vars.$selected-days-day-remove-line-height;
+      vertical-align: middle;
+      background: vars.$selected-days-day-remove-background;
+      font-weight: vars.$selected-days-day-remove-font-weight;
+      margin-bottom: vars.$selected-days-day-remove-margin-bottom;
+      
+      &:hover { 
+        color: vars.$selected-days-day-remove-hover-color;
+      }
+    }
+  }
+}

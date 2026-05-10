@@ -1,0 +1,63 @@
+@use 'styles/utils/variables' as vars;
+
+.my-calendar {
+  border: vars.$my-calendar-border;
+  border-radius: vars.$my-calendar-border-radius;
+  padding: vars.$my-calendar-padding;
+  background: vars.$my-calendar-background;
+  width: vars.$my-calendar-width;
+  max-width: vars.$my-calendar-max-width;
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: vars.$my-calendar-header-margin-bottom;
+    font-weight: vars.$my-calendar-header-font-weight;
+
+    button {
+      background: vars.$my-calendar-header-button-background;
+      border: vars.$my-calendar-header-button-border;
+      font-size: vars.$my-calendar-header-button-font-size;
+      cursor: pointer;
+      &:hover { color: vars.$my-calendar-header-button-hover-color; }
+    }
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: vars.$my-calendar-grid-template-columns;
+    gap: vars.$my-calendar-grid-gap;
+  }
+
+  &__weekday {
+    text-align: center;
+    font-size: vars.$my-calendar-weekday-font-size;
+    color: vars.$my-calendar-weekday-color;
+    padding-bottom: vars.$my-calendar-weekday-padding-bottom;
+  }
+
+  &__day {
+    aspect-ratio: vars.$my-calendar-day-aspect-ratio;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: vars.$my-calendar-day-font-size;
+    border-radius: vars.$my-calendar-day-border-radius;
+    transition: vars.$my-calendar-day-transition;
+
+    &:hover:not(.my-calendar__day--empty) {
+      background-color: vars.$my-calendar-day-hover-background-color;
+    }
+
+    &--selected {
+      background-color: vars.$my-calendar-day-selected-background-color;
+      color: vars.$my-calendar-day-selected-color;
+    }
+
+    &--empty {
+      cursor: default;
+    }
+  }
+}

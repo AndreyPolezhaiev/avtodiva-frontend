@@ -4,7 +4,10 @@
   </div>
 
   <div class="action-bar__actions">
-    <button class="btn-control btn-control--add" (click)="openControlModal(ModalType.ADD)" title="Призначити вихідний">+</button>
+    <button 
+      class="btn-control btn-control--add" 
+      (click)="openControlModal(ModalType.ADD)" 
+      title="Призначити вихідний">+</button>
   </div>
 </div>
 
@@ -17,7 +20,7 @@
           <div class="form__group">
             <div class="form__field">
               <label class="form__label">Дні:</label>
-              
+
               <div class="display-column">
                 <app-calendar 
                   [(selectedDates)]="selectedDates">
@@ -29,9 +32,9 @@
               <div class="form__label form__label--visibility-hidden">Дні:</div>
               <div class="selected-days">
                 @for (date of selectedDates(); track date) {
-                  <div class="day">
-                    <div class="day__value">{{ date | date:'dd.MM.yyyy' }}</div>
-                    <div class="day__remove" (click)="removeDate(date)">×</div>
+                  <div class="selected-days__day">
+                    <div class="selected-days__day__value">{{ date | date:'dd.MM.yyyy' }}</div>
+                    <div class="selected-days__day__remove" (click)="removeDate(date)">×</div>
                   </div>
                 }
               </div>
@@ -65,7 +68,10 @@
           </div>
 
           <div class="form__actions">
-            <button type="button" class="btn-control btn-control--cancel" (click)="closeControlModal(); clearDates()">Відмінити</button>
+            <button 
+            type="button" 
+            class="btn-control btn-control--cancel" 
+            (click)="closeControlModal(); clearDates()">Відмінити</button>
             <button type="submit" class="btn-control btn-control--save" [disabled]="addForm.invalid">Зберегти</button>
           </div>
         </form>
