@@ -10,6 +10,13 @@
       title="Додати нове заняття">
       +
     </button>
+
+    <button 
+      class="btn-control btn-control--refresh" 
+      (click)="openControlModal(ModalType.GENERATE)"
+      title="Сгенерувати заняття">
+      Генерувати заняття
+    </button>
   </div>
 </div>
 
@@ -288,7 +295,7 @@
               <label class="form__label">Опис:</label>
               <textarea 
                 class="form__input"
-                [ngModel]="slotForDelete.description" 
+                [ngModel]="slotForDelete.description"
                 [ngModelOptions]="{standalone: true}"
                 readonly
               >
@@ -310,6 +317,69 @@
           <div class="form__actions">
             <button type="button" class="btn-control btn-control--cancel" (click)="closeControlModal()">Відмінити</button>
             <button type="submit" class="btn-control btn-control--save">Видалити</button>
+          </div>
+        </form>
+      }
+      @else if (activeModal() === ModalType.GENERATE) {
+        <h3 class="modal__title">Сгенерувати заняття</h3>
+        <form class="form" #generateForm="ngForm" (ngSubmit)="generateSlots(generateForm)">
+          <div class="form__group">
+            <div class="form__field">
+              <label class="form__label">Кількість днів:</label>
+              <select 
+                class="form__input"
+                name="days"
+                [ngModel]="14"
+                required
+                min="1"
+              >
+                @for (day of daysOptions; track day) {
+                  <option [value]="day">
+                    {{ day }} днів
+                  </option>
+                }
+              </select>
+            </div>
+
+            <div class="form__field form__field--select-instructors">
+              <label class="form__label">Інструктори:</label>
+              <ng-select 
+                [items]="foundInstructors()" 
+                bindLabel="name" 
+                bindValue="id" 
+                [multiple]="true"
+                [closeOnSelect]="false"
+                placeholder="Усі (за замовчуванням)"
+                name="instructorIds"
+                ngModel>
+                
+                <ng-template ng-option-tmp let-item="item" let-item$="item$">
+                  <input type="checkbox" [checked]="item$.selected" /> {{item.name}}
+                </ng-template>
+              </ng-select>
+            </div>
+
+            <div class="form__field form__field--select-cars">
+              <label class="form__label">Машини:</label>
+              <ng-select 
+                [items]="foundCars()" 
+                bindLabel="name" 
+                bindValue="id" 
+                [multiple]="true" 
+                [closeOnSelect]="false"
+                placeholder="Усі (за замовчуванням)"
+                name="carIds"
+                ngModel>
+                
+                <ng-template ng-option-tmp let-item="item" let-item$="item$">
+                  <input type="checkbox" [checked]="item$.selected" /> {{item.name}}
+                </ng-template>
+              </ng-select>
+            </div>
+          </div>
+          <div class="form__actions">
+            <button type="button" class="btn-control btn-control--cancel" (click)="closeControlModal()">Відмінити</button>
+            <button type="submit" class="btn-control btn-control--save" [disabled]="isGenerating">Сгенерувати</button>
           </div>
         </form>
       }

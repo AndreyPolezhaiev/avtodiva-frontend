@@ -1,9 +1,7 @@
-import { ScheduleSlotResponseDto } from "../schedule-slot/schedule-slot.response";
-import { WeekendResponseDto } from "../weekend/weekend.response";
+import { ScheduleTemplateResponseDto } from "../template/time/schedule-template.response";
 
 export interface InstructorDetailedResponseDto {
   id: number;
   name: string;
-  weekends?: WeekendResponseDto[];
-  slots?: ScheduleSlotResponseDto[]; 
+  scheduleTemplate: ScheduleTemplateResponseDto;
 }

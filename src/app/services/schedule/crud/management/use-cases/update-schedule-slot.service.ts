@@ -1,20 +1,20 @@
 import { inject, Injectable } from "@angular/core";
-import { StudentManagementService } from "../../../student/management/student-management.service";
-import { ScheduleSlotService } from "../../schedule-slot.service";
-import { ScheduleSlotResponseDto } from "../../../../models/schedule-slot/schedule-slot.response";
+import { StudentManagementService } from "../../../../student/management/student-management.service";
+import { ScheduleSlotCrudService } from "../../schedule-slot-crud.service";
+import { ScheduleSlotResponseDto } from "../../../../../models/schedule-slot/schedule-slot.response";
 import { catchError, EMPTY, Observable, switchMap, tap } from "rxjs";
-import { StudentResponseDto } from "../../../../models/student/student.response";
+import { StudentResponseDto } from "../../../../../models/student/student.response";
 import { NgForm } from "@angular/forms";
-import { StudentRequestDto } from "../../../../models/student/student.request";
-import { NotificationService } from "../../../notification/notification.service";
+import { StudentRequestDto } from "../../../../../models/student/student.request";
+import { NotificationService } from "../../../../notification/notification.service";
 import { HttpErrorResponse } from "@angular/common/http";
-import { UpdateScheduleSlotRequestDto } from "../../../../models/schedule-slot/schedule-slot.update";
+import { UpdateScheduleSlotRequestDto } from "../../../../../models/schedule-slot/schedule-slot.update";
 
 @Injectable({
   providedIn: 'root'
 })
 export class UpdateScheduleSlotService {
-  private scheduleSlotService = inject(ScheduleSlotService);
+  private slotCrudService = inject(ScheduleSlotCrudService);
   private studentManagementService = inject(StudentManagementService);
 
   public updateScheduleSlot(form: NgForm, slotId: number, selectedStudent?: StudentResponseDto | null): Observable<ScheduleSlotResponseDto> {
@@ -83,7 +83,7 @@ export class UpdateScheduleSlotService {
 
     console.log(slotRequest);
 
-    return this.scheduleSlotService.updateSlot(slotId, slotRequest).pipe(
+    return this.slotCrudService.updateSlot(slotId, slotRequest).pipe(
       tap({
         next: () => {
           NotificationService.showSuccess('Заняття оновлено!');

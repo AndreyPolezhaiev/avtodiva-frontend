@@ -5,27 +5,35 @@ import { ScheduleSlotResponseDto } from "../../../models/schedule-slot/schedule-
 import { ModalType } from "../../../shared/modal-type";
 import { HttpErrorResponse } from "@angular/common/http";
 import { StudentResponseDto } from "../../../models/student/student.response";
-import { ScheduleSlotManagementService } from "../../../services/schedule/management/schedule-slot-management.service";
+import { SlotCrudManagementService } from "../../../services/schedule/crud/management/slot-crud-management.service";
 import { NotificationService } from "../../../services/notification/notification.service";
-import { ScheduleSlotFacadeService } from "../../../services/schedule/management/facade-schedule-slot.service";
-import { debounceTime, distinctUntilChanged, Subject, switchMap, take } from "rxjs";
+import { ScheduleSlotFacadeService } from "../../../services/schedule/crud/management/facade-schedule-slot.service";
+import { finalize, take } from "rxjs";
 import { ScheduleSlotTableComponent } from "./table/schedule-slot-table.component";
 import { SlotSearchParametersDto } from "../../../models/schedule-slot/schedule-slot.search";
-import { StudentManagementService } from "../../../services/student/management/student-management.service";
-import { StudentSearchParametersDto } from "../../../models/student/student.search";
 import { StudentPrefillData } from "../../../models/student/student-prefill-data";
 import { StudentAutocompleteComponent } from "../student/search/student-autocomplete.component";
+import { SlotGenerationRequestDto } from "../../../models/schedule-slot/generation/slot-generation.request";
+import { ScheduleSlotGeneratorService } from "../../../services/schedule/generation/schedule-slot-generator.service";
+import { NgSelectModule } from "@ng-select/ng-select";
 
 @Component({
   selector: 'app-schedule-slot',
   standalone: true,
-  imports: [CommonModule, FormsModule, ScheduleSlotTableComponent, StudentAutocompleteComponent],
+  imports: [
+    CommonModule,
+    FormsModule,
+    ScheduleSlotTableComponent,
+    StudentAutocompleteComponent, 
+    NgSelectModule
+  ],
   templateUrl: './schedule-slot.component.html',
   styleUrl: './schedule-slot.component.scss'
 })
 export class ScheduleSlotComponent {
-  private scheduleSlotManagementService = inject(ScheduleSlotManagementService);
+  private slotCrudManagementService = inject(SlotCrudManagementService);
   private facadeScheduleSlotService = inject(ScheduleSlotFacadeService);
+  private slotGenerationService = inject(ScheduleSlotGeneratorService);
 
   public readonly ModalType = ModalType;
   public activeModal = signal<ModalType>(ModalType.NONE);
@@ -48,6 +56,9 @@ export class ScheduleSlotComponent {
   public slotForUpdate: ScheduleSlotResponseDto | null = null;
   public slotForDelete: ScheduleSlotResponseDto | null = null;
 
+  public isGenerating = false;
+  public daysOptions = [1, 2, 3, 7, 14, 21, 30, 45, 60, 120];
+
   constructor() {
   }
 
@@ -63,7 +74,7 @@ export class ScheduleSlotComponent {
       carId: form.value.carId
     };
 
-    this.scheduleSlotManagementService.createScheduleSlot(form, this.selectedStudent())
+    this.slotCrudManagementService.createScheduleSlot(form, this.selectedStudent())
     .pipe(take(1))
     .subscribe({
       next: (response) => {
@@ -84,7 +95,7 @@ export class ScheduleSlotComponent {
       return;
     }
 
-    this.scheduleSlotManagementService.updateScheduleSlot(form, this.slotForUpdate.id, this.selectedStudent())
+    this.slotCrudManagementService.updateScheduleSlot(form, this.slotForUpdate.id, this.selectedStudent())
     .pipe(take(1))
     .subscribe({
       next: () => {
@@ -105,7 +116,7 @@ export class ScheduleSlotComponent {
       return;
     }
 
-    this.scheduleSlotManagementService.deleteScheduleSlot(this.slotForDelete.id)
+    this.slotCrudManagementService.deleteScheduleSlot(this.slotForDelete.id)
     .pipe(take(1))
     .subscribe({
       next: () => {
@@ -116,6 +127,52 @@ export class ScheduleSlotComponent {
         this.facadeScheduleSlotService.refreshSlots();
       },
       error: (error) => NotificationService.showError('Не вдалося видалити заняття', error)
+    });
+  }
+
+  public generateSlots(form: NgForm): void {
+    if (form.invalid) {
+      return;
+    }
+
+    const instructorIds: number[] = (form.value.instructorIds && form.value.instructorIds.length > 0) 
+        ? form.value.instructorIds 
+        : this.foundInstructors().map(i => i.id);
+
+    const carIds: number[] = (form.value.carIds && form.value.carIds.length > 0)
+        ? form.value.carIds 
+        : this.foundCars().map(c => c.id);
+
+    console.log('Selected instructor IDs:', instructorIds);
+    console.log('Selected car IDs:', carIds);
+
+    const requestDto: SlotGenerationRequestDto = {
+      days: form.value.days,
+      instructorIds: instructorIds,
+      carIds: carIds
+    };
+
+    this.isGenerating = true;
+
+    this.slotGenerationService.generateSlots(requestDto)
+    .pipe(
+      take(1),
+      finalize(() => {
+        this.isGenerating = false;
+        form.resetForm(form.value); 
+      })
+    )
+    .subscribe({
+      next: (message) => {
+        NotificationService.showSuccess(message);
+
+        this.closeControlModal();
+        form.resetForm();
+        this.facadeScheduleSlotService.refreshSlots();
+      },
+      error: (error) => NotificationService.showError(
+        "Не вдалося згенерувати заняття, перевірте графік інструкторів або їх наявність", error
+      )
     });
   }
 

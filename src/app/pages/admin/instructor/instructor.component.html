@@ -16,6 +16,7 @@
       <div class="card__id">ID: {{instructor.id}}</div>
       <div class="card__actions">
         <button class="btn-icon" (click)="openUpdateModal(instructor)">✏️</button>
+        <button class="btn-icon" (click)="openScheduleModal(instructor)">📅</button>
         <button class="btn-icon" (click)="openDeleteModal(instructor)">🗑️</button>
       </div>
     </div>
@@ -80,6 +81,61 @@
           <div class="form__actions">
             <button type="button" class="btn-control btn-control--cancel" (click)="closeControlModal()">Відмінити</button>
             <button type="submit" class="btn-control btn-control--save" [disabled]="deleteForm.invalid">Видалити</button>
+          </div>
+        </form>
+      }
+      @else if (activeModal() && selectedInstructor()) {
+        <h3 class="modal__title">
+          Розклад інструктора {{selectedInstructor()?.name}}
+        </h3>
+
+        <form class="form" #scheduleForm="ngForm" (ngSubmit)="updateInstructorSchedule(scheduleForm)">
+          <div class="form__group">
+            <div class="time-intervals">
+              @for (newInterval of intervals(); track $index) {
+                <div class="time-intervals__row">
+                  <div class="time-intervals__field">
+                    <span class="time-intervals__label">З:</span>
+                    <input 
+                      class="time-intervals__input" 
+                      type="time" 
+                      [(ngModel)]="newInterval.startTime" 
+                      [name]="'newStart_' + $index" 
+                      required>
+                  </div>
+                  
+                  <div class="time-intervals__field">
+                    <span class="time-intervals__label">До:</span>
+                    <input 
+                      class="time-intervals__input" 
+                      type="time" 
+                      [(ngModel)]="newInterval.endTime" 
+                      [name]="'newEnd_' + $index" 
+                      required>
+                  </div>
+
+                  <button 
+                    type="button" 
+                    class="time-intervals__btn-delete" 
+                    (click)="removeInterval($index)"
+                    title="Видалити інтервал">
+                    🗑️
+                  </button>
+                </div>
+              }
+
+              <button 
+                type="button"
+                class="btn-control btn-control--add-time-interval" 
+                (click)="addScheduleInterval('', '')" 
+                title="Додати інтервал">+
+              </button>
+            </div>
+          </div>
+
+          <div class="form__actions">
+            <button type="button" class="btn-control btn-control--cancel" (click)="closeControlModal()">Відмінити</button>
+            <button type="submit" class="btn-control btn-control--save" [disabled]="scheduleForm.invalid">Оновити</button>
           </div>
         </form>
       }

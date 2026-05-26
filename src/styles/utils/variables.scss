@@ -137,6 +137,11 @@ $modal-title-padding-bottom: 10px;
 /* #region form */
 $form-group-margin: 16px 0 24px 0;
 
+$form-field-gap: 15px;
+$form-field-inline-gap: 8px;
+$form-field-column-gap: 0;
+$form-field-column-margin-bottom: 8px;
+
 $form-label-font-weight: 600;
 $form-label-color: #555;
 
@@ -145,6 +150,13 @@ $form-input-padding: 10px;
 $form-input-margin-top: 5px;
 $form-input-border: 1px solid #ddd;
 $form-input-border-radius: 10px;
+$form-input-height: 45px;
+$form-input-select-width: 280px;
+$form-input-select-max-height: 200px;
+$form-input-dropdown-max-height: 250px;
+$form-input-ng-placeholder-top: 50% !important;
+$form-input-ng-placeholder-transform: translateY(-43%) !important;
+$form-input-ng-placeholder-color: #000 !important;
 
 $form-input-border-color: #3498db;
 $form-input-box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2); 
@@ -335,4 +347,39 @@ $selected-days-day-remove-font-weight: bold;
 $selected-days-day-remove-margin-bottom: 2px;
 
 $selected-days-day-remove-hover-color: #d93939;
+/* #endregion */
+/* #region time-intervals */
+$time-intervals-gap: 12px;
+$time-intervals-width: 100%;
+
+$time-intervals-empty-font-size: 0.95rem;
+$time-intervals-empty-color: #6c757d;
+$time-intervals-empty-padding: 10px 0;
+
+$time-intervals-row-gap: 15px;
+$time-intervals-row-width: 100%;
+$time-intervals-row-padding: 6px 0;
+
+$time-intervals-field-gap: 6px;
+
+$time-intervals-label-font-size: 0.9rem;
+$time-intervals-label-font-weight: 600;
+$time-intervals-label-color: #475569;
+
+$time-intervals-input-height: 34px;
+$time-intervals-input-padding: 0 8px;
+$time-intervals-input-border: 1px solid #cbd5e1;
+$time-intervals-input-border-radius: 4px;
+$time-intervals-input-font-size: 0.9rem;
+$time-intervals-input-outline: none;
+$time-intervals-input-focus-border-color: #28a745;
+
+$time-intervals-btn-delete-width: 34px;
+$time-intervals-btn-delete-height: 34px;
+$time-intervals-btn-delete-border-radius: 4px;
+$time-intervals-btn-delete-font-size: 1.1rem;
+$time-intervals-btn-delete-transition: background-color 0.2s, transform 0.1s;
+$time-intervals-btn-delete-hover-background-color: #fff5f5;
+$time-intervals-btn-delete-hover-transform: scale(1.05);
+$time-intervals-btn-delete-active-transform: scale(0.95);
 /* #endregion */

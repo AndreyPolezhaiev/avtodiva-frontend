@@ -8,7 +8,7 @@
   &__field {
     display: flex;
     align-items: center;
-    gap: 15px;
+    gap: vars.$form-field-gap;
 
     &--position-relative {
       position: relative;
@@ -18,17 +18,17 @@
       display: flex;
       align-items: center;
       flex-direction: row;
-      gap: 8px;
+      gap: vars.$form-field-inline-gap;
     }
 
     &--column {
       display: flex;
       align-items: flex-start;
       flex-direction: column;
-      gap: 0;
+      gap: vars.$form-field-column-gap;
 
       &:not(:last-child) {
-        margin-bottom: 8px;
+        margin-bottom: vars.$form-field-column-margin-bottom;
       }
     }
   }
@@ -50,6 +50,7 @@
     padding: vars.$form-input-padding;
     margin-top: vars.$form-input-margin-top;
     box-sizing: border-box;
+    min-height: vars.$form-input-height;
 
     border: vars.$form-input-border; 
     border-radius: vars.$form-input-border-radius;
@@ -58,6 +59,84 @@
     &:focus {
       border-color: vars.$form-input-border-color;
       box-shadow: vars.$form-input-box-shadow; 
+    }
+  }
+
+  ::ng-deep .ng-select {
+    .ng-select-container {
+      width: vars.$form-input-select-width !important;
+      min-height: vars.$form-input-height !important;
+      align-items: center;
+      margin-top: vars.$form-input-margin-top;
+      padding: auto 0;
+      box-sizing: border-box;
+
+      border: vars.$form-input-border !important;
+      border-radius: vars.$form-input-border-radius !important;
+
+      outline: none;
+      box-shadow: none !important;
+    }
+
+    .ng-value-container {
+      align-items: flex-start !important;
+      max-height: vars.$form-input-select-max-height !important;
+      overflow-y: auto !important;
+
+      &::-webkit-scrollbar {
+        display: none !important;
+      }
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    .ng-placeholder {
+      top: vars.$form-input-ng-placeholder-top;
+      transform: vars.$form-input-ng-placeholder-transform;
+      color: vars.$form-input-ng-placeholder-color;
+    }
+
+    .ng-clear-wrapper {
+      align-self: center !important;
+      padding-bottom: 2px !important;
+    }
+
+    .ng-arrow-wrapper {
+      align-self: center !important;
+      padding-bottom: 2px !important;
+
+      .ng-arrow {
+        fill: #000 !important;
+        stroke: #000 !important;
+      }
+    }
+
+    &:hover .ng-arrow {
+      border-color: #000 transparent transparent;
+    }
+
+    &:not(.ng-select-opened) {
+      .ng-arrow {
+        border-color: #000 transparent transparent !important;
+      }
+    }
+
+    &.ng-select-opened {
+      .ng-arrow {
+        border-color: transparent transparent #000 !important;
+      }
+    }
+
+    .ng-dropdown-panel {
+      .ng-dropdown-panel-items {
+        max-height: vars.$form-input-dropdown-max-height !important;
+        overflow-y: auto !important;
+      }
+    }
+
+    &.ng-select-focused .ng-select-container {
+      border-color: vars.$form-input-border-color !important;
+      box-shadow: vars.$form-input-box-shadow !important;
     }
   }
 

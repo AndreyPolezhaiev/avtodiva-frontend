@@ -8,6 +8,11 @@ import { InstructorManagementService } from "../../../services/instructor/manage
 import { InstructorFacadeService } from "../../../services/instructor/management/facade-instructor.service";
 import { NotificationService } from "../../../services/notification/notification.service";
 import { ModalType } from "../../../shared/modal-type";
+import { ScheduleTemplateResponseDto } from "../../../models/template/time/schedule-template.response";
+import { ScheduleTemplateRequestDto } from "../../../models/template/time/schedule-template.request";
+import { ScheduleTemplateService } from "../../../services/schedule/template/time/schedule-template.service";
+import { InstructorDetailedResponseDto } from "../../../models/instructor/instructor.detailed";
+import { TimeSlotDto } from "../../../models/template/time/time-slot.dto";
 
 @Component({
   selector: 'app-instructor-page',
@@ -21,10 +26,14 @@ export class InstructorComponent {
 
   private instructorManagementService = inject(InstructorManagementService);
   private facadeInstructorService = inject(InstructorFacadeService);
+  private scheduleTemplateService = inject(ScheduleTemplateService);
 
   public instructors = this.facadeInstructorService.instructors;
   public selectedInstructor = signal<InstructorResponseDto | null>(null);
   public activeModal = signal<ModalType>(ModalType.NONE);
+
+  public instructorSchedule = signal<ScheduleTemplateResponseDto>({} as ScheduleTemplateResponseDto);
+  public intervals = signal<TimeSlotDto[]>([]);
 
   constructor(){}
 
@@ -84,6 +93,72 @@ export class InstructorComponent {
     }
   }
 
+  public removeInterval(index: number): void {
+    this.intervals.update((intervals) => intervals.filter((_, i) => i !== index));
+  }
+
+  public updateInstructorSchedule(form: NgForm): void {
+    if (form.invalid) {
+      return;
+    }
+
+    const currentInstructor = this.selectedInstructor();
+    if (!currentInstructor) {
+      return;
+    }
+
+    const existingIntervals = this.instructorSchedule()?.intervals || [];
+    const addedIntervals = this.intervals();
+
+    const hasInvalidInterval = addedIntervals.some(interval => 
+      !interval.startTime || !interval.endTime || interval.startTime >= interval.endTime
+    );
+
+    if (hasInvalidInterval) {
+      NotificationService.showError(
+        'Помилка валідації', 
+        { message: 'Перевірте введені інтервали. Час початку має бути меншим за час закінчення.' } as any
+      );
+      return;
+    }
+
+    const allIntervals = [...existingIntervals, ...addedIntervals];
+
+    const validIntervals = allIntervals.filter(
+      interval => interval.startTime && interval.endTime && interval.startTime < interval.endTime
+    );
+
+    const validUniqueIntervals = [
+      ...new Map(validIntervals.map(item => [`${item.startTime}-${item.endTime}`, item])).values()
+    ];
+
+    const templateRequest: ScheduleTemplateRequestDto = {
+      intervals: validUniqueIntervals
+    };
+
+    this.scheduleTemplateService.updateTemplateById(this.instructorSchedule().id, templateRequest).subscribe({
+      next: () => {
+        form.reset();
+        this.intervals.set([]);
+        this.closeControlModal();
+
+        NotificationService.showSuccess('Шаблон розкладу успішно оновлено');
+      },
+      error: (error: HttpErrorResponse) => {
+        NotificationService.showError('Не вдалося оновити шаблон розкладу', error);
+      }
+    });
+  }
+
+  public addScheduleInterval(startTime: string, endTime: string): void {
+    const newInterval: TimeSlotDto = {
+      startTime: startTime,
+      endTime: endTime
+    };
+
+    this.intervals.update((intervals) => [...intervals, newInterval]);
+  }
+
   public refreshInstructors(): void {
     this.facadeInstructorService.refreshInstructors();
   }
@@ -105,5 +180,21 @@ export class InstructorComponent {
   public openDeleteModal(instructor: InstructorResponseDto): void {
     this.activeModal.set(ModalType.DELETE);
     this.selectedInstructor.set(instructor);
+  }
+
+  public openScheduleModal(instructor: InstructorResponseDto): void {
+    this.activeModal.set(ModalType.SCHEDULE);
+    this.selectedInstructor.set(instructor);
+
+    this.instructorManagementService.getDetailedInstructor(instructor.id).subscribe({
+      next: (detailedInstructor) => {
+        console.log('Detailed instructor data:', detailedInstructor.scheduleTemplate);
+        this.instructorSchedule.set(detailedInstructor.scheduleTemplate);
+        this.intervals.set(detailedInstructor.scheduleTemplate.intervals || []);
+      },
+      error: (error: HttpErrorResponse) => {
+        NotificationService.showError('Не вдалося завантажити розклад інструктора', error);
+      }
+    });
   }
 }

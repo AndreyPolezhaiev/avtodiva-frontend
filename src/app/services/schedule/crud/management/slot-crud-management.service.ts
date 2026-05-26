@@ -1,8 +1,8 @@
 import { inject, Injectable } from "@angular/core";
 import { CreateScheduleSlotService } from "./use-cases/create-schedule-slot.service";
 import { NgForm } from "@angular/forms";
-import { StudentResponseDto } from "../../../models/student/student.response";
-import { ScheduleSlotResponseDto } from "../../../models/schedule-slot/schedule-slot.response";
+import { StudentResponseDto } from "../../../../models/student/student.response";
+import { ScheduleSlotResponseDto } from "../../../../models/schedule-slot/schedule-slot.response";
 import { Observable } from "rxjs";
 import { SearchScheduleSlotService } from "./use-cases/search-schedule-slot.service";
 import { UpdateScheduleSlotService } from "./use-cases/update-schedule-slot.service";
@@ -11,7 +11,7 @@ import { DeleteScheduleSlotService } from "./use-cases/delete-schedule-slot.serv
 @Injectable({
   providedIn: 'root'
 })
-export class ScheduleSlotManagementService {
+export class SlotCrudManagementService {
   private createService = inject(CreateScheduleSlotService);
   private searchService = inject(SearchScheduleSlotService);
   private updateService = inject(UpdateScheduleSlotService);

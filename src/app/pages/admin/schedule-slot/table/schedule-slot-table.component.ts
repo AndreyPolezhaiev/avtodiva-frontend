@@ -1,8 +1,8 @@
 import { CommonModule } from "@angular/common";
 import { Component, EventEmitter, inject, Output, signal } from "@angular/core";
 import { ScheduleSlotResponseDto } from "../../../../models/schedule-slot/schedule-slot.response";
-import { ScheduleSlotFacadeService } from "../../../../services/schedule/management/facade-schedule-slot.service";
-import { FormsModule, NgForm } from "@angular/forms";
+import { ScheduleSlotFacadeService } from "../../../../services/schedule/crud/management/facade-schedule-slot.service";
+import { FormsModule } from "@angular/forms";
 import { NgSelectModule } from "@ng-select/ng-select";
 import { StudentResponseDto } from "../../../../models/student/student.response";
 import { ModalType } from "../../../../shared/modal-type";

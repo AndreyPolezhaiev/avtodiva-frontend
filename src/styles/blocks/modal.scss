@@ -33,6 +33,10 @@
       padding-right: 15px;
       overflow-y: auto;
     }
+
+    &:has(.form__field--select-instructors) {
+      overflow-y: visible !important;
+    }
   }
 
   &__title {

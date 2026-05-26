@@ -1,21 +1,21 @@
 import { inject, Injectable } from "@angular/core";
-import { ScheduleSlotService } from "../../schedule-slot.service";
-import { StudentManagementService } from "../../../student/management/student-management.service";
+import { ScheduleSlotCrudService } from "../../schedule-slot-crud.service";
+import { StudentManagementService } from "../../../../student/management/student-management.service";
 import { NgForm } from "@angular/forms";
-import { StudentResponseDto } from "../../../../models/student/student.response";
-import { ScheduleSlotResponseDto } from "../../../../models/schedule-slot/schedule-slot.response";
+import { StudentResponseDto } from "../../../../../models/student/student.response";
+import { ScheduleSlotResponseDto } from "../../../../../models/schedule-slot/schedule-slot.response";
 import { catchError, EMPTY, Observable, switchMap, tap } from "rxjs";
-import { StudentRequestDto } from "../../../../models/student/student.request";
-import { NotificationService } from "../../../notification/notification.service";
-import { ScheduleSlotRequestDto } from "../../../../models/schedule-slot/schedule-slot.create";
+import { StudentRequestDto } from "../../../../../models/student/student.request";
+import { NotificationService } from "../../../../notification/notification.service";
+import { ScheduleSlotRequestDto } from "../../../../../models/schedule-slot/schedule-slot.create";
 import { HttpErrorResponse } from "@angular/common/http";
-import { PhoneFormatter } from "../../../../shared/utils/phone-formatter.service";
+import { PhoneFormatter } from "../../../../../shared/utils/phone-formatter.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class CreateScheduleSlotService {
-  private scheduleSlotService = inject(ScheduleSlotService);
+  private slotCrudService = inject(ScheduleSlotCrudService);
   private studentManagementService = inject(StudentManagementService);
 
   public createScheduleSlot(form: NgForm, selectedStudent?: StudentResponseDto | null): Observable<ScheduleSlotResponseDto> {
@@ -83,7 +83,7 @@ export class CreateScheduleSlotService {
       link: form.value.link
     };
 
-    return this.scheduleSlotService.createSlot(slotRequest).pipe(
+    return this.slotCrudService.createSlot(slotRequest).pipe(
       tap({
         next: () => {
           NotificationService.showSuccess('Нове заняття створено!');

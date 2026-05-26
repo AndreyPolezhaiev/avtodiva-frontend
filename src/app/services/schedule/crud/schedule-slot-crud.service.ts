@@ -1,16 +1,16 @@
 import { Injectable } from "@angular/core";
-import { environment } from "../../../environmets/environment";
+import { environment } from "../../../../environmets/environment";
 import { HttpClient } from "@angular/common/http";
-import { ScheduleSlotRequestDto } from "../../models/schedule-slot/schedule-slot.create";
+import { ScheduleSlotRequestDto } from "../../../models/schedule-slot/schedule-slot.create";
 import { Observable } from "rxjs";
-import { ScheduleSlotResponseDto } from "../../models/schedule-slot/schedule-slot.response";
-import { SlotSearchParametersDto } from "../../models/schedule-slot/schedule-slot.search";
-import { UpdateScheduleSlotRequestDto } from "../../models/schedule-slot/schedule-slot.update";
+import { ScheduleSlotResponseDto } from "../../../models/schedule-slot/schedule-slot.response";
+import { SlotSearchParametersDto } from "../../../models/schedule-slot/schedule-slot.search";
+import { UpdateScheduleSlotRequestDto } from "../../../models/schedule-slot/schedule-slot.update";
 
 @Injectable({
   providedIn: 'root',
 })
-export class ScheduleSlotService {
+export class ScheduleSlotCrudService {
   private apiUrl = `${environment.apiBaseUrl}/api/schedule`;
 
   constructor(private http: HttpClient) {}

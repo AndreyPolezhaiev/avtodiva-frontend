@@ -1,0 +1,72 @@
+@use 'styles/utils/variables' as vars;
+
+.time-intervals {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: vars.$time-intervals-gap;
+  width: vars.$time-intervals-width;
+
+  &__empty {
+    font-size: vars.$time-intervals-empty-font-size;
+    color: vars.$time-intervals-empty-color;
+    padding: vars.$time-intervals-empty-padding;
+  }
+
+  &__row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: vars.$time-intervals-row-gap;
+    width: vars.$time-intervals-row-width;
+    padding: vars.$time-intervals-row-padding;
+  }
+
+  &__field {
+    display: flex;
+    align-items: center;
+    gap: vars.$time-intervals-field-gap;
+  }
+
+  &__label {
+    font-size: vars.$time-intervals-label-font-size;
+    font-weight: vars.$time-intervals-label-font-weight;
+    color: vars.$time-intervals-label-color;
+  }
+
+  &__input {
+    height: vars.$time-intervals-input-height;
+    padding: vars.$time-intervals-input-padding;
+    border: vars.$time-intervals-input-border;
+    border-radius: vars.$time-intervals-input-border-radius;
+    font-size: vars.$time-intervals-input-font-size;
+    outline: vars.$time-intervals-input-outline;
+
+    &:focus {
+      border-color: vars.$time-intervals-input-focus-border-color;
+    }
+  }
+
+  &__btn-delete {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: vars.$time-intervals-btn-delete-width;
+    height: vars.$time-intervals-btn-delete-height;
+    background: none;
+    border: none;
+    border-radius: vars.$time-intervals-btn-delete-border-radius;
+    font-size: vars.$time-intervals-btn-delete-font-size;
+    cursor: pointer;
+    transition: vars.$time-intervals-btn-delete-transition;
+
+    &:hover {
+      background-color: vars.$time-intervals-btn-delete-hover-background-color;
+      transform: vars.$time-intervals-btn-delete-hover-transform;
+    }
+
+    &:active {
+      transform: vars.$time-intervals-btn-delete-active-transform;
+    }
+  }
+}

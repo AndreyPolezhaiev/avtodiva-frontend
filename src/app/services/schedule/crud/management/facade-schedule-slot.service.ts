@@ -1,15 +1,15 @@
 import { inject, Injectable, signal } from "@angular/core";
-import { NotificationService } from "../../notification/notification.service";
+import { NotificationService } from "../../../notification/notification.service";
 import {  finalize, Observable, of, shareReplay, take, tap } from "rxjs";
 import { SearchScheduleSlotService } from "./use-cases/search-schedule-slot.service";
-import { ScheduleSlotResponseDto } from "../../../models/schedule-slot/schedule-slot.response";
-import { SlotSearchParametersDto } from "../../../models/schedule-slot/schedule-slot.search";
-import { SlotFiltersState } from "../../../models/schedule-slot/schedule-slot-filters.state";
-import { DataRegistryService } from "../../../shared/registry/data-registry.service";
-import { DateFormatter } from "../../../shared/utils/date-formatter.service";
+import { ScheduleSlotResponseDto } from "../../../../models/schedule-slot/schedule-slot.response";
+import { SlotSearchParametersDto } from "../../../../models/schedule-slot/schedule-slot.search";
+import { SlotFiltersState } from "../../../../models/schedule-slot/schedule-slot-filters.state";
+import { DataRegistryService } from "../../../../shared/registry/data-registry.service";
+import { DateFormatter } from "../../../../shared/utils/date-formatter.service";
 import { NgForm } from "@angular/forms";
-import { StudentResponseDto } from "../../../models/student/student.response";
-import { StudentPrefillData } from "../../../models/student/student-prefill-data";
+import { StudentResponseDto } from "../../../../models/student/student.response";
+import { StudentPrefillData } from "../../../../models/student/student-prefill-data";
 
 @Injectable({ providedIn: 'root' })
 export class ScheduleSlotFacadeService {

@@ -7,6 +7,8 @@ import { UpdateInstructorService } from "./use-cases/update-instructor.service";
 import { DeleteInstructorService } from "./use-cases/delete-instructor.service";
 import { DataRegistryService } from "../../../shared/registry/data-registry.service";
 import { LoadDataType } from "../../../shared/load-type";
+import { InstructorDetailedResponseDto } from "../../../models/instructor/instructor.detailed";
+import { SearchInstructorService } from "./use-cases/search-instructor.service";
 
 @Injectable({
   providedIn: "root"
@@ -16,6 +18,7 @@ export class InstructorManagementService {
   private createInstructorService = inject(CreateInstructorService);
   private updateInstructorService = inject(UpdateInstructorService);
   private deleteInstructorService = inject(DeleteInstructorService);
+  private searchInstructorService = inject(SearchInstructorService);
 
   public get instructors() {
     return this.dataRegistryService.instructors;
@@ -37,5 +40,9 @@ export class InstructorManagementService {
     return this.deleteInstructorService.deleteInstructor(id).pipe(
       tap(() => this.dataRegistryService.refreshData(LoadDataType.INSTRUCTORS))
     );
+  }
+
+  public getDetailedInstructor(id: number): Observable<InstructorDetailedResponseDto> {
+    return this.searchInstructorService.getDetailedInstructor(id);
   }
 }

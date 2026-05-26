@@ -24,6 +24,18 @@
     }
   }
 
+  &--add-time-interval {
+    width: vars.$btn-action-add-width;
+    padding: vars.$btn-action-add-padding;
+    background: vars.$btn-action-add-background;
+    font-size: vars.$btn-action-add-font-size;
+    border-radius: vars.$btn-action-add-border-radius;
+    
+    &:hover {
+      background: vars.$btn-action-add-bg-hover;
+    }
+  }
+
   &--add-small {
     padding: 0 15px;
     font-size: 20px;
