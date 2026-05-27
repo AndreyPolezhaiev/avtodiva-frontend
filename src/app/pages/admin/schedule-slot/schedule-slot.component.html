@@ -65,36 +65,32 @@
                 placeholder="Номер телефону...">
             </div>
 
-            <div class="form__field">
+            <div class="form__field form__field--select-instructors form__field--single-select">
               <label class="form__label">Інструктор:</label>
-              <select 
-                class="form__input" 
-                name="instructorId" 
-                ngModel 
+              <ng-select 
+                [items]="foundInstructors()" 
+                bindLabel="name" 
+                bindValue="id" 
+                [clearable]="false"
+                placeholder="Оберіть інструктора"
+                name="instructorId"
+                ngModel
                 required>
-                <option value="" disabled selected>Оберіть інструктора...</option>
-                @for (instructor of foundInstructors(); track instructor.id) {
-                  <option [value]="instructor.id">
-                    {{ instructor.name }}
-                  </option>
-                }
-              </select>
+              </ng-select>
             </div>
 
-            <div class="form__field">
+            <div class="form__field form__field--select-cars form__field--single-select">
               <label class="form__label">Машина:</label>
-              <select 
-                class="form__input" 
-                name="carId" 
-                ngModel 
+              <ng-select 
+                [items]="foundCars()" 
+                bindLabel="name" 
+                bindValue="id"
+                [clearable]="false"
+                placeholder="Оберіть машину"
+                name="carId"
+                ngModel
                 required>
-                <option value="" disabled selected>Оберіть машину...</option>
-                @for (car of foundCars(); track car.id) {
-                  <option [value]="car.id">
-                    {{ car.name }}
-                  </option>
-                }
-              </select>
+              </ng-select>
             </div>
 
             <div class="form__field">
@@ -161,36 +157,32 @@
                 placeholder="Номер телефону...">
             </div>
 
-            <div class="form__field">
+            <div class="form__field form__field--select-instructors form__field--single-select">
               <label class="form__label">Інструктор:</label>
-              <select 
-                class="form__input" 
-                name="instructorId" 
+              <ng-select 
+                [items]="foundInstructors()" 
+                bindLabel="name" 
+                bindValue="id" 
+                [clearable]="false"
+                placeholder="Оберіть інструктора"
+                name="instructorId"
                 [ngModel]="slotForUpdate.instructorDto?.id"
                 required>
-                <option value="" disabled selected>Оберіть інструктора...</option>
-                @for (instructor of foundInstructors(); track instructor.id) {
-                  <option [value]="instructor.id">
-                    {{ instructor.name }}
-                  </option>
-                }
-              </select>
+              </ng-select>
             </div>
 
-            <div class="form__field">
+            <div class="form__field form__field--select-cars form__field--single-select">
               <label class="form__label">Машина:</label>
-              <select 
-                class="form__input" 
-                name="carId" 
+              <ng-select 
+                [items]="foundCars()" 
+                bindLabel="name" 
+                bindValue="id"
+                [clearable]="false"
+                placeholder="Оберіть машину"
+                name="carId"
                 [ngModel]="slotForUpdate.carDto?.id"
                 required>
-                <option value="" disabled selected>Оберіть машину...</option>
-                @for (car of foundCars(); track car.id) {
-                  <option [value]="car.id">
-                    {{ car.name }}
-                  </option>
-                }
-              </select>
+              </ng-select>
             </div>
 
             <div class="form__field">

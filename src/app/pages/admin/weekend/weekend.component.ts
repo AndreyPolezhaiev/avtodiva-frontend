@@ -11,6 +11,7 @@ import { CalendarComponent } from "../../../shared/calendar/calendar.component";
 import { WeekendResponseDto } from "../../../models/weekend/weekend.response";
 import { WeekendTableComponent } from "./table/weekend-table.component";
 import { UpdateWeekendRequestDto } from "../../../models/weekend/weekend.update";
+import { NgSelectModule } from "@ng-select/ng-select";
 
 @Component ({
   selector: 'app-weekend-page',
@@ -19,7 +20,8 @@ import { UpdateWeekendRequestDto } from "../../../models/weekend/weekend.update"
     CommonModule,
     FormsModule,
     CalendarComponent,
-    WeekendTableComponent
+    WeekendTableComponent,
+    NgSelectModule
 ],
   templateUrl: './weekend.component.html',
   styleUrl: './weekend.component.scss'

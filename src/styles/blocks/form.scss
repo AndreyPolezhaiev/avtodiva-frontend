@@ -103,7 +103,6 @@
 
     .ng-arrow-wrapper {
       align-self: center !important;
-      padding-bottom: 2px !important;
 
       .ng-arrow {
         fill: #000 !important;
@@ -137,6 +136,43 @@
     &.ng-select-focused .ng-select-container {
       border-color: vars.$form-input-border-color !important;
       box-shadow: vars.$form-input-box-shadow !important;
+    }
+  }
+
+  &__field--single-select {
+    ::ng-deep .ng-select {
+      .ng-select-container {
+        width: vars.$form-input-single-select-width;
+        display: flex !important;
+        align-items: center !important;
+      }
+
+      .ng-value-container {
+        display: flex !important;
+        align-items: center !important;
+      }
+
+      .ng-placeholder {
+        top: 50% !important;
+        transform: translateY(-57%) !important; 
+        line-height: normal !important;
+        padding-left: 0 !important;
+        margin: 0 !important;
+      }
+
+      .ng-input {
+        display: flex !important;
+        align-items: center !important;
+        top: 0 !important;
+        bottom: 0 !important;
+      }
+
+      .ng-value {
+        margin: 0 !important;
+        display: flex !important;
+        align-items: center !important;
+        line-height: normal !important;
+      }
     }
   }
 

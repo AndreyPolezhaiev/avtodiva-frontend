@@ -50,20 +50,19 @@
               <input class="form__input" type="time" name="endTime" ngModel required>
             </div>
 
-            <div class="form__field">
+            <div class="form__field form__field--select-instructors form__field--single-select">
               <label class="form__label">Інструктор:</label>
-              <select 
-                class="form__input"
+              <ng-select 
+              class="custom"
+                [items]="foundInstructors()" 
+                bindLabel="name" 
+                bindValue="id" 
+                [clearable]="false"
+                placeholder="Оберіть інструктора"
                 name="instructorId"
-                ngModel 
+                ngModel
                 required>
-                <option value="" disabled selected>Оберіть інструктора...</option>
-                @for (instructor of foundInstructors(); track instructor.id) {
-                  <option [value]="instructor.id">
-                    {{ instructor.name }}
-                  </option>
-                }
-              </select>
+              </ng-select>
             </div>
           </div>
 
@@ -100,20 +99,18 @@
               <input class="form__input" type="time" name="endTime" [ngModel]="weekendForUpdate.endTime" required>
             </div>
 
-            <div class="form__field">
+            <div class="form__field form__field--select-instructors form__field--single-select">
               <label class="form__label">Інструктор:</label>
-              <select 
-                class="form__input" 
-                name="instructorId" 
+              <ng-select 
+                [items]="foundInstructors()" 
+                bindLabel="name" 
+                bindValue="id" 
+                [clearable]="false"
+                placeholder="Оберіть інструктора"
+                name="instructorId"
                 [ngModel]="weekendForUpdate.instructorDto?.id"
                 required>
-                <option value="" disabled selected>Оберіть інструктора...</option>
-                @for (instructor of foundInstructors(); track instructor.id) {
-                  <option [value]="instructor.id">
-                    {{ instructor.name }}
-                  </option>
-                }
-              </select>
+              </ng-select>
             </div>
           </div>
 
