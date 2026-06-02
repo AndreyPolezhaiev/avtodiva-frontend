@@ -5,11 +5,13 @@ import { FormsModule, NgForm } from "@angular/forms";
 import { CommonModule } from "@angular/common";
 import { NgSelectModule } from "@ng-select/ng-select";
 import { WeekendResponseDto } from "../../../../models/weekend/weekend.response";
+import { MultiSelectTableDirective } from "../../../../shared/table/multi-select-table.directive";
+import { ClipBoardService } from "../../../../shared/utils/clip-board.service";
 
 @Component({
   selector: 'app-weekend-table',
   standalone: true,
-  imports: [CommonModule, FormsModule, NgSelectModule],
+  imports: [CommonModule, FormsModule, NgSelectModule, MultiSelectTableDirective],
   templateUrl: './weekend-table.component.html',
   styleUrl: './weekend-table.component.scss'
 })
@@ -33,6 +35,10 @@ export class WeekendTableComponent {
     if (form.invalid) return;
     
     this.facadeWeekendService.searchWeekends(form.value);
+  }
+
+  public onWeekendsCopied(selectedWeekends: WeekendResponseDto[]): void {
+    ClipBoardService.copyWeekendsInfoUkr(selectedWeekends);
   }
 
   public emitUpdate(weekend: WeekendResponseDto): void {

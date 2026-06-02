@@ -44,6 +44,10 @@
 
       &--edit { width: vars.$table-head-cell-edit-width; }
       &--delete { width: vars.$table-head-cell-delete-width; }
+      &--copy { 
+        width: vars.$table-head-cell-copy-width;
+        cursor: pointer;
+      }
 
       &:not(:last-child) {
         border-right: vars.$table-head-cell-border-right;
@@ -53,6 +57,20 @@
 
   &__body {
     &__row {
+      transition: background-color 0.2s ease;
+
+      &--selected {
+        .table__body__cell {
+          background-color: rgba(#2ecc71, 0.15) !important;
+        }
+      }
+
+      &:hover:not(.table__body__row--selected) {
+        .table__body__cell {
+          background-color: rgba(vars.$table-body-cell-background-color, 0.85);
+        }
+      }
+
       &:last-child {
         .table__body__cell {
           border-bottom: none;
@@ -71,10 +89,11 @@
 
       border-bottom: vars.$table-body-cell-border-bottom;
 
+      &--date { text-transform: capitalize; }
       &--description { text-align: left; } 
       &--link { text-align: left; }
 
-      &--delete, &--edit { 
+      &--delete, &--edit, &--copy { 
         padding: vars.$table-body-cell-delete-edit-padding;
         height: vars.$table-body-cell-delete-edit-height;
       }

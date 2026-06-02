@@ -58,30 +58,51 @@
     }
     @else {
       <div class="table-manager__scroll-container">
-        <table class="table table--weekend">
+        <table 
+          class="table table--weekend"
+          [appMultiSelectTable]="weekends()"
+          (selectedItemsChange)="onWeekendsCopied($event)"
+          #tableSelect="appMultiSelectTable"
+        >
           <thead class="table__head">
             <tr class="table__head__row">
               <th class="table__head__cell table__head__cell--date">Дата</th>
               <th class="table__head__cell table__head__cell--time">Час</th>
               <th class="table__head__cell table__head__cell--instructor">Інструктор</th>
               <th class="table__head__cell table__head__cell--edit">✏️</th>
+              <th class="table__head__cell table__head__cell--copy"
+                (click)="tableSelect.toggleAll(); $event.stopPropagation()"
+                title="Скопіювати ВСІ вихідні"
+              >📋
               <th class="table__head__cell table__head__cell--delete">🗑️</th>
             </tr>
           </thead>
           <tbody class="table__body">
             @for (weekend of weekends(); track weekend.id) {
-              <tr class="table__body__row">
+              <tr class="table__body__row"
+                [class.table__body__row--selected]="tableSelect.selectedIds.has(weekend.id)"
+                (click)="tableSelect.toggleRow(weekend, $event); $event.stopPropagation()"
+              >
                 <td class="table__body__cell table__body__cell--date">
                   {{ weekend.date | date:'EE, dd.MM.yyyy' }}
                 </td>
+
                 <td class="table__body__cell table__body__cell--time">
                   {{ weekend.startTime.slice(0, 5) }} — {{ weekend.endTime.slice(0, 5) }}
                 </td>
+
                 <td class="table__body__cell table__body__cell--instructor">{{ weekend.instructorDto?.name }}</td>
 
                 <td class="table__body__cell table__body__cell--edit">
                   <button class="table-cell-button" (click)="emitUpdate(weekend)">✏️</button>
                 </td>
+
+                <td class="table__body__cell table__body__cell--copy">
+                  <button class="table-cell-button" (click)="tableSelect.toggleRow(weekend, $event, true); $event.stopPropagation()" title="Виділити вихідний">
+                    📋
+                  </button>
+                </td>
+
                 <td class="table__body__cell table__body__cell--delete">
                   <button class="table-cell-button" (click)="emitDelete(weekend)">🗑️</button>
                 </td>
@@ -89,7 +110,7 @@
             } 
             @empty {
               <tr class="table__body__row table__body__row--empty">
-                <td colspan="5" class="table__body__cell table__body__cell--empty">
+                <td colspan="6" class="table__body__cell table__body__cell--empty">
                   Занять не знайдено
                 </td>
               </tr>

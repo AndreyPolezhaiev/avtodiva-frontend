@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { Component, EventEmitter, inject, Output, signal } from "@angular/core";
+import { Component, EventEmitter, HostListener, inject, Output, signal } from "@angular/core";
 import { ScheduleSlotResponseDto } from "../../../../models/schedule-slot/schedule-slot.response";
 import { ScheduleSlotFacadeService } from "../../../../services/schedule/crud/management/facade-schedule-slot.service";
 import { FormsModule } from "@angular/forms";
@@ -7,11 +7,14 @@ import { NgSelectModule } from "@ng-select/ng-select";
 import { StudentResponseDto } from "../../../../models/student/student.response";
 import { ModalType } from "../../../../shared/modal-type";
 import { StudentAutocompleteComponent } from "../../student/search/student-autocomplete.component";
+import { ClipBoardService } from "../../../../shared/utils/clip-board.service";
+import { filter, fromEvent, Subscription } from "rxjs";
+import { MultiSelectTableDirective } from "../../../../shared/table/multi-select-table.directive";
 
 @Component({
   selector: 'app-schedule-slot-table',
   standalone: true,
-  imports: [CommonModule, FormsModule, NgSelectModule, StudentAutocompleteComponent],
+  imports: [CommonModule, FormsModule, NgSelectModule, StudentAutocompleteComponent, MultiSelectTableDirective],
   templateUrl: './schedule-slot-table.component.html',
   styleUrl: './schedule-slot-table.component.scss'
 })
@@ -41,6 +44,10 @@ export class ScheduleSlotTableComponent {
 
   public onSearch(): void {
     this.facadeScheduleSlotService.searchSlots(this.currentFilters());
+  }
+
+  public onSlotsCopied(selectedSlots: ScheduleSlotResponseDto[]): void {
+    ClipBoardService.copySlotsInfoUkr(selectedSlots);
   }
 
   public emitUpdate(slot: ScheduleSlotResponseDto): void {

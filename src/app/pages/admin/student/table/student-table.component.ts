@@ -8,11 +8,13 @@ import { StudentManagementService } from "../../../../services/student/managemen
 import { StudentFacadeService } from "../../../../services/student/management/facade-student.service";
 import { StudentSearchParametersDto } from "../../../../models/student/student.search";
 import { StudentAutocompleteComponent } from "../../student/search/student-autocomplete.component";
+import { MultiSelectTableDirective } from "../../../../shared/table/multi-select-table.directive";
+import { ClipBoardService } from "../../../../shared/utils/clip-board.service";
 
 @Component({
   selector: 'app-student-table',
   standalone: true,
-  imports: [CommonModule, FormsModule, NgSelectModule, StudentAutocompleteComponent],
+  imports: [CommonModule, FormsModule, NgSelectModule, StudentAutocompleteComponent, MultiSelectTableDirective],
   templateUrl: './student-table.component.html',
   styleUrl: './student-table.component.scss'
 })
@@ -95,6 +97,10 @@ export class StudentTableComponent {
 
   public stopShowList(): void {
     this.activeSearchField.set(null);
+  }
+
+  public onStudentsCopied(selectedStudents: StudentResponseDto[]): void {
+    ClipBoardService.copyStudentsInfoUkr(selectedStudents);
   }
 
   @HostListener('document:click', ['$event'])

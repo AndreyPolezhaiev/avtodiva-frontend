@@ -109,7 +109,12 @@
     }
     @else {
       <div class="table-manager__scroll-container">
-        <table class="table table--schedule-slot">
+        <table 
+          class="table table--schedule-slot"
+          [appMultiSelectTable]="slots()"
+          (selectedItemsChange)="onSlotsCopied($event)"
+          #tableSelect="appMultiSelectTable"
+        >
           <thead class="table__head">
             <tr class="table__head__row">
               <th class="table__head__cell table__head__cell--date">Дата</th>
@@ -120,18 +125,28 @@
               <th class="table__head__cell table__head__cell--description">Опис</th>
               <th class="table__head__cell table__head__cell--link">Посилання</th>
               <th class="table__head__cell table__head__cell--edit">✏️</th>
+              <th class="table__head__cell table__head__cell--copy"
+                (click)="tableSelect.toggleAll(); $event.stopPropagation()"
+                title="Скопіювати ВСІ заняття"
+              >📋
+              </th>
               <th class="table__head__cell table__head__cell--delete">🗑️</th>
             </tr>
           </thead>
           <tbody class="table__body">
             @for (slot of slots(); track slot.id) {
-              <tr class="table__body__row">
+              <tr class="table__body__row" 
+                  [class.table__body__row--selected]="tableSelect.selectedIds.has(slot.id)"
+                  (click)="tableSelect.toggleRow(slot, $event); $event.stopPropagation()">
+
                 <td class="table__body__cell table__body__cell--date">
                   {{ slot.date | date:'EE, dd.MM.yyyy' }}
                 </td>
+                
                 <td class="table__body__cell table__body__cell--time">
                   {{ slot.startTime.slice(0, 5) }} — {{ slot.endTime.slice(0, 5) }}
                 </td>
+
                 <td class="table__body__cell table__body__cell--instructor">{{ slot.instructorDto?.name }}</td>
                 <td class="table__body__cell table__body__cell--car">{{ slot.carDto?.name }}</td>
                 <td class="table__body__cell table__body__cell--student">{{ slot.studentDto?.name }}</td>
@@ -141,6 +156,13 @@
                 <td class="table__body__cell table__body__cell--edit">
                   <button class="table-cell-button" (click)="emitUpdate(slot)">✏️</button>
                 </td>
+
+                <td class="table__body__cell table__body__cell--copy">
+                  <button class="table-cell-button" (click)="tableSelect.toggleRow(slot, $event, true); $event.stopPropagation()" title="Виділити заняття">
+                    📋
+                  </button>
+                </td>
+
                 <td class="table__body__cell table__body__cell--delete">
                   <button class="table-cell-button" (click)="emitDelete(slot)">🗑️</button>
                 </td>
@@ -148,7 +170,7 @@
             } 
             @empty {
               <tr class="table__body__row table__body__row--empty">
-                <td colspan="9" class="table__body__cell table__body__cell--empty">
+                <td colspan="10" class="table__body__cell table__body__cell--empty">
                   Занять не знайдено
                 </td>
               </tr>

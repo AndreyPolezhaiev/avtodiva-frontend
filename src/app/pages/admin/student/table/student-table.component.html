@@ -55,24 +55,43 @@
     }
     @else {
       <div class="table-manager__scroll-container">
-        <table class="table table--student">
+        <table 
+          class="table table--student"
+          [appMultiSelectTable]="students()"
+          (selectedItemsChange)="onStudentsCopied($event)"
+          #tableSelect="appMultiSelectTable"
+        >
           <thead class="table__head">
             <tr class="table__head__row">
               <th class="table__head__cell table__head__cell--student">Студент</th>
               <th class="table__head__cell table__head__cell--phone">Телефон</th>
               <th class="table__head__cell table__head__cell--edit">✏️</th>
+              <th class="table__head__cell table__head__cell--copy"
+                (click)="tableSelect.toggleAll(); $event.stopPropagation()"
+                title="Скопіювати ВСІX студентів"
+              >📋
               <th class="table__head__cell table__head__cell--delete">🗑️</th>
             </tr>
           </thead>
           <tbody class="table__body">
             @for (student of students(); track student.id) {
-              <tr class="table__body__row">
+              <tr class="table__body__row"
+                [class.table__body__row--selected]="tableSelect.selectedIds.has(student.id)"
+                (click)="tableSelect.toggleRow(student, $event); $event.stopPropagation()"
+              >
                 <td class="table__body__cell table__body__cell--student">{{ student?.name }}</td>
                 <td class="table__body__cell table__body__cell--phone">{{ student?.phoneNumber }}</td>
 
                 <td class="table__body__cell table__body__cell--edit">
                   <button class="table-cell-button" (click)="emitUpdate(student)">✏️</button>
                 </td>
+
+                <td class="table__body__cell table__body__cell--copy">
+                  <button class="table-cell-button" (click)="tableSelect.toggleRow(student, $event, true); $event.stopPropagation()" title="Виділити студента">
+                    📋
+                  </button>
+                </td>
+
                 <td class="table__body__cell table__body__cell--delete">
                   <button class="table-cell-button" (click)="emitDelete(student)">🗑️</button>
                 </td>
@@ -80,7 +99,7 @@
             } 
             @empty {
               <tr class="table__body__row table__body__row--empty">
-                <td colspan="4" class="table__body__cell table__body__cell--empty">
+                <td colspan="5" class="table__body__cell table__body__cell--empty">
                   Студентів не знайдено
                 </td>
               </tr>
