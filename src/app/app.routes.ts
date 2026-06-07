@@ -6,11 +6,18 @@ import { StudentComponent } from './pages/admin/student/student.component';
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
 import { ScheduleSlotComponent } from './pages/admin/schedule-slot/schedule-slot.component';
 import { WeekendComponent } from './pages/admin/weekend/weekend.component';
+import { authGuard } from './core/auth/guard/auth.guard';
 
 export const routes: Routes = [
   {
-    path: '',
+    path: 'login',
+    loadComponent: () => import('./pages/auth/login.component').then(m => m.LoginComponent)
+  },
+
+  {
+    path: 'admin',
     component: AdminLayoutComponent,
+    canActivate: [authGuard],
     children: [
       { path: '', component: HomeComponent},
       { path: 'schedule', component: ScheduleSlotComponent },
@@ -19,5 +26,16 @@ export const routes: Routes = [
       { path: 'students', component: StudentComponent },
       { path: 'weekends', component: WeekendComponent }
     ]
+  },
+
+  {
+    path: '',
+    redirectTo: 'login',
+    pathMatch: 'full'
+  },
+
+  {
+    path: '**',
+    redirectTo: 'login'
   }
 ];

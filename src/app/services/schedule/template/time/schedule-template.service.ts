@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { environment } from "../../../../../environmets/environment";
+import { environment } from "../../../../../environments/environment";
 import { HttpClient } from "@angular/common/http";
 import { ScheduleTemplateRequestDto } from "../../../../models/template/time/schedule-template.request";
 import { ScheduleTemplateResponseDto } from "../../../../models/template/time/schedule-template.response";

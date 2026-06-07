@@ -1,0 +1,58 @@
+<div class="login-page">
+  <div class="login-page__card">
+    <h2 class="login-page__title">Вхід до Avtodiva</h2>
+
+    <form class="login-page__form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      
+      <div class="login-page__form-group">
+        <label class="login-page__label" for="email">Email</label>
+        <input 
+          class="login-page__input" 
+          id="email" 
+          type="email" 
+          formControlName="email" 
+          placeholder="example@mail.com"
+        >
+        
+        @if (loginForm.get('email')?.touched && loginForm.get('email')?.errors?.['required']) {
+          <div class="login-page__error">Email обов'язковий для заповнення</div>
+        }
+        
+        @if (loginForm.get('email')?.touched && loginForm.get('email')?.errors?.['email']) {
+          <div class="login-page__error">Введіть коректний email</div>
+        }
+      </div>
+
+      <div class="login-page__form-group">
+        <label class="login-page__label" for="password">Пароль</label>
+        <input 
+          class="login-page__input" 
+          id="password" 
+          type="password" 
+          formControlName="password" 
+          placeholder="******"
+        >
+        
+        @if (loginForm.get('password')?.touched && loginForm.get('password')?.errors?.['required']) {
+          <div class="login-page__error">Пароль обов'язковий для заповнення</div>
+        }
+      </div>
+
+      @if (errorMessage) {
+        <div class="login-page__error login-page__error--global">
+          {{ errorMessage }}
+        </div>
+      }
+
+      <button 
+        class="login-page__button" 
+        [class.login-page__button--loading]="isLoading"
+        type="submit" 
+        [disabled]="isLoading"
+      >
+        {{ isLoading ? 'Вхід...' : 'Увійти' }}
+      </button>
+
+    </form>
+  </div>
+</div>

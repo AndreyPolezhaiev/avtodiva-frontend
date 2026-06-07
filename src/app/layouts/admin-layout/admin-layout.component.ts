@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
-import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { DataRegistryService } from '../../shared/registry/data-registry.service';
+import { AuthService } from '../../core/auth/service/auth.service';
 
 @Component({
   selector: 'app-admin-layout',
@@ -10,4 +11,11 @@ import { DataRegistryService } from '../../shared/registry/data-registry.service
 })
 export class AdminLayoutComponent {
   private dataRegistryService = inject(DataRegistryService);
+  private authService = inject(AuthService);
+  private router = inject(Router);
+
+  public onLogout(): void {
+    this.authService.logout();
+    this.router.navigate(['/login']);
+  }
 }

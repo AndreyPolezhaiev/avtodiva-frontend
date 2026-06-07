@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { environment } from "../../../../environmets/environment.prod";
+import { environment } from "../../../../environments/environment.prod";
 import { Observable } from "rxjs";
 import { SlotGenerationRequestDto } from "../../../models/schedule-slot/generation/slot-generation.request";
 import { HttpClient } from "@angular/common/http";

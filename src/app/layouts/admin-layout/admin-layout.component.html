@@ -1,23 +1,37 @@
 <header class="header">
   <div class="header__logo">
-    <a routerLink="/" class="header__link">AvtoDiva Admin</a>
+    <a routerLink="/admin" class="header__link">AvtoDiva Admin</a>
   </div>
   <nav class="nav">
     <ul class="nav__list">
       <li class="nav__item">
-        <a class="nav__link" routerLink="/schedule" routerLinkActive="active">Заняття</a>
+        <a class="nav__link" routerLink="schedule" routerLinkActive="active">Заняття</a>
       </li>
       <li class="nav__item">
-        <a class="nav__link" routerLink="/cars" routerLinkActive="active">Машини</a>
+        <a class="nav__link" routerLink="cars" routerLinkActive="active">Машини</a>
       </li>
       <li class="nav__item">
-        <a class="nav__link" routerLink="/instructors" routerLinkActive="active">Інструктори</a>
+        <a class="nav__link" routerLink="instructors" routerLinkActive="active">Інструктори</a>
       </li>
       <li class="nav__item">
-        <a class="nav__link" routerLink="/students" routerLinkActive="active">Студенти</a>
+        <a class="nav__link" routerLink="students" routerLinkActive="active">Студенти</a>
       </li>
       <li class="nav__item">
-        <a class="nav__link" routerLink="/weekends" routerLinkActive="active">Вихідні</a>
+        <a class="nav__link" routerLink="weekends" routerLinkActive="active">Вихідні</a>
+      </li>
+      <li class="nav__item nav__item--logout">
+        <a 
+          href="#" 
+          class="nav__link nav__link--logout" 
+          (click)="onLogout(); $event.preventDefault()" 
+          title="Вийти з системи"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="nav__icon">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+            <polyline points="16 17 21 12 16 7"></polyline>
+            <line x1="21" y1="12" x2="9" y2="12"></line>
+          </svg>
+        </a>
       </li>
     </ul>
   </nav>

@@ -29,6 +29,24 @@ $nav-border-radius: 4px;
 $nav-hover-bg: rgba(white, 0.1);
 $nav-active-bg: #3498db;
 $nav-active-color: white;
+
+$nav-item-link-last-before-padding-x: nth($nav-padding, 2); 
+$nav-item-link-last-before-margin-right: calc(
+  #{$nav-item-link-last-before-padding-x} 
+  - (#{$nav-item-link-last-before-padding-x} + #{$nav-gap}) + 3px
+);
+
+$nav-item-logout-border-left: 1px solid rgba(255, 255, 255, 0.15);
+$nav-item-logout-margin-left: 0.5rem;
+$nav-item-logout-margin-right: calc(-1 * #{nth($header-padding, 2)});
+
+$nav-link-logout-color: #dc3545;
+$nav-link-logout-hover-color: #bd2130;
+$nav-link-logout-hover-bg: rgba(220, 53, 69, 0.1);
+
+$nav-icon-width: 20px;
+$nav-icon-height: 20px;
+$nav-icon-stroke-width: 2;
 /* #endregion */
 /* #region content-area */
 $content-area-padding: 20px;
@@ -384,4 +402,52 @@ $time-intervals-btn-delete-transition: background-color 0.2s, transform 0.1s;
 $time-intervals-btn-delete-hover-background-color: #fff5f5;
 $time-intervals-btn-delete-hover-transform: scale(1.05);
 $time-intervals-btn-delete-active-transform: scale(0.95);
+/* #endregion */
+/* #region login-page */
+// Login Page Base
+$login-page-background-color: #f8f9fa;
+
+// Login Card
+$login-page-card-background-color: #ffffff;
+$login-page-card-padding: 2.5rem;
+$login-page-card-border-radius: 8px;
+$login-page-card-box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+$login-page-card-width: 100%;
+$login-page-card-max-width: 400px;
+
+// Login Title
+$login-page-title-color: #333333;
+$login-page-title-margin-bottom: 2rem;
+
+// Form Groups & Labels
+$login-page-form-group-margin-bottom: 1.5rem;
+$login-page-label-margin-bottom: 0.5rem;
+$login-page-label-font-weight: 500;
+
+// Inputs
+$login-page-input-padding: 0.75rem;
+$login-page-input-border: 1px solid #ccc;
+$login-page-input-border-radius: 4px;
+$login-page-input-focus-border-color: #007bff;
+
+// Errors
+$login-page-error-color: #dc3545;
+$login-page-error-font-size: 0.875rem;
+$login-page-error-margin-top: 0.25rem;
+
+// Global Error Box
+$login-page-error-global-background-color: #f8d7da;
+$login-page-error-global-padding: 0.75rem;
+$login-page-error-global-margin-bottom: 1.5rem;
+$login-page-error-global-border-radius: 4px;
+
+// Button
+$login-page-button-width: 100%;
+$login-page-button-padding: 0.75rem;
+$login-page-button-background-color: #007bff;
+$login-page-button-color: #ffffff;
+$login-page-button-font-weight: 600;
+$login-page-button-border-radius: 4px;
+$login-page-button-disabled-background-color: #6c757d;
+$login-page-button-loading-opacity: 0.8;
 /* #endregion */

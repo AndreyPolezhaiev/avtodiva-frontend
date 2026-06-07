@@ -1,0 +1,80 @@
+@use 'styles/utils/variables' as vars;
+
+.login-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: vars.$login-page-background-color;
+
+  &__card {
+    background: vars.$login-page-card-background-color;
+    padding: vars.$login-page-card-padding;
+    border-radius: vars.$login-page-card-border-radius;
+    box-shadow: vars.$login-page-card-box-shadow;
+    width: vars.$login-page-card-width;
+    max-width: vars.$login-page-card-max-width;
+  }
+
+  &__title {
+    margin-bottom: vars.$login-page-title-margin-bottom;
+    text-align: center;
+    color: vars.$login-page-title-color;
+  }
+
+  &__form-group {
+    margin-bottom: vars.$login-page-form-group-margin-bottom;
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__label {
+    margin-bottom: vars.$login-page-label-margin-bottom;
+    font-weight: vars.$login-page-label-font-weight;
+  }
+
+  &__input {
+    padding: vars.$login-page-input-padding;
+    border: vars.$login-page-input-border;
+    border-radius: vars.$login-page-input-border-radius;
+    outline: none;
+
+    &:focus {
+      border-color: vars.$login-page-input-focus-border-color;
+    }
+  }
+
+  &__error {
+    color: vars.$login-page-error-color;
+    font-size: vars.$login-page-error-font-size;
+    margin-top: vars.$login-page-error-margin-top;
+
+    &--global {
+      text-align: center;
+      margin-bottom: vars.$login-page-error-global-margin-bottom;
+      padding: vars.$login-page-error-global-padding;
+      background-color: vars.$login-page-error-global-background-color;
+      border-radius: vars.$login-page-error-global-border-radius;
+    }
+  }
+
+  &__button {
+    width: vars.$login-page-button-width;
+    padding: vars.$login-page-button-padding;
+    background-color: vars.$login-page-button-background-color;
+    color: vars.$login-page-button-color;
+    border: none;
+    border-radius: vars.$login-page-button-border-radius;
+    cursor: pointer;
+    font-weight: vars.$login-page-button-font-weight;
+
+    &:disabled {
+      background-color: vars.$login-page-button-disabled-background-color;
+      cursor: not-allowed;
+    }
+
+    &--loading {
+      opacity: vars.$login-page-button-loading-opacity;
+    }
+  }
+}
