@@ -1,3 +1,5 @@
+@use 'sass:list';
+
 /* #region primary */
 $primary-background: white;
 /* #endregion */
@@ -30,7 +32,7 @@ $nav-hover-bg: rgba(white, 0.1);
 $nav-active-bg: #3498db;
 $nav-active-color: white;
 
-$nav-item-link-last-before-padding-x: nth($nav-padding, 2); 
+$nav-item-link-last-before-padding-x: list.nth($nav-padding, 2); 
 $nav-item-link-last-before-margin-right: calc(
   #{$nav-item-link-last-before-padding-x} 
   - (#{$nav-item-link-last-before-padding-x} + #{$nav-gap}) + 3px
@@ -38,7 +40,7 @@ $nav-item-link-last-before-margin-right: calc(
 
 $nav-item-logout-border-left: 1px solid rgba(255, 255, 255, 0.15);
 $nav-item-logout-margin-left: 0.5rem;
-$nav-item-logout-margin-right: calc(-1 * #{nth($header-padding, 2)});
+$nav-item-logout-margin-right: calc(-1 * #{list.nth($header-padding, 2)});
 
 $nav-link-logout-color: #dc3545;
 $nav-link-logout-hover-color: #bd2130;
