@@ -40,8 +40,19 @@ export class LoginComponent {
 
     this.authService.login(credentials).subscribe({
       next: () => {
-        this.isLoading = false;
-        this.router.navigate(['/admin']);
+        const roles = this.authService.getUserRoles();
+
+        if (roles.includes('ROLE_ADMIN')) {
+          this.isLoading = false; 
+          this.router.navigate(['/admin']);
+        } 
+        else {
+          this.isLoading = false;
+          this.errorMessage = 'Доступ заборонено';
+          this.authService.clearToken(); 
+
+          this.cdr.detectChanges();
+        }
       },
       error: (err) => {
         this.isLoading = false;

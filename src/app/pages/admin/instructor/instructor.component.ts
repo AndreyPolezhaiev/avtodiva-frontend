@@ -107,10 +107,9 @@ export class InstructorComponent {
       return;
     }
 
-    const existingIntervals = this.instructorSchedule()?.intervals || [];
-    const addedIntervals = this.intervals();
+    const currentIntervals = this.intervals();
 
-    const hasInvalidInterval = addedIntervals.some(interval => 
+    const hasInvalidInterval = currentIntervals.some(interval => 
       !interval.startTime || !interval.endTime || interval.startTime >= interval.endTime
     );
 
@@ -122,15 +121,15 @@ export class InstructorComponent {
       return;
     }
 
-    const allIntervals = [...existingIntervals, ...addedIntervals];
-
-    const validIntervals = allIntervals.filter(
+    const validIntervals = currentIntervals.filter(
       interval => interval.startTime && interval.endTime && interval.startTime < interval.endTime
     );
 
     const validUniqueIntervals = [
       ...new Map(validIntervals.map(item => [`${item.startTime}-${item.endTime}`, item])).values()
     ];
+
+    validUniqueIntervals.sort((a, b) => a.startTime.localeCompare(b.startTime));
 
     const templateRequest: ScheduleTemplateRequestDto = {
       intervals: validUniqueIntervals
@@ -190,6 +189,10 @@ export class InstructorComponent {
       next: (detailedInstructor) => {
         console.log('Detailed instructor data:', detailedInstructor.scheduleTemplate);
         this.instructorSchedule.set(detailedInstructor.scheduleTemplate);
+
+        const backendIntervals = detailedInstructor.scheduleTemplate.intervals || [];
+        backendIntervals.sort((a, b) => a.startTime.localeCompare(b.startTime));
+
         this.intervals.set(detailedInstructor.scheduleTemplate.intervals || []);
       },
       error: (error: HttpErrorResponse) => {

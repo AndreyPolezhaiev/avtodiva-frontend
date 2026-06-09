@@ -6,7 +6,7 @@ import { StudentComponent } from './pages/admin/student/student.component';
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
 import { ScheduleSlotComponent } from './pages/admin/schedule-slot/schedule-slot.component';
 import { WeekendComponent } from './pages/admin/weekend/weekend.component';
-import { authGuard } from './core/auth/guard/auth.guard';
+import { roleGuard } from './core/auth/guard/role.quard';
 
 export const routes: Routes = [
   {
@@ -17,7 +17,8 @@ export const routes: Routes = [
   {
     path: 'admin',
     component: AdminLayoutComponent,
-    canActivate: [authGuard],
+    canActivate: [roleGuard],
+    data: { roles: ['ROLE_ADMIN'] },
     children: [
       { path: '', component: HomeComponent},
       { path: 'schedule', component: ScheduleSlotComponent },

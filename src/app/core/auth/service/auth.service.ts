@@ -5,6 +5,13 @@ import { LoginResponseDto } from '../models/login-response.dto';
 import { LoginRequestDto } from '../models/login-request.dto';
 import { environment } from '../../../../environments/environment.prod';
 import { Router } from '@angular/router';
+import { jwtDecode } from 'jwt-decode';
+
+interface JwtPayload {
+  sub: string;
+  roles?: string[];
+  exp?: number;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -45,9 +52,31 @@ export class AuthService {
     return !!this.getToken();
   }
 
+  public getUserRoles(): string[] {
+    const token = this.getToken();
+    if (!token) {
+      return [];
+    }
+
+    try {
+      const decoded = jwtDecode<JwtPayload>(token);
+
+      return decoded.roles || []; 
+    } 
+    catch (error) {
+      console.error('Can\'t decode JWT token:', error);
+
+      return [];
+    }
+  }
+
   public logout(): void {
     localStorage.removeItem(this.TOKEN_KEY);
 
     this.router.navigate(['/login']);
+  }
+
+  public clearToken(): void {
+    localStorage.removeItem(this.TOKEN_KEY);
   }
 }
