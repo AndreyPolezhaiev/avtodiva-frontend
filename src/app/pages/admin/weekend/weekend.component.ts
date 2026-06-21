@@ -54,8 +54,6 @@ export class WeekendComponent {
         form.resetForm();
         this.closeControlModal();
         this.clearDates();
-
-        NotificationService.showSuccess("Вихідні створено!");
       },
       error (error: HttpErrorResponse) {
         NotificationService.showError("Не вдалося створити вихідний", error);
@@ -82,8 +80,6 @@ export class WeekendComponent {
         form.resetForm();
         this.closeControlModal();
         this.weekendForUpdate = null;
-
-        NotificationService.showSuccess("Вихідний оновлено!");
         this.weekendFacadeService.refreshWeekends();
       },
       error: (error: HttpErrorResponse) => {

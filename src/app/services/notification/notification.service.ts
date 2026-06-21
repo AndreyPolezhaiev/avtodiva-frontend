@@ -7,7 +7,7 @@ import { Injectable } from "@angular/core";
 export class NotificationService {
   public static showError(message: string, error?: HttpErrorResponse): void {
     const fullMessage = error?.message ? `${message}: ${error.message}` : message;
-    console.error('Помилка при створенні заняття', error);
+    console.error(error);
     alert(`❌ Помилка: ${fullMessage}`);
   }
 

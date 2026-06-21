@@ -85,9 +85,6 @@ export class UpdateScheduleSlotService {
 
     return this.slotCrudService.updateSlot(slotId, slotRequest).pipe(
       tap({
-        next: () => {
-          NotificationService.showSuccess('Заняття оновлено!');
-        },
         error: (err: HttpErrorResponse) => {
           NotificationService.showError('Не вдалося оновити заняття', err);
         }

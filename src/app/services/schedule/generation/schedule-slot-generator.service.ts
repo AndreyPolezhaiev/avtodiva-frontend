@@ -8,7 +8,7 @@ import { HttpClient } from "@angular/common/http";
   providedIn: 'root'
 })
 export class ScheduleSlotGeneratorService {
-  private apiUrl = `${environment.apiBaseUrl}/api/slot-generator`;
+  private apiUrl = `${environment.apiBaseUrl}/slot-generator`;
 
   constructor(private http: HttpClient) {}
 

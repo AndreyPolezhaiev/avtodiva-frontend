@@ -19,7 +19,7 @@ interface JwtPayload {
 export class AuthService {
   private http = inject(HttpClient); 
   private router = inject(Router);
-  private readonly apiUrl = `${environment.apiBaseUrl}/api/auth`;
+  private readonly apiUrl = `${environment.apiBaseUrl}/auth`;
   private readonly TOKEN_KEY = 'avtodiva_jwt_token';
 
   constructor() {

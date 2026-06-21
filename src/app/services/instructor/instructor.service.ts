@@ -10,7 +10,7 @@ import { InstructorDetailedResponseDto } from "../../models/instructor/instructo
   providedIn: 'root',
 })
 export class InstructorService {
-  private apiUrl = `${environment.apiBaseUrl}/api/instructors`;
+  private apiUrl = `${environment.apiBaseUrl}/instructors`;
 
   constructor(private http: HttpClient){};
 

@@ -11,7 +11,7 @@ import { StudentSearchParametersDto } from "../../models/student/student.search"
   providedIn: 'root',
 })
 export class StudentService {
-  private apiUrl = `${environment.apiBaseUrl}/api/students`;
+  private apiUrl = `${environment.apiBaseUrl}/students`;
 
   constructor(private http: HttpClient){}
 

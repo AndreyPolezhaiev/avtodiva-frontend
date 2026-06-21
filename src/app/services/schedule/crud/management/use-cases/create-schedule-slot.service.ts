@@ -85,9 +85,6 @@ export class CreateScheduleSlotService {
 
     return this.slotCrudService.createSlot(slotRequest).pipe(
       tap({
-        next: () => {
-          NotificationService.showSuccess('Нове заняття створено!');
-        },
         error: (err: HttpErrorResponse) => {
           NotificationService.showError('Не вдалося створити заняття', err);
         }

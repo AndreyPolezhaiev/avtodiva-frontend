@@ -9,7 +9,7 @@ import { Observable } from "rxjs";
   providedIn: 'root'
 })
 export class ScheduleTemplateService {
-  private apiUrl = `${environment.apiBaseUrl}/api/template`;
+  private apiUrl = `${environment.apiBaseUrl}/template`;
 
   constructor(private http: HttpClient) {}
 

@@ -11,7 +11,7 @@ import { WeekendSearchParametersDto } from "../../models/weekend/weekend.search"
   providedIn: 'root'
 })
 export class WeekendService {
-  private apiUrl = `${environment.apiBaseUrl}/api/weekends`;
+  private apiUrl = `${environment.apiBaseUrl}/weekends`;
 
   constructor(private http: HttpClient) {}
 

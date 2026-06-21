@@ -122,7 +122,6 @@ export class ScheduleSlotComponent {
       next: () => {
         this.closeControlModal();
         this.slotForDelete = null;
-        NotificationService.showSuccess('Заняття видалено');
 
         this.facadeScheduleSlotService.refreshSlots();
       },
@@ -142,9 +141,6 @@ export class ScheduleSlotComponent {
     const carIds: number[] = (form.value.carIds && form.value.carIds.length > 0)
         ? form.value.carIds 
         : this.foundCars().map(c => c.id);
-
-    console.log('Selected instructor IDs:', instructorIds);
-    console.log('Selected car IDs:', carIds);
 
     const requestDto: SlotGenerationRequestDto = {
       days: form.value.days,

@@ -11,7 +11,7 @@ import { UpdateScheduleSlotRequestDto } from "../../../models/schedule-slot/sche
   providedIn: 'root',
 })
 export class ScheduleSlotCrudService {
-  private apiUrl = `${environment.apiBaseUrl}/api/schedule`;
+  private apiUrl = `${environment.apiBaseUrl}/schedule`;
 
   constructor(private http: HttpClient) {}
 

@@ -63,8 +63,6 @@ export class ScheduleSlotFacadeService {
     const { studentName, ...searchDto } = filters;
     const cleanedFilters = this.removeEmptyFilters(searchDto);
 
-    console.log('Searching with filters:', cleanedFilters);
-
     this.#isSearching.set(true);
     this.searchService.searchSlots(cleanedFilters).subscribe({
       next: (slots) => {
@@ -95,8 +93,6 @@ export class ScheduleSlotFacadeService {
         cleanParams[key] = value;
       }
     });
-
-    console.log('Searching with filters:', cleanParams);
 
     return cleanParams as SlotSearchParametersDto;
   }

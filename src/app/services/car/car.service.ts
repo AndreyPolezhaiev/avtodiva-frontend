@@ -9,7 +9,7 @@ import { CarResponseDto } from '../../models/car/car.response';
   providedIn: 'root',
 })
 export class CarService {
-  private apiUrl = `${environment.apiBaseUrl}/api/cars`;
+  private apiUrl = `${environment.apiBaseUrl}/cars`;
 
   constructor(private http: HttpClient) {};
 
