@@ -1,5 +1,6 @@
 services:
   frontend-app:
+    restart: unless-stopped
     image: andreypolezhaiev/avtodiva-frontend:latest
     container_name: avtodiva-frontend
     build: .
