@@ -5,6 +5,8 @@
 
 This project represents a complete architectural transition from a legacy [Java Swing desktop client](https://github.com/AndreyPolezhaiev/avtodiva) to a modern web ecosystem. It is designed to handle school management operations with a focus on security, scalability, and maintainability.
 
+> 📸 **Visual Preview:** [System Screenshots](docs/AvtoDiva_Short_Overview.pdf) — view the application interface and key features.
+
 
 ## 🛠 Tech Stack
 
