@@ -9,7 +9,7 @@ This project represents a complete architectural transition from a legacy [Java 
 ## 🛠 Tech Stack
 
 * **Frontend:** Angular, TypeScript, HTML5, SCSS.
-* **API Integration:** Consumes the REST API provided by the [backend](https://github.com/AndreyPolezhaiev/avtodiva-backend).
+* **API Integration:** Consumes the REST API provided by the [backend](https://github.com/AndreyPolezhaiev/avtodiva-advanced).
 * **Infrastructure:** Docker, Nginx (Reverse Proxy & SSL termination), Linux (Hetzner).
 
 
@@ -35,7 +35,7 @@ This project represents a complete architectural transition from a legacy [Java 
 
 ## 🔗 Related Projects
 
-* **Backend Repository:** [AndreyPolezhaiev/avtodiva-backend](https://github.com/AndreyPolezhaiev/avtodiva-backend)
+* **Backend Repository:** [AndreyPolezhaiev/avtodiva-backend](https://github.com/AndreyPolezhaiev/avtodiva-advanced)
 
 ---
 
