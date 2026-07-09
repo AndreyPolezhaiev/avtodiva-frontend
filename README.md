@@ -1,59 +1,42 @@
-# AvtodivaFrontend
+# Avtodiva Frontend (ERP for Driving Schools)
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.0.5.
 
-## Development server
+## 💡Overview
 
-To start a local development server, run:
+This project represents a complete architectural transition from a legacy [Java Swing desktop client](https://github.com/AndreyPolezhaiev/avtodiva) to a modern web ecosystem. It is designed to handle school management operations with a focus on security, scalability, and maintainability.
 
-```bash
-ng serve
-```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## 🛠 Tech Stack
 
-## Code scaffolding
+* **Frontend:** Angular, TypeScript, HTML5, SCSS.
+* **Backend Integration:** REST API (connected to [Backend Repository](https://github.com/AndreyPolezhaiev/avtodiva-backend)).
+* **Infrastructure:** Docker, Nginx (Reverse Proxy & SSL termination), Linux (Hetzner).
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
 
-```bash
-ng generate component component-name
-```
+## 🏗 Architecture Highlights
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+* **Full-Stack Integration:** RESTful API architecture connecting the Angular frontend with a robust Spring Boot backend.
+* **Modern UI/UX:** Responsive design optimized for school management workflow.
+* **Secure Deployment:** Automated production environment setup using Docker and Nginx, ensuring secure traffic routing.
 
-```bash
-ng generate --help
-```
 
-## Building
+## 📂 Project Structure
 
-To build the project run:
+* `src/app/...`: Frontend business logic and components.
+* `src/styles/...`: Styles.
+* `docker-compose.yml`: Infrastructure orchestration.
 
-```bash
-ng build
-```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+## 🚀 How to Run
+1. Clone the repository: `git clone https://github.com/AndreyPolezhaiev/avtodiva-frontend`
+2. Configure your `.env` file.
+3. Run with Docker: `docker-compose up --build`
 
-## Running unit tests
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+## 🔗 Related Projects
 
-```bash
-ng test
-```
+* **Backend Repository:** [AndreyPolezhaiev/avtodiva-backend](https://github.com/AndreyPolezhaiev/avtodiva-backend)
 
-## Running end-to-end tests
+---
 
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Developed and maintained by **Andrii Polezhaiev**.
