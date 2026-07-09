@@ -38,6 +38,8 @@ This project represents a complete architectural transition from a legacy [Java 
 ## 🔗 Related Projects
 
 * **Backend Repository:** [AndreyPolezhaiev/avtodiva-backend](https://github.com/AndreyPolezhaiev/avtodiva-advanced)
+* **Gateway Repository:** [AndreyPolezhaiev/avtodiva-gateway](https://github.com/AndreyPolezhaiev/avtodiva-gateway)
+
 
 ---
 
