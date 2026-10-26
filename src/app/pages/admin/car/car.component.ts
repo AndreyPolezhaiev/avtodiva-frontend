@@ -30,7 +30,8 @@ export class CarComponent {
   public createCar(form: NgForm): void {
     if (form.valid) {
       const carRequest: CarRequestDto = {
-        name: form.value.model
+        name: form.value.model,
+        lessonPrice: form.value.lessonPrice
       };
 
       this.carManagementService.createCar(carRequest).subscribe({
@@ -56,7 +57,8 @@ export class CarComponent {
 
     if (form.valid && currentCar) {
       const carRequest: CarRequestDto = {
-        name: form.value.model
+        name: form.value.model,
+        lessonPrice: form.value.lessonPrice
       };
 
       this.carManagementService.updateCar(currentCar.id, carRequest).subscribe({

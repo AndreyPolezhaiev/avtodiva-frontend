@@ -1,16 +1,18 @@
 services:
   frontend-app:
     restart: unless-stopped
-    image: andreypolezhaiev/avtodiva-frontend:latest
+    image: ghcr.io/andreypolezhaiev/avtodiva-frontend:latest
     container_name: avtodiva-frontend
-    build: .
     ports:
       - "${FRONTEND_PORT}:${DOCKER_PORT}"
     environment:
       - NGINX_PORT=${NGINX_PORT}
       - BACKEND_HOST=${BACKEND_HOST}
       - BACKEND_PORT=${BACKEND_PORT}
+      - ANALYTICS_HOST=${ANALYTICS_HOST}
+      - ANALYTICS_PORT=${ANALYTICS_PORT}
       - API_LINK=${API_LINK}
+      - ANALYTICS_API_LINK=${ANALYTICS_API_LINK}
     networks:
       - avtodiva-network
 

@@ -1,0 +1,137 @@
+<div class="table-manager">
+  <div class="table-manager__filter">
+    <form class="filter-form" #filterForm="ngForm" (ngSubmit)="onSearch(filterForm)" (click)="$event.stopPropagation()">
+      <div class="filter-form__group">
+        <div class="filter-form__field">
+          <label class="filter-form__label">Дата з:</label>
+          <input
+            class="filter-form__input filter-form__input--date"
+            type="date"
+            name="from"
+            [(ngModel)]="currentFilters().from"
+          >
+        </div>
+
+        <div class="filter-form__field">
+          <label class="filter-form__label">Дата до:</label>
+          <input
+            class="filter-form__input filter-form__input--date"
+            type="date"
+            name="to"
+            [(ngModel)]="currentFilters().to"
+          >
+        </div>
+
+        <div class="filter-form__field filter-form__field--instructors">
+          <label class="filter-form__label">Інструктор:</label>
+          <ng-select
+            [items]="foundInstructors()"
+            bindLabel="name"
+            bindValue="name"
+            placeholder="Усі інструктори"
+            name="instructorName"
+            [(ngModel)]="currentFilters().instructorName">
+          </ng-select>
+        </div>
+
+        <div class="filter-form__field filter-form__field--cars">
+          <label class="filter-form__label">Машина:</label>
+          <ng-select
+            [items]="foundCars()"
+            bindLabel="name"
+            bindValue="name"
+            placeholder="Усі машини"
+            name="carName"
+            [(ngModel)]="currentFilters().carName">
+          </ng-select>
+        </div>
+
+        <div class="filter-form__actions">
+          <button
+            type="submit"
+            class="btn-control btn-control--save"
+            [disabled]="filterForm.invalid">Пошук
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  @if (isSearching()) {
+    <div class="loader">Завантаження...</div>
+  }
+  @else if (profit(); as profit) {
+    <div class="profit-summary">
+      <div class="profit-summary__item">
+        <span class="profit-summary__label">Занять:</span>
+        <span class="profit-summary__value">{{ profit.lessonsCount }}</span>
+      </div>
+      <div class="profit-summary__item">
+        <span class="profit-summary__label">Загальний прибуток:</span>
+        <span class="profit-summary__value">{{ profit.totalProfit | number:'1.0-2' }} ₴</span>
+      </div>
+    </div>
+
+    <div class="profit-summary__tables">
+      <div class="table-manager__content table-manager__content--analytics">
+        <div class="table-manager__scroll-container">
+          <table class="table table--analytics">
+            <thead class="table__head">
+              <tr class="table__head__row">
+                <th class="table__head__cell table__head__cell--instructor">Інструктор</th>
+                <th class="table__head__cell table__head__cell--lessons">Занять</th>
+                <th class="table__head__cell table__head__cell--profit">Прибуток</th>
+              </tr>
+            </thead>
+            <tbody class="table__body">
+              @for (instructor of profit.instructors; track instructor.instructorName) {
+                <tr class="table__body__row">
+                  <td class="table__body__cell table__body__cell--instructor">{{ instructor.instructorName ?? '—' }}</td>
+                  <td class="table__body__cell table__body__cell--lessons">{{ instructor.lessonsCount }}</td>
+                  <td class="table__body__cell table__body__cell--profit">{{ instructor.profit | number:'1.0-2' }} ₴</td>
+                </tr>
+              }
+              @empty {
+                <tr class="table__body__row table__body__row--empty">
+                  <td colspan="3" class="table__body__cell table__body__cell--empty">
+                    Даних не знайдено
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="table-manager__content table-manager__content--analytics">
+        <div class="table-manager__scroll-container">
+          <table class="table table--analytics">
+            <thead class="table__head">
+              <tr class="table__head__row">
+                <th class="table__head__cell table__head__cell--car">Машина</th>
+                <th class="table__head__cell table__head__cell--lessons">Занять</th>
+                <th class="table__head__cell table__head__cell--profit">Прибуток</th>
+              </tr>
+            </thead>
+            <tbody class="table__body">
+              @for (car of profit.cars; track car.carName) {
+                <tr class="table__body__row">
+                  <td class="table__body__cell table__body__cell--car">{{ car.carName ?? '—' }}</td>
+                  <td class="table__body__cell table__body__cell--lessons">{{ car.lessonsCount }}</td>
+                  <td class="table__body__cell table__body__cell--profit">{{ car.profit | number:'1.0-2' }} ₴</td>
+                </tr>
+              }
+              @empty {
+                <tr class="table__body__row table__body__row--empty">
+                  <td colspan="3" class="table__body__cell table__body__cell--empty">
+                    Даних не знайдено
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  }
+</div>

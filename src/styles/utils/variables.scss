@@ -121,6 +121,10 @@ $card-title-font-size: 20px;
 $card-title-color: #333;
 $card-title-margin-bottom: 8px;
 
+$card-price-color: #2f855a;
+$card-price-font-size: 15px;
+$card-price-font-weight: 600;
+
 $card-id-margin-top: 8px;
 $card-id-color: #718096;
 $card-id-font-size: 12px;
@@ -266,6 +270,24 @@ $table-manager-content-border-top-right-radius: 12px;
 
 $table-manager-scroll-container-max-height: 500px;
 /* #endregion */
+/* #region profit-summary */
+$profit-summary-gap: 20px;
+$profit-summary-margin-bottom: 15px;
+
+$profit-summary-item-gap: 8px;
+$profit-summary-item-padding: 10px 20px;
+$profit-summary-item-background: #fff;
+$profit-summary-item-border: 1px solid #ddd;
+$profit-summary-item-border-radius: 12px;
+
+$profit-summary-label-font-size: 14px;
+$profit-summary-label-color: #666;
+
+$profit-summary-value-font-size: 20px;
+$profit-summary-value-font-weight: 600;
+
+$profit-summary-tables-gap: 20px;
+/* #endregion */
 /* #region table */
 // head
 $table-head-cell-z-index: 10;
@@ -282,6 +304,8 @@ $table-head-cell-phone-width: 160px;
 $table-head-cell-edit-width: 50px;
 $table-head-cell-delete-width: 50px;
 $table-head-cell-copy-width: 50px;
+$table-head-cell-lessons-width: 90px;
+$table-head-cell-profit-width: 130px;
 
 $table-head-cell-border-right: 1px solid #ddd;
 
