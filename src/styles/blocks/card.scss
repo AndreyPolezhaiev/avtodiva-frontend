@@ -22,6 +22,12 @@
     margin-bottom: vars.$card-title-margin-bottom;
   }
 
+  &__price {
+    color: vars.$card-price-color;
+    font-size: vars.$card-price-font-size;
+    font-weight: vars.$card-price-font-weight;
+  }
+
   &__id {
     margin-top: vars.$card-id-margin-top;
     display: inline-block;

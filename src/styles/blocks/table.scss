@@ -15,6 +15,10 @@
     width: fit-content;
   }
 
+  &--analytics {
+    width: fit-content;
+  }
+
   border-collapse: separate;
   border-spacing: 0;
   margin: 0;
@@ -38,6 +42,8 @@
       &--car { width: vars.$table-head-cell-car-width; }
       &--student { width: vars.$table-head-cell-student-width; }
       &--phone { width: vars.$table-head-cell-phone-width; }
+      &--lessons { width: vars.$table-head-cell-lessons-width; }
+      &--profit { width: vars.$table-head-cell-profit-width; }
 
       &--description { width: auto; } 
       &--link { width: auto; }

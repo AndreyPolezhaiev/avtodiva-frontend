@@ -6,6 +6,7 @@ import { StudentComponent } from './pages/admin/student/student.component';
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
 import { ScheduleSlotComponent } from './pages/admin/schedule-slot/schedule-slot.component';
 import { WeekendComponent } from './pages/admin/weekend/weekend.component';
+import { AnalyticsComponent } from './pages/admin/analytics/analytics.component';
 import { roleGuard } from './core/auth/guard/role.quard';
 
 export const routes: Routes = [
@@ -25,7 +26,8 @@ export const routes: Routes = [
       { path: 'cars', component: CarComponent },
       { path: 'instructors', component: InstructorComponent },
       { path: 'students', component: StudentComponent },
-      { path: 'weekends', component: WeekendComponent }
+      { path: 'weekends', component: WeekendComponent },
+      { path: 'analytics', component: AnalyticsComponent }
     ]
   },
 

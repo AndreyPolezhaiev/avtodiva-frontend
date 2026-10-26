@@ -1,0 +1,36 @@
+@use 'styles/utils/variables' as vars;
+
+.profit-summary {
+  display: flex;
+  justify-content: center;
+  gap: vars.$profit-summary-gap;
+  margin-bottom: vars.$profit-summary-margin-bottom;
+
+  &__item {
+    display: flex;
+    align-items: baseline;
+    gap: vars.$profit-summary-item-gap;
+    padding: vars.$profit-summary-item-padding;
+    background: vars.$profit-summary-item-background;
+    border: vars.$profit-summary-item-border;
+    border-radius: vars.$profit-summary-item-border-radius;
+  }
+
+  &__label {
+    font-size: vars.$profit-summary-label-font-size;
+    color: vars.$profit-summary-label-color;
+  }
+
+  &__value {
+    font-size: vars.$profit-summary-value-font-size;
+    font-weight: vars.$profit-summary-value-font-weight;
+  }
+
+  &__tables {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: vars.$profit-summary-tables-gap;
+  }
+}

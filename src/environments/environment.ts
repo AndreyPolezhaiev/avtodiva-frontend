@@ -1,4 +1,5 @@
 export const environment = {
-  production: false,
-  apiBaseUrl: 'API_URL_PLACEHOLDER'
+  production: true,
+  apiBaseUrl: 'API_URL_PLACEHOLDER',
+  analyticsApiBaseUrl: 'ANALYTICS_URL_PLACEHOLDER'
 };

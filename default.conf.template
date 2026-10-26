@@ -12,4 +12,13 @@ server {
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
     }
+
+    location /api/analytics {
+        # resolve at request time so nginx starts even if the analytics service is down
+        resolver 127.0.0.11 valid=10s;
+        set $analytics_upstream http://${ANALYTICS_HOST}:${ANALYTICS_PORT};
+        proxy_pass $analytics_upstream;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+    }
 }
