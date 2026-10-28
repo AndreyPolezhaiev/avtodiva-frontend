@@ -1,4 +1,5 @@
 @use 'styles/utils/variables' as vars;
+@use 'styles/utils/breakpoints' as bp;
 
 .profit-summary {
   display: flex;
@@ -32,5 +33,29 @@
     align-items: flex-start;
     flex-wrap: wrap;
     gap: vars.$profit-summary-tables-gap;
+  }
+}
+
+.profit-summary {
+  flex-wrap: wrap;
+}
+
+@include bp.down(sm) {
+  .profit-summary {
+    gap: vars.$adaptive-gutter-small;
+
+    &__item {
+      flex: 1 1 100%;
+      justify-content: space-between;
+    }
+
+    &__tables {
+      flex-direction: column;
+      align-items: stretch;
+
+      .table-manager__content--analytics {
+        width: 100%;
+      }
+    }
   }
 }

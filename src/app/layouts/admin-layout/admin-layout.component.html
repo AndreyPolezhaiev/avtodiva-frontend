@@ -2,8 +2,26 @@
   <div class="header__logo">
     <a routerLink="/admin" class="header__link">AvtoDiva Admin</a>
   </div>
-  <nav class="nav">
-    <ul class="nav__list">
+  <button
+    type="button"
+    class="header__burger"
+    (click)="toggleMenu()"
+    [attr.aria-expanded]="isMenuOpen()"
+    aria-label="Меню"
+  >
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="nav__icon">
+      @if (isMenuOpen()) {
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+      } @else {
+        <line x1="4" y1="6" x2="20" y2="6"></line>
+        <line x1="4" y1="12" x2="20" y2="12"></line>
+        <line x1="4" y1="18" x2="20" y2="18"></line>
+      }
+    </svg>
+  </button>
+  <nav class="nav" [class.nav--open]="isMenuOpen()">
+    <ul class="nav__list" (click)="closeMenu()">
       <li class="nav__item">
         <a class="nav__link" routerLink="schedule" routerLinkActive="active">Заняття</a>
       </li>
@@ -34,6 +52,7 @@
             <polyline points="16 17 21 12 16 7"></polyline>
             <line x1="21" y1="12" x2="9" y2="12"></line>
           </svg>
+          <span class="nav__link-text">Вийти</span>
         </a>
       </li>
     </ul>

@@ -1,4 +1,5 @@
 @use 'styles/utils/variables' as vars;
+@use 'styles/utils/breakpoints' as bp;
 
 .table-manager {
   margin-inline: vars.$table-manager-margin-inline;
@@ -42,5 +43,27 @@
   &__scroll-container {
     max-height: vars.$table-manager-scroll-container-max-height;
     overflow-y: auto;
+  }
+}
+
+.table-manager__content {
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.table-manager__scroll-container {
+  overflow-x: auto;
+  min-width: 0;
+  max-width: 100%;
+  -webkit-overflow-scrolling: touch;
+}
+
+@include bp.down(lg) {
+  .table-manager {
+    margin-inline: 0;
+
+    &__filter {
+      width: 100%;
+    }
   }
 }

@@ -1,5 +1,12 @@
 @use 'styles/utils/variables' as vars;
+@use 'styles/utils/breakpoints' as bp;
 
 .content-area {
   padding: vars.$content-area-padding;
+}
+
+@include bp.down(sm) {
+  .content-area {
+    padding: vars.$adaptive-gutter-small;
+  }
 }

@@ -1,4 +1,5 @@
 @use 'styles/utils/variables' as vars;
+@use 'styles/utils/breakpoints' as bp;
 
 .nav {
   &__list {
@@ -66,5 +67,59 @@
     stroke-width: vars.$nav-icon-stroke-width;
     stroke-linecap: round;
     stroke-linejoin: round;
+  }
+}
+
+.nav__link-text {
+  display: none;
+}
+
+@include bp.down(lg) {
+  .nav {
+    display: none;
+    width: 100%;
+
+    &--open {
+      display: block;
+    }
+
+    &__list {
+      flex-direction: column;
+      gap: vars.$nav-mobile-list-gap;
+      padding: vars.$nav-mobile-list-padding;
+    }
+
+    &__item {
+      height: auto;
+
+      &:has(+ .nav__item--logout), &:nth-last-child(2) {
+        .nav__link {
+          margin-right: 0;
+        }
+      }
+
+      &--logout {
+        border-left: none;
+        border-top: vars.$nav-mobile-logout-border-top;
+        margin: 0;
+        padding: 0;
+        padding-top: vars.$nav-mobile-list-gap;
+      }
+    }
+
+    &__link {
+      flex: 1;
+      padding: vars.$nav-mobile-link-padding;
+
+      &--logout {
+        display: flex;
+        align-items: center;
+        gap: vars.$nav-mobile-logout-gap;
+      }
+    }
+
+    &__link-text {
+      display: inline;
+    }
   }
 }

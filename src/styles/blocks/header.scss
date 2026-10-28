@@ -1,4 +1,5 @@
 @use 'styles/utils/variables' as vars;
+@use 'styles/utils/breakpoints' as bp;
 
 .header {
   position: sticky;
@@ -18,5 +19,40 @@
     font-weight: vars.$logo-font-weight;
     text-decoration: none;
     color: inherit;
+  }
+
+  &__burger {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: vars.$burger-size;
+    height: vars.$burger-size;
+    padding: 0;
+    background: none;
+    border: vars.$burger-border;
+    border-radius: vars.$burger-border-radius;
+    color: inherit;
+    cursor: pointer;
+    transition: vars.$transition-base;
+
+    &:hover {
+      background: vars.$nav-hover-bg;
+    }
+  }
+
+  @include bp.down(lg) {
+    min-width: 0;
+    flex-wrap: wrap;
+    padding: vars.$header-padding-mobile;
+
+    &__burger {
+      display: flex;
+    }
+  }
+
+  @include bp.down(sm) {
+    &__link {
+      font-size: vars.$logo-font-size-mobile;
+    }
   }
 }
