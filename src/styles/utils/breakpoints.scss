@@ -1,0 +1,15 @@
+@use 'sass:map';
+
+// Desktop layout (> xl) stays untouched; everything below adapts.
+$breakpoints: (
+  sm: 600px,   // phones
+  md: 900px,   // tablets (portrait)
+  lg: 1100px,  // tablets (landscape), small laptops
+  xl: 1400px,  // laptops where the full filter row no longer fits
+);
+
+@mixin down($name) {
+  @media (max-width: map.get($breakpoints, $name)) {
+    @content;
+  }
+}

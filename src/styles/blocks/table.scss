@@ -1,4 +1,5 @@
 @use 'styles/utils/variables' as vars;
+@use 'styles/utils/breakpoints' as bp;
 
 .table {
   width: 100%;
@@ -116,6 +117,28 @@
         font-style: italic;
         border-right: none !important; 
         border-bottom: none;
+      }
+    }
+  }
+}
+
+@include bp.down(lg) {
+  .table--schedule-slot {
+    min-width: vars.$table-schedule-slot-min-width;
+  }
+}
+
+@include bp.down(sm) {
+  .table {
+    font-size: vars.$table-font-size-mobile;
+
+    &--analytics {
+      width: 100%;
+
+      .table__head__cell {
+        &--instructor, &--car { width: 40%; }
+        &--lessons { width: 25%; }
+        &--profit { width: 35%; }
       }
     }
   }

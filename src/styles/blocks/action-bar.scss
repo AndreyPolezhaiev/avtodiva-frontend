@@ -1,4 +1,5 @@
 @use 'styles/utils/variables' as vars;
+@use 'styles/utils/breakpoints' as bp;
 
 .action-bar {
   display: flex;
@@ -35,5 +36,24 @@
     display: flex;
     gap: vars.$action-bar-actions-gap;
     align-items: center;
+  }
+}
+
+@include bp.down(md) {
+  .action-bar {
+    flex-wrap: wrap;
+    gap: vars.$action-bar-actions-gap;
+    padding: vars.$action-bar-padding-mobile;
+
+    &__info {
+      flex-wrap: wrap;
+      gap: vars.$action-bar-actions-gap;
+    }
+  }
+}
+
+@include bp.down(sm) {
+  .action-bar__title {
+    font-size: vars.$action-bar-title-font-size-mobile;
   }
 }

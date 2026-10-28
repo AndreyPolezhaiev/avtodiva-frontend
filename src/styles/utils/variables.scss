@@ -477,3 +477,33 @@ $login-page-button-border-radius: 4px;
 $login-page-button-disabled-background-color: #6c757d;
 $login-page-button-loading-opacity: 0.8;
 /* #endregion */
+/* #region adaptive */
+$adaptive-gutter: 16px;
+$adaptive-gutter-small: 12px;
+
+$header-padding-mobile: 12px $adaptive-gutter;
+$logo-font-size-mobile: 20px;
+
+$nav-mobile-list-gap: 4px;
+$nav-mobile-list-padding: 12px 0 4px;
+$nav-mobile-link-padding: 10px 12px;
+$nav-mobile-logout-border-top: 1px solid rgba(255, 255, 255, 0.15);
+$nav-mobile-logout-gap: 8px;
+
+$burger-size: 40px;
+$burger-border: 1px solid rgba(255, 255, 255, 0.3);
+$burger-border-radius: 6px;
+
+$action-bar-padding-mobile: $adaptive-gutter;
+$action-bar-title-font-size-mobile: 20px;
+
+$filter-form-group-gap-mobile: 12px;
+
+$table-font-size-mobile: 14px;
+$table-schedule-slot-min-width: 960px;
+
+$modal-mobile-padding: $adaptive-gutter-small;
+$modal-content-padding-mobile: $adaptive-gutter;
+
+$login-page-card-padding-mobile: 1.5rem;
+/* #endregion */

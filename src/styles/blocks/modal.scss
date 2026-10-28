@@ -1,4 +1,5 @@
 @use 'styles/utils/variables' as vars;
+@use 'styles/utils/breakpoints' as bp;
 
 .modal {
   position: fixed;
@@ -44,5 +45,31 @@
     color: vars.$modal-title-color;
     border-bottom: vars.$modal-title-border-bottom;
     padding-bottom: vars.$modal-title-padding-bottom;
+  }
+}
+
+@include bp.down(md) {
+  .modal {
+    align-items: flex-start;
+    padding: vars.$modal-mobile-padding;
+    box-sizing: border-box;
+    overflow-y: auto;
+
+    &__content,
+    &__content--large {
+      margin: auto;
+      max-width: 100%;
+      max-height: none;
+      box-sizing: border-box;
+      overflow: visible;
+    }
+  }
+}
+
+@include bp.down(sm) {
+  .modal__content {
+    width: 100%;
+    min-width: 0;
+    padding: vars.$modal-content-padding-mobile;
   }
 }

@@ -1,4 +1,5 @@
 @use 'styles/utils/variables' as vars;
+@use 'styles/utils/breakpoints' as bp;
 
 .selected-days {
   display: grid;
@@ -49,5 +50,11 @@
         color: vars.$selected-days-day-remove-hover-color;
       }
     }
+  }
+}
+
+@include bp.down(sm) {
+  .selected-days {
+    margin-left: 0;
   }
 }

@@ -1,4 +1,5 @@
 @use 'styles/utils/variables' as vars;
+@use 'styles/utils/breakpoints' as bp;
 
 .filter-form {
   background: vars.$filter-form-background;
@@ -72,5 +73,45 @@
 
   &__actions {
     align-self: end;
+  }
+}
+
+@include bp.down(xl) {
+  .filter-form__group {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
+
+@include bp.down(sm) {
+  .filter-form {
+    width: 100%;
+    box-sizing: border-box;
+
+    &__group {
+      gap: vars.$filter-form-group-gap-mobile;
+    }
+
+    &__field {
+      flex: 1 1 100%;
+      width: 100% !important;
+      min-width: 0;
+
+      &:has(.filter-form__input--date) {
+        flex-basis: calc(50% - #{vars.$filter-form-group-gap-mobile} / 2);
+      }
+    }
+
+    &__input {
+      box-sizing: border-box;
+    }
+
+    &__actions {
+      width: 100%;
+
+      .btn-control {
+        width: 100%;
+      }
+    }
   }
 }

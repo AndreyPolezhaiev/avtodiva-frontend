@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { DataRegistryService } from '../../shared/registry/data-registry.service';
 import { AuthService } from '../../core/auth/service/auth.service';
@@ -13,6 +13,16 @@ export class AdminLayoutComponent {
   private dataRegistryService = inject(DataRegistryService);
   private authService = inject(AuthService);
   private router = inject(Router);
+
+  public isMenuOpen = signal(false);
+
+  public toggleMenu(): void {
+    this.isMenuOpen.update(isOpen => !isOpen);
+  }
+
+  public closeMenu(): void {
+    this.isMenuOpen.set(false);
+  }
 
   public onLogout(): void {
     this.authService.logout();

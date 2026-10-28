@@ -1,3 +1,8 @@
 @use 'styles/blocks/autocomplete-list';
 @use 'styles/blocks/filter-form';
 @use 'styles/blocks/form';
+
+// Let the inner field act as the flex item of the surrounding form.
+:host {
+  display: contents;
+}
