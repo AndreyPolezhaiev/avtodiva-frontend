@@ -6,6 +6,7 @@
   
   &--schedule-slot {
     width: 100%;
+    min-width: vars.$table-schedule-slot-min-width;
   }
 
   &--student {
@@ -46,8 +47,12 @@
       &--lessons { width: vars.$table-head-cell-lessons-width; }
       &--profit { width: vars.$table-head-cell-profit-width; }
 
-      &--description { width: auto; } 
-      &--link { width: auto; }
+      &--description, &--link {
+        width: auto;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
 
       &--edit { width: vars.$table-head-cell-edit-width; }
       &--delete { width: vars.$table-head-cell-delete-width; }
@@ -119,12 +124,6 @@
         border-bottom: none;
       }
     }
-  }
-}
-
-@include bp.down(lg) {
-  .table--schedule-slot {
-    min-width: vars.$table-schedule-slot-min-width;
   }
 }
 
